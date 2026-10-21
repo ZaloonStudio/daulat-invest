@@ -32,6 +32,11 @@ export interface IndexQuote {
   high: number;
   low: number;
   volume: number;
+  value?: number;
+  open?: number;
+  ldcp?: number;
+  yearHigh?: number;
+  yearLow?: number;
 }
 
 export interface ChartPoint {
@@ -44,6 +49,17 @@ export interface ChartPoint {
   volume?: number;
 }
 
+export interface NewsArticle {
+  id: string;
+  title: string;
+  summary: string;
+  link: string;
+  source: string;
+  publishedAt: string;
+  imageUrl?: string;
+  category?: string;
+}
+
 export interface CompanyAnnouncement {
   id: string;
   symbol: string;
@@ -54,6 +70,7 @@ export interface CompanyAnnouncement {
   type: string;
   documentUrl: string;
   attachmentId?: string;
+  summary?: string;
 }
 
 export interface MarketSummary {
