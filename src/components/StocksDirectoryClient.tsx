@@ -25,18 +25,10 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
   );
 
   useEffect(() => {
-    const sec = searchParams?.get('sector');
-    if (sec) {
-      setSelectedSector(sec);
-    }
-    const q = searchParams?.get('q');
-    if (q) {
-      setSearch(q);
-    }
-    const tab = searchParams?.get('tab') || searchParams?.get('sort');
-    if (tab && ['volume', 'gainers', 'losers', 'symbol', 'price'].includes(tab)) {
-      setSortBy(tab as any);
-    }
+    setSelectedSector(searchParams?.get('sector') || 'ALL');
+    setSearch(searchParams?.get('q') || '');
+    const tab = searchParams?.get('tab') || searchParams?.get('sort') || 'volume';
+    setSortBy((['volume', 'gainers', 'losers', 'symbol', 'price'].includes(tab) ? tab : 'volume') as typeof sortBy);
   }, [searchParams]);
 
   const filtered = useMemo(() => {

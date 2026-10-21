@@ -126,7 +126,7 @@ export default function HomeCommoditiesWidget() {
           return (
             <Link
               key={item.id}
-              href="/commodities"
+              href={item.id === 'usd-interbank' ? '/forex' : '/commodities'}
               className="bg-[#0B1120] border border-[#28354A] hover:border-[#465770] p-3 rounded-xl transition-all group flex flex-col justify-between"
             >
               <div>

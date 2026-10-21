@@ -12,10 +12,12 @@ import {
 interface StockResearchConsoleProps {
   stock: StockQuote;
   peers: StockQuote[];
+  section?: 'ratios' | 'peers' | 'dividends' | 'shariah';
 }
 
-export default function StockResearchConsole({ stock, peers }: StockResearchConsoleProps) {
-  const [activeTab, setActiveTab] = useState<'ratios' | 'peers' | 'dividends' | 'shariah'>('ratios');
+export default function StockResearchConsole({ stock, peers, section }: StockResearchConsoleProps) {
+  const [selectedTab, setActiveTab] = useState<'ratios' | 'peers' | 'dividends' | 'shariah'>('ratios');
+  const activeTab = section ?? selectedTab;
 
   // Approximate metrics if not directly provided
   const eps = stock.peRatio && stock.peRatio > 0 ? (stock.current / stock.peRatio).toFixed(2) : '—';
@@ -41,7 +43,7 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
     <div className="bg-[#111A2B] border border-[#28354A] rounded-2xl p-6 shadow-2xl space-y-6">
       {/* Tab Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#28354A] pb-4">
-        <div className="flex items-center space-x-2 overflow-x-auto scrollbar-none pb-1">
+        {!section && <div className="flex items-center space-x-2 overflow-x-auto scrollbar-none pb-1">
           <button
             onClick={() => setActiveTab('ratios')}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
@@ -87,6 +89,8 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
           </button>
         </div>
 
+        }
+        {section && <h2 className="text-lg font-semibold">{({ratios: 'Valuation & ratios', peers: 'Sector peers', dividends: 'Dividend history', shariah: 'Shariah screening'})[section]}</h2>}
         {/* Quick Compare CTA */}
         {peers.length > 0 && (
           <Link
@@ -300,8 +304,8 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
       {activeTab === 'dividends' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-[#EFF3FA]">Recent Cash Dividend Declarations</span>
-            <span className="text-[#A4AEC1]">Historical payouts from PSX company books</span>
+            <span className="font-semibold text-[#EFF3FA]">Illustrative dividend breakdown</span>
+            <span className="text-[#A4AEC1]">Illustrative allocation of the current dividend yield; not verified historical payouts</span>
           </div>
           <div className="border border-[#28354A] rounded-xl overflow-hidden">
             <table className="w-full text-left text-xs">
@@ -329,12 +333,13 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
       )}
 
       {/* TAB 4: SHARIAH COMPLIANCE AUDIT */}
-      {activeTab === 'shariah' && (
+      {activeTab === 'shariah' && !stock.isShariah && <div className="space-y-3 text-sm text-[#A4AEC1]"><p>{stock.symbol} is not flagged as Shariah compliant in the current market feed.</p><p>Verify the latest company screening and index membership with PSX before making an investment decision.</p></div>}
+      {activeTab === 'shariah' && stock.isShariah && (
         <div className="bg-[#0B1120] border border-[#28354A] p-5 rounded-xl space-y-4">
           <div className="flex items-center space-x-2 text-[#6DDBA5]">
             <Moon className="w-5 h-5 fill-current" />
             <h4 className="text-sm font-semibold text-[#EFF3FA]">
-              KMI Islamic Screening Standard &amp; Audit
+              KMI screening criteria reference
             </h4>
           </div>
 
@@ -343,18 +348,18 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
               <span className="text-[#A4AEC1] block text-[10px] uppercase font-semibold">1. Primary Business Activity</span>
               <span className="font-semibold text-[#6DDBA5] flex items-center space-x-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Permissible / Halal Operations</span>
+                <span>Flagged as compliant in the market feed</span>
               </span>
             </div>
 
             <div className="p-3 bg-[#111A2B] rounded-xl border border-[#28354A] space-y-1">
               <span className="text-[#A4AEC1] block text-[10px] uppercase font-semibold">2. Interest-Bearing Debt to Total Assets</span>
-              <span className="font-semibold text-[#EFF3FA]">&lt; 37% (Compliant)</span>
+              <span className="font-semibold text-[#EFF3FA]">&lt; 37% threshold</span>
             </div>
 
             <div className="p-3 bg-[#111A2B] rounded-xl border border-[#28354A] space-y-1">
               <span className="text-[#A4AEC1] block text-[10px] uppercase font-semibold">3. Illiquid Assets to Total Assets</span>
-              <span className="font-semibold text-[#EFF3FA]">&gt; 25% (Compliant)</span>
+              <span className="font-semibold text-[#EFF3FA]">&gt; 25% threshold</span>
             </div>
 
             <div className="p-3 bg-[#111A2B] rounded-xl border border-[#28354A] space-y-1">

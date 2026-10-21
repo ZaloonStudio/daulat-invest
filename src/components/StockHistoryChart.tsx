@@ -1,5 +1,6 @@
 'use client';
 
+import { normalizeChartPoints } from '@/lib/chart-data';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import {
   createChart,
@@ -63,7 +64,7 @@ export default function StockHistoryChart({
 
   // Prepare and sanitize raw stock points
   const rawPoints = useMemo(() => {
-    const valid = (history || [])
+    const valid = normalizeChartPoints(history || [])
       .filter((p) => p.time && (p.close || p.value))
       .map((p) => {
         let timestamp: any = p.time;

@@ -38,7 +38,7 @@ export default function IndexPerformanceTable({
         </div>
 
         <Link
-          href="/stocks?tab=indices"
+          href="/#indices-section"
           className="text-xs font-semibold text-[#B69249] hover:text-[#B69249]/80 inline-flex items-center space-x-1"
         >
           <span>VIEW ALL INDICES</span>

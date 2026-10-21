@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { MutualFund, PAKISTAN_MUTUAL_FUNDS } from '@/lib/mutualFundsData';
 import {
   Search,
@@ -33,6 +33,17 @@ export default function MutualFundsClient() {
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
   const [selectedFund, setSelectedFund] = useState<MutualFund | null>(null);
+
+  useEffect(() => {
+    if (!selectedFund) return;
+    const overflow = document.body.style.overflow;
+    const previous = document.activeElement as HTMLElement | null;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('close-fund-details')?.focus();
+    const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setSelectedFund(null); };
+    document.addEventListener('keydown', close);
+    return () => { document.body.style.overflow = overflow; document.removeEventListener('keydown', close); previous?.focus(); };
+  }, [selectedFund]);
 
   // Extract unique AMCs and Categories
   const amcs = useMemo(() => {
@@ -577,10 +588,11 @@ export default function MutualFundsClient() {
 
       {/* Fund Details Modal / Flyout */}
       {selectedFund && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111A2B] border border-[#28354A] rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={e => { if (e.target === e.currentTarget) setSelectedFund(null); }}>
+          <div role="dialog" aria-modal="true" aria-labelledby="fund-details-title" className="bg-[#111A2B] border border-[#28354A] rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto">
             {/* Close Button */}
             <button
+              id="close-fund-details" aria-label="Close fund details"
               onClick={() => setSelectedFund(null)}
               className="absolute top-5 right-5 p-2 bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] rounded-full border border-[#28354A] transition-colors cursor-pointer"
             >
@@ -605,7 +617,7 @@ export default function MutualFundsClient() {
                   </span>
                 )}
               </div>
-              <h2 className="text-xl sm:text-2xl font-semibold text-[#EFF3FA]">
+              <h2 id="fund-details-title" className="text-xl sm:text-2xl font-semibold text-[#EFF3FA]">
                 {selectedFund.name}
               </h2>
               <p className="text-xs text-[#A4AEC1] mt-0.5">

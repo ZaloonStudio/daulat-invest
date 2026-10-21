@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { StockQuote } from '@/lib/types';
+import { useAuth } from '@/components/AuthProvider';
+import { db } from '@/lib/firebase';
+import { collection, doc, onSnapshot, setDoc, deleteDoc } from 'firebase/firestore';
 import {
   Star,
   Plus,
@@ -18,28 +21,48 @@ interface WatchlistClientProps {
 const DEFAULT_SYMBOLS = ['HUBC', 'MEBL', 'SYS', 'OGDC', 'ENGRO', 'LUCK', 'FFC', 'MCB'];
 
 export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
+  const { user, loading: authLoading, openSignIn } = useAuth();
+  const [syncError, setSyncError] = useState('');
+  const [readyUid, setReadyUid] = useState<string | null>(null);
   const [watchlistSymbols, setWatchlistSymbols] = useState<string[]>(DEFAULT_SYMBOLS);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  // Load from localStorage
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('daulat_watchlist');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setWatchlistSymbols(parsed);
-        }
-      }
-    } catch {}
-  }, []);
+    if (authLoading) return;
+    setSyncError(''); setReadyUid(null);
+    if (!user) {
+      try {
+        const stored = localStorage.getItem('daulat_watchlist');
+        const parsed = stored ? JSON.parse(stored) : DEFAULT_SYMBOLS;
+        setWatchlistSymbols(Array.isArray(parsed) ? parsed.filter(s => typeof s === 'string') : DEFAULT_SYMBOLS);
+      } catch { setWatchlistSymbols(DEFAULT_SYMBOLS); }
+      return;
+    }
+    setWatchlistSymbols([]);
+    return onSnapshot(collection(db, 'users', user.uid, 'watchlist'), snapshot => {
+      setWatchlistSymbols(snapshot.docs.map(d => String(d.data().symbol || d.id).toUpperCase()));
+      setReadyUid(user.uid);
+    }, () => { setSyncError('Unable to load your app watchlist. Please check your connection or sign in again.'); });
+  }, [user, authLoading]);
 
-  const saveWatchlist = (symbols: string[]) => {
-    setWatchlistSymbols(symbols);
+  const saveWatchlist = async (symbols: string[]) => {
+    if (authLoading) return;
+    if (!user) {
+      setWatchlistSymbols(symbols);
+      try { localStorage.setItem('daulat_watchlist', JSON.stringify(symbols)); } catch {}
+      return;
+    }
+    if (readyUid !== user.uid) return;
+    setSyncError('');
     try {
-      localStorage.setItem('daulat_watchlist', JSON.stringify(symbols));
-    } catch {}
+      const added = symbols.filter(s => !watchlistSymbols.includes(s));
+      const removed = watchlistSymbols.filter(s => !symbols.includes(s));
+      await Promise.all([
+        ...added.map(symbol => setDoc(doc(db, 'users', user.uid, 'watchlist', symbol), {symbol, updatedAt: Date.now()}, {merge: true})),
+        ...removed.map(symbol => deleteDoc(doc(db, 'users', user.uid, 'watchlist', symbol))),
+      ]);
+    } catch { setSyncError('Unable to save your watchlist. Please try again.'); }
   };
 
   const addStock = (sym: string) => {
@@ -113,6 +136,8 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
 
   return (
     <div className="space-y-8">
+      {syncError && <p role="alert" className="text-sm text-[#F28B82]">{syncError}</p>}
+      {user ? <p role="status" className="text-xs text-[#A4AEC1]">{readyUid === user.uid ? "Synced with your Daulat app account" : "Loading your app watchlist…"}</p> : !authLoading && <p className="text-xs text-[#A4AEC1]">Saved on this browser. <button onClick={openSignIn} className="text-[#B69249] hover:underline">Sign in to use your app watchlist</button></p>}
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#28354A] pb-6">
         <div>

@@ -30,12 +30,13 @@ export default function AnnouncementsClient({ initialAnnouncements }: Announceme
         item.companyName.toLowerCase().includes(search.toLowerCase()) ||
         item.title.toLowerCase().includes(search.toLowerCase());
 
+      const typeText = (item.type + ' ' + item.title).toLowerCase();
       const matchType =
         selectedType === 'All' ||
-        (selectedType === 'Financial Results' && (item.type.includes('Financial') || item.title.includes('Financial') || item.title.includes('Accounts'))) ||
-        (selectedType === 'Board Meeting' && (item.type.includes('Meeting') || item.title.includes('Board'))) ||
-        (selectedType === 'Dividend / Payout' && (item.title.includes('Dividend') || item.title.includes('Bonus') || item.title.includes('Payout'))) ||
-        (selectedType === 'Material Info' && (item.type.includes('Material') || item.title.includes('Disclosure')));
+        (selectedType === 'Financial Results' && /financial|accounts|results/.test(typeText)) ||
+        (selectedType === 'Board Meeting' && /board|meeting/.test(typeText)) ||
+        (selectedType === 'Dividend / Payout' && /dividend|bonus|payout/.test(typeText)) ||
+        (selectedType === 'Material Info' && /material|disclosure|regulatory|legal|briefing/.test(typeText));
 
       return matchSearch && matchType;
     });

@@ -4,20 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { auth, db, googleProvider } from '@/lib/firebase';
-import {
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  User,
-} from 'firebase/auth';
+import { db } from '@/lib/firebase';
+import { useAuth } from '@/components/AuthProvider';
+import { readHolding, readSoldTrade } from '@/lib/portfolio-data';
 import {
   collection,
   onSnapshot,
   doc,
   setDoc,
   deleteDoc,
-  query,
 } from 'firebase/firestore';
 import { StockQuote } from '@/lib/types';
 import {
@@ -55,8 +50,9 @@ interface SoldTrade {
 }
 
 export default function PortfolioPage() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading, openSignIn, logout } = useAuth();
+  const [syncError, setSyncError] = useState('');
+  const [isSyncing, setIsSyncing] = useState(false);
   const [holdings, setHoldings] = useState<Holding[]>([]);
   const [trades, setTrades] = useState<SoldTrade[]>([]);
   const [quotes, setQuotes] = useState<Record<string, StockQuote>>({});
@@ -68,15 +64,6 @@ export default function PortfolioPage() {
   const [newShares, setNewShares] = useState('');
   const [newPrice, setNewPrice] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Monitor Auth state
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Fetch live quotes for accurate enrichment
   useEffect(() => {
@@ -102,63 +89,19 @@ export default function PortfolioPage() {
       return;
     }
 
-    const holdingsRef = collection(db, 'users', user.uid, 'portfolio');
-    const unsubscribeHoldings = onSnapshot(query(holdingsRef), (snapshot) => {
-      const items: Holding[] = [];
-      snapshot.forEach((docSnap) => {
-        const d = docSnap.data();
-        items.push({
-          id: docSnap.id,
-          symbol: d.symbol || '',
-          companyName: d.companyName || d.symbol || '',
-          shares: Number(d.shares) || 0,
-          buyPrice: Number(d.buyPrice) || 0,
-          buyDate: Number(d.buyDate) || Date.now(),
-        });
-      });
-      setHoldings(items);
-    });
-
-    const tradesRef = collection(db, 'users', user.uid, 'trades');
-    const unsubscribeTrades = onSnapshot(query(tradesRef), (snapshot) => {
-      const items: SoldTrade[] = [];
-      snapshot.forEach((docSnap) => {
-        const d = docSnap.data();
-        items.push({
-          id: docSnap.id,
-          symbol: d.symbol || '',
-          companyName: d.companyName || d.symbol || '',
-          shares: Number(d.shares) || 0,
-          buyPrice: Number(d.buyPrice) || 0,
-          sellPrice: Number(d.sellPrice) || 0,
-          profit: Number(d.profit) || 0,
-          soldDate: Number(d.soldDate) || Date.now(),
-        });
-      });
-      setTrades(items);
-    });
-
-    return () => {
-      unsubscribeHoldings();
-      unsubscribeTrades();
-    };
+    setHoldings([]); setTrades([]); setSyncError(''); setIsSyncing(true);
+    const onSyncError = () => { setSyncError('Unable to load your cloud data. Check your connection and try signing in again.'); setIsSyncing(false); };
+    const unsubscribeHoldings = onSnapshot(collection(db, 'users', user.uid, 'portfolio'), snapshot => {
+      setHoldings(snapshot.docs.map(d => readHolding(d.id, d.data()))); setIsSyncing(false);
+    }, onSyncError);
+    const unsubscribeTrades = onSnapshot(collection(db, 'users', user.uid, 'trades'), snapshot => {
+      setTrades(snapshot.docs.map(d => readSoldTrade(d.id, d.data())));
+    }, onSyncError);
+    return () => { unsubscribeHoldings(); unsubscribeTrades(); };
   }, [user]);
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (err: any) {
-      console.error('Google Sign In Error:', err);
-      alert('Sign in failed: ' + (err.message || 'Please try again.'));
-    }
-  };
-
   const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error('Sign Out Error:', err);
-    }
+    try { await logout(); } catch { setSyncError('Unable to sign out. Please try again.'); }
   };
 
   const handleAddHolding = async (e: React.FormEvent) => {
@@ -169,6 +112,7 @@ export default function PortfolioPage() {
     const sharesNum = parseInt(newShares, 10);
     const priceNum = parseFloat(newPrice);
 
+    if (!quotes[sym]) { alert("Choose a valid PSX stock symbol."); return; }
     if (!sym || isNaN(sharesNum) || sharesNum <= 0 || isNaN(priceNum) || priceNum <= 0) {
       alert('Please enter valid symbol, shares, and purchase price.');
       return;
@@ -248,6 +192,8 @@ export default function PortfolioPage() {
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {syncError && <p role="alert" className="mb-6 text-sm text-[#F28B82]">{syncError}</p>}
+        {user && isSyncing && <p role="status" className="mb-6 text-sm text-[#A4AEC1]">Loading your app portfolio…</p>}
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
@@ -292,11 +238,11 @@ export default function PortfolioPage() {
               </div>
             ) : (
               <button
-                onClick={handleGoogleSignIn}
+                onClick={openSignIn}
                 className="flex items-center space-x-2 px-5 py-2.5 bg-[#B69249] hover:bg-[#E5A200] text-black rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-yellow-500/20"
               >
                 <LogIn className="w-4 h-4" />
-                <span>Sign in with Google</span>
+                <span>Sign in</span>
               </button>
             )}
           </div>
@@ -318,10 +264,10 @@ export default function PortfolioPage() {
               </p>
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button
-                  onClick={handleGoogleSignIn}
+                  onClick={openSignIn}
                   className="w-full sm:w-auto px-6 py-3 bg-[#B69249] hover:bg-[#E5A200] text-black font-semibold rounded-xl text-sm transition-all shadow-lg"
                 >
-                  Continue with Google
+                  Sign in to your account
                 </button>
                 <a
                   href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
@@ -552,7 +498,7 @@ export default function PortfolioPage() {
                 <Wallet className="w-10 h-10 text-[#7F8DA4] mx-auto" />
                 <h3 className="text-base font-semibold text-[#EFF3FA]">No closed trades recorded</h3>
                 <p className="text-xs text-[#A4AEC1] max-w-md mx-auto">
-                  When you record sales in the Daulat mobile app or website, your realized profit/loss and trade history will appear here.
+                  When you record sales in the Daulat mobile app, your realized profit/loss and trade history will appear here.
                 </p>
               </div>
             ) : (

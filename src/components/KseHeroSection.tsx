@@ -1,5 +1,6 @@
 'use client';
 
+import { normalizeChartPoints } from '@/lib/chart-data';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createChart, ColorType, AreaSeries, HistogramSeries, IChartApi, ISeriesApi } from 'lightweight-charts';
 import { IndexQuote, ChartPoint } from '@/lib/types';
@@ -53,7 +54,9 @@ export default function KseHeroSection({
 
   // Fetch chart points for active index / timeframe
   useEffect(() => {
-    fetch(`/api/kse100-chart?symbol=${encodeURIComponent(selectedIndexCode)}&timeframe=${timeframe}`)
+    const controller = new AbortController();
+    setPoints([]);
+    fetch(`/api/kse100-chart?symbol=${encodeURIComponent(selectedIndexCode)}&timeframe=${timeframe}`, { signal: controller.signal })
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
@@ -61,6 +64,7 @@ export default function KseHeroSection({
         }
       })
       .catch(() => {});
+    return () => controller.abort();
   }, [selectedIndexCode, timeframe]);
 
   useEffect(() => {
@@ -162,6 +166,7 @@ export default function KseHeroSection({
       }
     }
 
+    chartData = normalizeChartPoints(chartData);
     const formattedArea = chartData
       .map((p) => ({
         time: Number(p.time) as any,

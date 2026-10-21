@@ -24,8 +24,8 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
   const urlS2 = searchParams?.get('s2') || '';
 
   const [selectedSymbols, setSelectedSymbols] = useState<string[]>(() => {
-    if (urlS1 && urlS2) return [urlS1.toUpperCase(), urlS2.toUpperCase()];
-    if (urlS1) return [urlS1.toUpperCase(), 'MCB'];
+    if (urlS1 && urlS2) return [...new Set([urlS1.toUpperCase(), urlS2.toUpperCase()])];
+    if (urlS1) return [urlS1.toUpperCase(), urlS1.toUpperCase() === 'MCB' ? 'MEBL' : 'MCB'];
     return ['MEBL', 'MCB'];
   });
 
@@ -33,12 +33,12 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
     const s1 = searchParams?.get('s1') || searchParams?.get('base');
     const s2 = searchParams?.get('s2');
     if (s1 && s2) {
-      setSelectedSymbols([s1.toUpperCase(), s2.toUpperCase()]);
+      setSelectedSymbols([...new Set([s1.toUpperCase(), s2.toUpperCase()])]);
     } else if (s1) {
       setSelectedSymbols((prev) => {
         const sym = s1.toUpperCase();
         if (prev.includes(sym)) return prev;
-        const other = prev.find((x) => x !== sym) || 'MCB';
+        const other = prev.find((x) => x !== sym) || (sym === 'MCB' ? 'MEBL' : 'MCB');
         return [sym, other];
       });
     }
@@ -185,6 +185,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
                       </div>
                       {selectedStocks.length > 1 && (
                         <button
+                          disabled={selectedStocks.length <= 1}
                           onClick={() => removeStock(stock.symbol)}
                           title="Remove from comparison"
                           className="p-1 text-[#7F8DA4] hover:text-[#F28B82] rounded transition-colors"

@@ -186,13 +186,13 @@ html.light textarea::placeholder {
   .shadow-xl, .shadow-2xl { box-shadow: none; }
 }
 .site-header { background: rgba(11,17,32,.94); backdrop-filter: blur(20px); }
-.brand-mark { position: relative; display: block; width: 40px; height: 40px; flex-shrink: 0; overflow: hidden; border-radius: 9px; background: #080F20; }
-.brand-logo-image { position: absolute; width: 88px; height: 88px; max-width: none; left: -25px; top: -23px; }
+.brand-mark { position: relative; display: block; width: 40px; height: 40px; flex-shrink: 0; overflow: hidden; border-radius: 9px; background: transparent; }
+.brand-logo-image { position: absolute; width: 54px; height: 54px; max-width: none; left: -8px; top: -7px; }
 .footer-link { color: #A4AEC1; transition: color .2s; }
 .footer-link:hover { color: #B69249; }
 html.light .footer-link { color: #657084; }
 html.light .footer-link:hover { color: #886521; }
-.primary-action { align-items: center; justify-content: center; gap: 12px; border-radius: 7px; background: #B69249; color: #141A27; font-weight: 600; transition: background .2s, transform .2s; }
+.primary-action { white-space: nowrap; flex-shrink: 0; align-items: center; justify-content: center; gap: 12px; border-radius: 7px; background: #B69249; color: #141A27; font-weight: 600; transition: background .2s, transform .2s; }
 .primary-action:hover { background: #C6A45B; transform: translateY(-1px); }
 .desktop-nav-link { position: relative; padding: 16px 0; color: #A4AEC1; font-size: 12px; font-weight: 500; white-space: nowrap; transition: color .2s; }
 .desktop-nav-link:hover, .desktop-nav-link.is-active { color: #B69249; }

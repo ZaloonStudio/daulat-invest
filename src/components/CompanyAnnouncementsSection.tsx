@@ -93,6 +93,7 @@ export default function CompanyAnnouncementsSection({
         </div>
       </div>
 
+      {filtered.length === 0 && <p role="status" className="py-6 text-sm text-[#A4AEC1]">No announcements match this category.</p>}
       {/* Announcements 2-Column Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filtered.slice(0, 6).map((ann) => (

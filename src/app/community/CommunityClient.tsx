@@ -16,8 +16,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { CommunityPost, CommunityComment } from '@/lib/types';
-import { auth, googleProvider, db } from '@/lib/firebase';
-import { signInWithPopup, signOut, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
+import { db } from '@/lib/firebase';
+import { useAuth } from '@/components/AuthProvider';
 import {
   collection,
   getDocs,
@@ -108,7 +108,7 @@ const SEED_POSTS: CommunityPost[] = [
 
 export default function CommunityClient() {
   const [posts, setPosts] = useState<CommunityPost[]>(SEED_POSTS);
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const { user, openSignIn, logout } = useAuth();
   const [search, setSearch] = useState('');
   const [selectedSentiment, setSelectedSentiment] = useState<'All' | 'Bullish' | 'Bearish'>('All');
   const [upvotedPostIds, setUpvotedPostIds] = useState<Set<string>>(new Set());
@@ -130,20 +130,7 @@ export default function CommunityClient() {
   const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({});
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
 
-  // 1. Firebase Auth Listener
-  useEffect(() => {
-    try {
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-        if (currentUser && currentUser.displayName) {
-          setNewAuthor(currentUser.displayName);
-        }
-      });
-      return () => unsubscribe();
-    } catch {
-      // Firebase auth initialization fallback
-    }
-  }, []);
+  useEffect(() => { if (user?.displayName) setNewAuthor(user.displayName); }, [user]);
 
   // 2. Load cached or Firestore posts
   useEffect(() => {
@@ -207,23 +194,8 @@ export default function CommunityClient() {
     } catch {}
   };
 
-  // Google Login / Logout
-  const handleGoogleLogin = async () => {
-    try {
-      const res = await signInWithPopup(auth, googleProvider);
-      setUser(res.user);
-      if (res.user.displayName) setNewAuthor(res.user.displayName);
-    } catch (err) {
-      console.warn('Google sign in skipped or cancelled:', err);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setUser(null);
-    } catch {}
-  };
+  const handleGoogleLogin = openSignIn;
+  const handleLogout = async () => { try { await logout(); } catch { openSignIn(); } };
 
   // Upvote Handler
   const handleUpvote = async (postId: string) => {
@@ -395,7 +367,7 @@ export default function CommunityClient() {
               className="bg-[#111A2B] hover:bg-[#1C2940] border border-[#28354A] text-[#EFF3FA] px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors"
             >
               <LogIn className="w-3.5 h-3.5 text-[#9BBCE3]" />
-              <span>Sign In with Google</span>
+              <span>Sign in</span>
             </button>
           )}
 
@@ -624,6 +596,7 @@ export default function CommunityClient() {
                 <h3 className="text-base font-semibold text-[#EFF3FA]">Create PSX Discussion</h3>
               </div>
               <button
+                aria-label="Close discussion form"
                 onClick={() => setIsNewPostOpen(false)}
                 className="p-1.5 text-[#A4AEC1] hover:text-[#EFF3FA] rounded-lg"
               >

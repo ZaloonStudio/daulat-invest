@@ -426,6 +426,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
               <option value={100000}>&gt; 100,000</option>
               <option value={500000}>&gt; 500,000</option>
               <option value={1000000}>&gt; 1,000,000</option>
+              <option value={2000000}>&gt; 2,000,000</option>
               <option value={5000000}>&gt; 5,000,000</option>
             </select>
           </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { normalizeChartPoints } from '@/lib/chart-data';
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart, ColorType, AreaSeries, IChartApi, ISeriesApi } from 'lightweight-charts';
 import { IndexQuote, ChartPoint } from '@/lib/types';
@@ -99,7 +100,7 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
 
     if (points.length > 0) {
       // Map and sort points chronologically
-      const formatted = points
+      const formatted = normalizeChartPoints(points)
         .map((p) => ({
           time: Number(p.time) as any,
           value: p.value || 0,

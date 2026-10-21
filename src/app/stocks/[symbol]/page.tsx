@@ -2,12 +2,12 @@ import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { fetchMarketWatch, fetchStockHistory, fetchTimeseries } from '@/lib/psx';
+import { fetchMarketWatch, fetchStockHistory, fetchTimeseries, fetchCompanyAnnouncements } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StockHistoryChart from '@/components/StockHistoryChart';
 import CompanyHealthScore from '@/components/CompanyHealthScore';
-import StockResearchConsole from '@/components/StockResearchConsole';
+import StockDetailTabs from '@/components/StockDetailTabs';
 import AppPromoBanner from '@/components/AppPromoBanner';
 import {
   TrendingUp,
@@ -62,10 +62,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function StockDetailPage({ params }: Props) {
   const symbol = params.symbol.toUpperCase();
-  const [quotes, history, kseHistory] = await Promise.all([
+  const [quotes, history, kseHistory, announcements] = await Promise.all([
     fetchMarketWatch(),
     fetchStockHistory(symbol),
     fetchTimeseries('KSE100', false),
+    fetchCompanyAnnouncements(),
   ]);
 
   const quote = quotes.find((q) => q.symbol.toUpperCase() === symbol);
@@ -156,36 +157,8 @@ export default async function StockDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Sarmaaya-Style Sub-Navigation Tabs */}
-        <div className="border-b border-[#28354A] flex items-center space-x-6 overflow-x-auto scrollbar-none text-xs font-semibold text-[#A4AEC1] pb-3 px-1">
-          <a href="#overview-section" className="text-[#B69249] border-b-2 border-[#B69249] pb-3 -mb-3 whitespace-nowrap">
-            Fundamentals
-          </a>
-          <a href="#peers-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
-            Peers
-          </a>
-          <a href="#financials-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
-            Financials
-          </a>
-          <a href="#ratios-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
-            Ratios
-          </a>
-          <a href="#dividends-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
-            Dividends
-          </a>
-          <a href="#shariah-section" className="hover:text-[#6DDBA5] transition-colors whitespace-nowrap">
-            Shariah Audit
-          </a>
-          <a href="#announcements-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
-            Announcements
-          </a>
-          <a href="#company-info-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
-            Company Info
-          </a>
-        </div>
-
-        {/* Main Grid: Interactive Chart & Daulat Score / Statistics */}
-        <div id="overview-section" className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <StockDetailTabs stock={quote} peers={relatedStocks} announcements={announcements.filter(a => a.symbol.toUpperCase() === symbol)} overview={
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8">
             <StockHistoryChart
               symbol={quote.symbol}
@@ -264,8 +237,7 @@ export default async function StockDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Sarmaaya-Grade Comprehensive Financial Console: Valuation Ratios, Sector Peers, Dividends & Shariah */}
-        <StockResearchConsole stock={quote} peers={relatedStocks} />
+        } />
 
         <AppPromoBanner />
       </main>

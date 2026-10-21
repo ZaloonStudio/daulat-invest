@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Brand from './Brand';
+import { useAuth } from './AuthProvider';
+import { resolveTheme } from '@/lib/theme';
 import { useRouter, usePathname } from 'next/navigation';
 import {
   Search,
@@ -24,6 +26,7 @@ import { StockQuote } from '@/lib/types';
 
 export default function Navbar() {
   const router = useRouter();
+  const { user, loading: authLoading, openSignIn } = useAuth();
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<StockQuote[]>([]);
@@ -35,6 +38,8 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
+  const searchRequest = useRef(0);
 
   useEffect(() => {
     // Check initial theme from html class
@@ -57,7 +62,7 @@ export default function Navbar() {
 
     // Close search dropdown on outside click
     function handleClickOutside(e: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+      if (!searchRef.current?.contains(e.target as Node) && !mobileSearchRef.current?.contains(e.target as Node)) {
         setIsSearching(false);
       }
     }
@@ -65,22 +70,33 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const syncTheme = () => {
+      let preference = null;
+      try { preference = localStorage.getItem('daulat_theme'); } catch {}
+      const theme = resolveTheme(preference, new Date().getHours());
+      document.documentElement.classList.toggle('light', theme === 'light');
+      setIsLightMode(theme === 'light');
+    };
+    const timer = window.setInterval(syncTheme, 60000);
+    window.addEventListener('storage', syncTheme);
+    window.addEventListener('focus', syncTheme);
+    return () => { clearInterval(timer); window.removeEventListener('storage', syncTheme); window.removeEventListener('focus', syncTheme); };
+  }, []);
+
   const toggleTheme = () => {
     if (typeof document === 'undefined') return;
     const isCurrentlyLight = document.documentElement.classList.contains('light');
-    if (isCurrentlyLight) {
-      document.documentElement.classList.remove('light');
-      localStorage.setItem('daulat_theme', 'dark');
-      setIsLightMode(false);
-    } else {
-      document.documentElement.classList.add('light');
-      localStorage.setItem('daulat_theme', 'light');
-      setIsLightMode(true);
-    }
+    const nextTheme = isCurrentlyLight ? 'dark' : 'light';
+    document.documentElement.classList.toggle('light', nextTheme === 'light');
+    try { localStorage.setItem('daulat_theme', nextTheme); } catch {}
+    setIsLightMode(nextTheme === 'light');
   };
 
   const handleSearch = async (val: string) => {
+    const request = ++searchRequest.current;
     setSearchQuery(val);
+    setSearchResults([]);
     if (val.trim().length === 0) {
       setSearchResults([]);
       setIsSearching(false);
@@ -90,15 +106,16 @@ export default function Navbar() {
     try {
       const res = await fetch(`/api/stocks?q=${encodeURIComponent(val)}`);
       const data = await res.json();
-      if (Array.isArray(data)) {
+      if (request === searchRequest.current && Array.isArray(data)) {
         setSearchResults(data.slice(0, 7));
       }
     } catch {
-      setSearchResults([]);
+      if (request === searchRequest.current) setSearchResults([]);
     }
   };
 
   const selectStock = (sym: string) => {
+    ++searchRequest.current;
     setIsSearching(false);
     setSearchQuery('');
     setMobileMenuOpen(false);
@@ -131,7 +148,7 @@ export default function Navbar() {
   ];
 
   const searchField = (mobile = false) => (
-    <div className={mobile ? 'relative w-full' : 'relative w-full max-w-md'} ref={mobile ? undefined : searchRef}>
+    <div className={mobile ? 'relative w-full' : 'relative w-full max-w-md'} ref={mobile ? mobileSearchRef : searchRef}>
       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4AEC1] pointer-events-none" />
       <input aria-label="Search PSX stocks" type="search" value={searchQuery}
         onChange={(e) => handleSearch(e.target.value)} onKeyDown={handleKeyDown}
@@ -153,13 +170,13 @@ export default function Navbar() {
   return (
     <header className="site-header sticky top-0 z-50 border-b border-[#28354A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-6 h-20">
+        <div className="flex items-center justify-between gap-3 sm:gap-6 h-20">
           <Brand tagline />
           <div className="hidden md:flex flex-1 justify-center">{searchField()}</div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden xl:flex items-center gap-2 text-xs text-[#A4AEC1] mr-2"><span className={marketStatus.isOpen ? 'w-1.5 h-1.5 rounded-full bg-[#6DDBA5]' : 'w-1.5 h-1.5 rounded-full bg-[#7F8DA4]'} />PSX {marketStatus.isOpen ? 'open' : 'closed'}</div>
-            <button onClick={toggleTheme} aria-label="Toggle Dark and Light Mode" title={isLightMode ? 'Switch to Dark Mode' : 'Switch to Light Mode'} className="p-2.5 rounded-lg border border-[#28354A] text-[#A4AEC1] hover:text-[#B69249]">{isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}</button>
-            <Link href="/watchlist" className="hidden sm:inline-flex primary-action text-xs px-4 py-2.5">My watchlist <Star className="w-3.5 h-3.5" /></Link>
+            <button onClick={toggleTheme} aria-label="Toggle Dark and Light Mode" title={isLightMode ? 'Switch to Dark Mode' : 'Switch to Light Mode'} className="hidden min-[380px]:inline-flex p-2.5 rounded-lg border border-[#28354A] text-[#A4AEC1] hover:text-[#B69249]">{isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}</button>
+            {user ? <Link href="/portfolio" className="inline-flex primary-action text-xs px-3 sm:px-4 py-2.5">My account</Link> : <button onClick={openSignIn} disabled={authLoading} className="inline-flex primary-action text-xs px-3 sm:px-4 py-2.5">{authLoading ? 'Loading…' : 'Sign in'}</button>}
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label={mobileMenuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" className="lg:hidden p-2.5 border border-[#28354A] rounded-lg">{mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
           </div>
         </div>
@@ -176,6 +193,7 @@ export default function Navbar() {
       {mobileMenuOpen && <div id="mobile-navigation" className="lg:hidden px-4 py-5 bg-[#111A2B] border-t border-[#28354A] max-h-[calc(100dvh-80px)] overflow-y-auto">
         {searchField(true)}
         <nav aria-label="Mobile navigation" className="grid grid-cols-2 gap-2 mt-5">{navLinks.map(item => <Link key={item.label} href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 p-3 text-sm text-[#A4AEC1] hover:bg-[#1C2940] rounded-lg"><item.icon className="w-4 h-4" />{item.label}</Link>)}</nav>
+        <button onClick={toggleTheme} className="mt-4 text-xs text-[#B69249]">{isLightMode ? 'Use dark mode' : 'Use light mode'}</button>
         <div className="mt-5 pt-4 border-t border-[#28354A] text-xs text-[#A4AEC1]">PSX {marketStatus.isOpen ? 'open' : 'closed'} · {marketStatus.time}</div>
       </div>}
     </header>

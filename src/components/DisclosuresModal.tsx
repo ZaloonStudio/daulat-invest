@@ -29,6 +29,7 @@ export default function DisclosuresModal({ isOpen, onClose }: DisclosuresModalPr
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
       <div
         className="relative w-full max-w-xl bg-[#0e1424] border border-[#28354A] rounded-xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+        role="dialog" aria-modal="true" aria-labelledby="risk-disclosure-title"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#28354A] bg-[#111A2B]">
@@ -37,7 +38,7 @@ export default function DisclosuresModal({ isOpen, onClose }: DisclosuresModalPr
               <ShieldAlert className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-[#EFF3FA]">
+              <h3 id="risk-disclosure-title" className="text-base font-semibold text-[#EFF3FA]">
                 Corporate Disclosures &amp; Risk Notice
               </h3>
               <p className="text-xs text-[#A4AEC1]">
@@ -46,6 +47,7 @@ export default function DisclosuresModal({ isOpen, onClose }: DisclosuresModalPr
             </div>
           </div>
           <button
+            aria-label="Close risk disclosure"
             onClick={onClose}
             className="p-1.5 text-[#A4AEC1] hover:text-[#EFF3FA] hover:bg-[#1C2940] rounded-lg transition-colors"
           >
