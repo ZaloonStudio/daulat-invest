@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Smartphone, Calculator, TrendingUp, ShieldAlert, ExternalLink } from 'lucide-react';
+import { Smartphone, Calculator, TrendingUp, ExternalLink } from 'lucide-react';
 import DividendCalculatorModal from './DividendCalculatorModal';
 import SipCalculatorModal from './SipCalculatorModal';
 import DisclosuresModal from './DisclosuresModal';
@@ -35,10 +35,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Markets & Screener */}
           <div>
             <h4 className="text-[#F0F6FC] font-bold uppercase text-[11px] tracking-wider mb-3">
-              Markets &amp; Navigation
+              Markets &amp; Screening
             </h4>
             <ul className="space-y-2">
               <li>
@@ -47,28 +47,34 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/stocks" className="hover:text-[#FFB401] transition-colors">
+                  All PSX Stocks Directory
+                </Link>
+              </li>
+              <li>
+                <Link href="/stocks/compare" className="hover:text-[#00D2B4] transition-colors flex items-center space-x-1">
+                  <span>Stock Compare Matrix</span>
+                  <span className="text-[9px] bg-[#00D2B4]/15 text-[#00D2B4] px-1 rounded font-bold">NEW</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/shariah" className="hover:text-[#00C076] transition-colors">
+                  KMI Shariah Screener
+                </Link>
+              </li>
+              <li>
+                <Link href="/commodities" className="hover:text-[#FFB401] transition-colors">
+                  Gold &amp; Commodities (PKR)
+                </Link>
+              </li>
+              <li>
+                <Link href="/forex" className="hover:text-[#58A6FF] transition-colors">
+                  Interbank &amp; Open Forex
+                </Link>
+              </li>
+              <li>
                 <Link href="/news" className="hover:text-[#FFB401] transition-colors">
                   Market &amp; Business News
-                </Link>
-              </li>
-              <li>
-                <Link href="/community" className="hover:text-[#FFB401] transition-colors">
-                  PSX Investor Community
-                </Link>
-              </li>
-              <li>
-                <Link href="/watchlist" className="hover:text-[#FFB401] transition-colors">
-                  My Stock Watchlist
-                </Link>
-              </li>
-              <li>
-                <Link href="/stocks/MEBL" className="hover:text-[#FFB401] transition-colors">
-                  Meezan Bank (MEBL)
-                </Link>
-              </li>
-              <li>
-                <Link href="/stocks/HUBC" className="hover:text-[#FFB401] transition-colors">
-                  Hub Power (HUBC)
                 </Link>
               </li>
             </ul>
@@ -81,22 +87,32 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <button
-                  onClick={() => setIsDividendOpen(true)}
-                  className="hover:text-[#FFB401] transition-colors text-left flex items-center space-x-1.5 cursor-pointer text-[#8B949E]"
-                >
-                  <Calculator className="w-3.5 h-3.5 text-[#FFB401]" />
-                  <span>Dividend Yield Screener</span>
-                </button>
+                <Link href="/fear-greed" className="hover:text-[#7EE787] transition-colors flex items-center space-x-1">
+                  <span>PSX Fear &amp; Greed Index</span>
+                  <span className="text-[9px] bg-[#7EE787]/15 text-[#7EE787] px-1 rounded font-bold">LIVE</span>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => setIsSipOpen(true)}
-                  className="hover:text-[#00D2B4] transition-colors text-left flex items-center space-x-1.5 cursor-pointer text-[#8B949E]"
-                >
+                <Link href="/dividend-calculator" className="hover:text-[#FFB401] transition-colors flex items-center space-x-1.5 text-[#8B949E]">
+                  <Calculator className="w-3.5 h-3.5 text-[#FFB401]" />
+                  <span>Dividend Yield Screener</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/sip-calculator" className="hover:text-[#00D2B4] transition-colors flex items-center space-x-1.5 text-[#8B949E]">
                   <TrendingUp className="w-3.5 h-3.5 text-[#00D2B4]" />
                   <span>SIP Wealth Compounding</span>
-                </button>
+                </Link>
+              </li>
+              <li>
+                <Link href="/announcements" className="hover:text-[#A371F7] transition-colors">
+                  Company Filings &amp; Disclosures
+                </Link>
+              </li>
+              <li>
+                <Link href="/watchlist" className="hover:text-[#FFB401] transition-colors">
+                  My Stock Watchlist
+                </Link>
               </li>
               <li>
                 <Link href="/portfolio" className="hover:text-[#FFB401] transition-colors">
@@ -104,13 +120,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <button
-                  onClick={() => setIsDisclosuresOpen(true)}
-                  className="hover:text-[#F0F6FC] transition-colors text-left flex items-center space-x-1.5 cursor-pointer text-[#8B949E]"
-                >
-                  <ShieldAlert className="w-3.5 h-3.5 text-[#FFA657]" />
-                  <span>Corporate Disclosures</span>
-                </button>
+                <Link href="/community" className="hover:text-[#A371F7] transition-colors">
+                  PSX Investor Community
+                </Link>
               </li>
               <li>
                 <a

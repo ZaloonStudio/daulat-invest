@@ -90,7 +90,7 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
         {/* Quick Compare CTA */}
         {peers.length > 0 && (
           <Link
-            href={`/stocks/compare`}
+            href={`/stocks/compare?base=${stock.symbol}`}
             className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#21262D] hover:bg-[#30363D] text-[#00D2B4] text-xs font-bold transition-colors shrink-0 w-fit"
           >
             <GitCompare className="w-3.5 h-3.5" />
@@ -270,12 +270,22 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
                         {(peer.changeYear || 0) >= 0 ? '+' : ''}{(peer.changeYear || 0).toFixed(2)}%
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <Link
-                          href={`/stocks/${peer.symbol}`}
-                          className="text-[#00D2B4] hover:underline text-xs font-semibold"
-                        >
-                          Analyze
-                        </Link>
+                        <div className="flex items-center justify-center space-x-2">
+                          <Link
+                            href={`/stocks/${peer.symbol}`}
+                            className="text-[#00D2B4] hover:underline text-xs font-semibold"
+                          >
+                            Analyze
+                          </Link>
+                          <span className="text-[#30363D]">|</span>
+                          <Link
+                            href={`/stocks/compare?s1=${stock.symbol}&s2=${peer.symbol}`}
+                            className="text-[#FFB401] hover:underline text-xs font-semibold whitespace-nowrap"
+                            title={`Compare ${stock.symbol} vs ${peer.symbol}`}
+                          >
+                            Compare
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   );

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart, ColorType, AreaSeries, IChartApi, ISeriesApi } from 'lightweight-charts';
 import { IndexQuote, ChartPoint } from '@/lib/types';
-import { TrendingUp, TrendingDown, Maximize2 } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface KseHeroChartProps {
   initialIndex: IndexQuote | null;
@@ -14,7 +14,7 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
   const chartInstance = useRef<IChartApi | null>(null);
   const seriesInstance = useRef<ISeriesApi<'Area'> | null>(null);
 
-  const [indexData, setIndexData] = useState<IndexQuote | null>(initialIndex);
+  const [indexData] = useState<IndexQuote | null>(initialIndex);
   const [points, setPoints] = useState<ChartPoint[]>([]);
   const [timeframe, setTimeframe] = useState<'1D' | '1W' | '1M' | '1Y'>('1D');
   const [hoveredPoint, setHoveredPoint] = useState<{ value: number; time: string } | null>(null);

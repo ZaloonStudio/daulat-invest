@@ -20,6 +20,7 @@ export default function StockHistoryChart({
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<IChartApi | null>(null);
   const [chartType, setChartType] = useState<'area' | 'candles'>('area');
+  const [timeframe, setTimeframe] = useState<'1D' | '1W' | '1M' | '6M' | '1Y' | 'ALL'>('1M');
   const [hoveredPoint, setHoveredPoint] = useState<{ value: number; time: string } | null>(null);
 
   const isPositive = change >= 0;
@@ -100,7 +101,21 @@ export default function StockHistoryChart({
       });
 
     // Fallback if history is empty: synthesize recent points
-    const finalPoints = validPoints.length > 0 ? validPoints : generateSyntheticHistory(currentPrice);
+    const rawPoints = validPoints.length > 0 ? validPoints : generateSyntheticHistory(currentPrice);
+
+    // Filter points by timeframe
+    let finalPoints = rawPoints;
+    if (timeframe === '1D') {
+      finalPoints = rawPoints.slice(-15);
+    } else if (timeframe === '1W') {
+      finalPoints = rawPoints.slice(-7);
+    } else if (timeframe === '1M') {
+      finalPoints = rawPoints.slice(-30);
+    } else if (timeframe === '6M') {
+      finalPoints = rawPoints.slice(-130);
+    } else if (timeframe === '1Y') {
+      finalPoints = rawPoints.slice(-260);
+    }
 
     let activeSeries: any;
 
@@ -166,7 +181,7 @@ export default function StockHistoryChart({
       chart.remove();
       chartInstance.current = null;
     };
-  }, [history, chartType, currentPrice, lineColor, topColor, bottomColor]);
+  }, [history, chartType, timeframe, currentPrice, lineColor, topColor, bottomColor]);
 
   function generateSyntheticHistory(basePrice: number) {
     const pts: any[] = [];
@@ -188,10 +203,10 @@ export default function StockHistoryChart({
 
   return (
     <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-5 shadow-xl">
-      <div className="flex items-center justify-between mb-4 border-b border-[#30363D] pb-3">
+      <div className="flex flex-wrap items-center justify-between mb-4 border-b border-[#30363D] pb-3 gap-2">
         <div className="flex items-center space-x-2">
           <span className="text-xs font-bold text-[#8B949E] uppercase tracking-wider">
-            Price Chart
+            {symbol} Price Chart
           </span>
           {hoveredPoint && (
             <span className="text-xs font-mono font-bold text-[#FFB401] bg-[#0B0E14] px-2 py-0.5 rounded border border-[#30363D]">
@@ -200,27 +215,47 @@ export default function StockHistoryChart({
           )}
         </div>
 
-        <div className="flex items-center space-x-1.5 bg-[#0B0E14] p-1 rounded-xl border border-[#30363D]">
-          <button
-            onClick={() => setChartType('area')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-              chartType === 'area'
-                ? 'bg-[#21262D] text-[#FFB401]'
-                : 'text-[#8B949E] hover:text-[#F0F6FC]'
-            }`}
-          >
-            Line
-          </button>
-          <button
-            onClick={() => setChartType('candles')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-              chartType === 'candles'
-                ? 'bg-[#21262D] text-[#FFB401]'
-                : 'text-[#8B949E] hover:text-[#F0F6FC]'
-            }`}
-          >
-            Candles
-          </button>
+        <div className="flex items-center space-x-2">
+          {/* Timeframe selector */}
+          <div className="flex items-center space-x-1 bg-[#0B0E14] p-1 rounded-xl border border-[#30363D]">
+            {(['1D', '1W', '1M', '6M', '1Y', 'ALL'] as const).map((tf) => (
+              <button
+                key={tf}
+                onClick={() => setTimeframe(tf)}
+                className={`px-2 py-0.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  timeframe === tf
+                    ? 'bg-[#00D2B4] text-black shadow-sm'
+                    : 'text-[#8B949E] hover:text-[#F0F6FC]'
+                }`}
+              >
+                {tf}
+              </button>
+            ))}
+          </div>
+
+          {/* Type selector */}
+          <div className="flex items-center space-x-1 bg-[#0B0E14] p-1 rounded-xl border border-[#30363D]">
+            <button
+              onClick={() => setChartType('area')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                chartType === 'area'
+                  ? 'bg-[#21262D] text-[#FFB401]'
+                  : 'text-[#8B949E] hover:text-[#F0F6FC]'
+              }`}
+            >
+              Line
+            </button>
+            <button
+              onClick={() => setChartType('candles')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                chartType === 'candles'
+                  ? 'bg-[#21262D] text-[#FFB401]'
+                  : 'text-[#8B949E] hover:text-[#F0F6FC]'
+              }`}
+            >
+              Candles
+            </button>
+          </div>
         </div>
       </div>
 

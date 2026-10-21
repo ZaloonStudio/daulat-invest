@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
@@ -29,7 +29,15 @@ export default async function StockComparePage() {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <StockCompareClient allStocks={allStocks} />
+        <Suspense
+          fallback={
+            <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-12 text-center text-sm text-[#8B949E]">
+              Loading comparison matrix...
+            </div>
+          }
+        >
+          <StockCompareClient allStocks={allStocks} />
+        </Suspense>
       </main>
 
       <Footer />

@@ -53,7 +53,7 @@ export default function KseHeroSection({
 
   // Fetch chart points for active index / timeframe
   useEffect(() => {
-    fetch('/api/kse100-chart')
+    fetch(`/api/kse100-chart?symbol=${encodeURIComponent(selectedIndexCode)}&timeframe=${timeframe}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
@@ -61,7 +61,7 @@ export default function KseHeroSection({
         }
       })
       .catch(() => {});
-  }, [selectedIndexCode]);
+  }, [selectedIndexCode, timeframe]);
 
   useEffect(() => {
     if (!chartContainerRef.current) return;

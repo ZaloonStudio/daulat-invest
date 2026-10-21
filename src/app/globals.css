@@ -79,6 +79,26 @@ html.light .bg-\[\#21262D\] {
   background-color: #f1f5f9 !important;
 }
 
+html.light .bg-\[\#1C2128\],
+html.light .bg-\[\#1C2128\]\/70,
+html.light .bg-\[\#1C2128\]\/60 {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-\[\#0B0E14\]\/40,
+html.light .bg-\[\#0B0E14\]\/50,
+html.light .bg-\[\#0B0E14\]\/60,
+html.light .bg-\[\#0B0E14\]\/70 {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-\[\#161B22\]\/70,
+html.light .bg-\[\#161B22\]\/80,
+html.light .bg-\[\#161B22\]\/90,
+html.light .bg-\[\#161B22\]\/95 {
+  background-color: #ffffff !important;
+}
+
 html.light .bg-\[\#0e1424\] {
   background-color: #ffffff !important;
 }
@@ -87,8 +107,14 @@ html.light .border-\[\#30363D\] {
   border-color: #e2e8f0 !important;
 }
 
+html.light .border-\[\#484F58\] {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .border-\[\#30363D\]\/80,
 html.light .border-\[\#30363D\]\/60,
-html.light .border-\[\#30363D\]\/50 {
+html.light .border-\[\#30363D\]\/50,
+html.light .border-\[\#30363D\]\/40 {
   border-color: #f1f5f9 !important;
 }
 
@@ -104,15 +130,35 @@ html.light .text-\[\#6E7681\] {
   color: #94a3b8 !important;
 }
 
-html.light .hover\:bg-\[\#21262D\]:hover {
+html.light .hover\:bg-\[\#21262D\]:hover,
+html.light .hover\:bg-\[\#21262D\]\/60:hover,
+html.light .hover\:bg-\[\#21262D\]\/70:hover {
   background-color: #f1f5f9 !important;
 }
 
-html.light .hover\:bg-\[\#161B22\]:hover {
+html.light .hover\:bg-\[\#161B22\]:hover,
+html.light .hover\:bg-\[\#1C2128\]:hover {
   background-color: #f8fafc !important;
 }
 
+html.light .hover\:border-\[\#484F58\]:hover {
+  border-color: #94a3b8 !important;
+}
+
 html.light .divide-\[\#30363D\]\/60 > :not([hidden]) ~ :not([hidden]),
+html.light .divide-\[\#30363D\]\/50 > :not([hidden]) ~ :not([hidden]),
+html.light .divide-\[\#30363D\]\/40 > :not([hidden]) ~ :not([hidden]),
 html.light .divide-\[\#30363D\] > :not([hidden]) ~ :not([hidden]) {
   border-color: #e2e8f0 !important;
+}
+
+html.light input,
+html.light select,
+html.light textarea {
+  color: #0f172a !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
 }

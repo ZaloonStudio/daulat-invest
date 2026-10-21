@@ -28,7 +28,6 @@ import {
   Trash2,
   LogIn,
   LogOut,
-  RefreshCw,
   ExternalLink,
   Shield,
   Smartphone,

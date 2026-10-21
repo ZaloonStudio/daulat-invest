@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { StockQuote } from '@/lib/types';
-import { Search, ChevronRight, ArrowUpDown, Filter } from 'lucide-react';
+import { Search, ChevronRight, X } from 'lucide-react';
 
 interface Props {
   initialQuotes: StockQuote[];
@@ -11,9 +12,32 @@ interface Props {
 }
 
 export default function StocksDirectoryClient({ initialQuotes, sectors }: Props) {
-  const [search, setSearch] = useState('');
-  const [selectedSector, setSelectedSector] = useState<string>('ALL');
-  const [sortBy, setSortBy] = useState<'volume' | 'gainers' | 'losers' | 'symbol' | 'price'>('volume');
+  const searchParams = useSearchParams();
+
+  const urlSector = searchParams?.get('sector') || 'ALL';
+  const urlQ = searchParams?.get('q') || '';
+  const urlTab = searchParams?.get('tab') || searchParams?.get('sort') || 'volume';
+
+  const [search, setSearch] = useState(urlQ);
+  const [selectedSector, setSelectedSector] = useState<string>(urlSector);
+  const [sortBy, setSortBy] = useState<'volume' | 'gainers' | 'losers' | 'symbol' | 'price'>(
+    (['volume', 'gainers', 'losers', 'symbol', 'price'].includes(urlTab) ? urlTab : 'volume') as any
+  );
+
+  useEffect(() => {
+    const sec = searchParams?.get('sector');
+    if (sec) {
+      setSelectedSector(sec);
+    }
+    const q = searchParams?.get('q');
+    if (q) {
+      setSearch(q);
+    }
+    const tab = searchParams?.get('tab') || searchParams?.get('sort');
+    if (tab && ['volume', 'gainers', 'losers', 'symbol', 'price'].includes(tab)) {
+      setSortBy(tab as any);
+    }
+  }, [searchParams]);
 
   const filtered = useMemo(() => {
     let list = [...initialQuotes];
@@ -62,8 +86,17 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by symbol or company name..."
-            className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl pl-10 pr-4 py-2 text-sm text-[#F0F6FC] placeholder-[#8B949E] focus:outline-none focus:border-[#FFB401]"
+            className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl pl-10 pr-9 py-2 text-sm text-[#F0F6FC] placeholder-[#8B949E] focus:outline-none focus:border-[#FFB401]"
           />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              title="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8B949E] hover:text-[#F0F6FC] p-1 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
         {/* Sector Selector */}

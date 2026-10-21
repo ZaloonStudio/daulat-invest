@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
@@ -38,7 +38,15 @@ export default async function StocksPage() {
           </p>
         </div>
 
-        <StocksDirectoryClient initialQuotes={quotes} sectors={sectors} />
+        <Suspense
+          fallback={
+            <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-12 text-center text-sm text-[#8B949E]">
+              Loading PSX directory...
+            </div>
+          }
+        >
+          <StocksDirectoryClient initialQuotes={quotes} sectors={sectors} />
+        </Suspense>
       </main>
 
       <Footer />

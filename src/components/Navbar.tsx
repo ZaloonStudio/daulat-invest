@@ -103,6 +103,20 @@ export default function Navbar() {
     router.push(`/stocks/${sym}`);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (searchResults.length > 0) {
+        selectStock(searchResults[0].symbol);
+      } else if (searchQuery.trim()) {
+        const queryTerm = searchQuery.trim();
+        setIsSearching(false);
+        setMobileMenuOpen(false);
+        router.push(`/stocks?q=${encodeURIComponent(queryTerm)}`);
+      }
+    }
+  };
+
   const navLinks = [
     { label: 'Home', href: '/', icon: Home },
     { label: 'Market', href: pathname === '/' ? '#indices-section' : '/#indices-section', icon: Activity },
@@ -178,6 +192,7 @@ export default function Navbar() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
+                onKeyDown={handleKeyDown}
                 onFocus={() => searchQuery && setIsSearching(true)}
                 placeholder="Search PSX stocks (e.g. MEBL, OGDC)..."
                 className="w-full bg-[#161B22] border border-[#30363D] rounded-xl pl-10 pr-4 py-2 text-xs text-[#F0F6FC] placeholder-[#8B949E] focus:outline-none focus:border-[#FFB401] transition-colors"
@@ -282,6 +297,7 @@ export default function Navbar() {
               type="text"
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Search symbol (e.g. MEBL, OGDC)..."
               className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl pl-9 pr-4 py-2 text-xs text-[#F0F6FC]"
             />

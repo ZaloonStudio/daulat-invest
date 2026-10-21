@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { StockQuote } from '@/lib/types';
-import { Layers, ChevronRight } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 interface SectorsGridProps {
   quotes: StockQuote[];

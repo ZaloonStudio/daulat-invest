@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { StockQuote } from '@/lib/types';
 import {
   GitCompare,
@@ -26,7 +27,30 @@ const COMPARISON_PRESETS = [
 ];
 
 export default function StockCompareClient({ allStocks }: StockCompareClientProps) {
-  const [selectedSymbols, setSelectedSymbols] = useState<string[]>(['MEBL', 'MCB']);
+  const searchParams = useSearchParams();
+  const urlS1 = searchParams?.get('s1') || searchParams?.get('base') || '';
+  const urlS2 = searchParams?.get('s2') || '';
+
+  const [selectedSymbols, setSelectedSymbols] = useState<string[]>(() => {
+    if (urlS1 && urlS2) return [urlS1.toUpperCase(), urlS2.toUpperCase()];
+    if (urlS1) return [urlS1.toUpperCase(), 'MCB'];
+    return ['MEBL', 'MCB'];
+  });
+
+  useEffect(() => {
+    const s1 = searchParams?.get('s1') || searchParams?.get('base');
+    const s2 = searchParams?.get('s2');
+    if (s1 && s2) {
+      setSelectedSymbols([s1.toUpperCase(), s2.toUpperCase()]);
+    } else if (s1) {
+      setSelectedSymbols((prev) => {
+        const sym = s1.toUpperCase();
+        if (prev.includes(sym)) return prev;
+        const other = prev.find((x) => x !== sym) || 'MCB';
+        return [sym, other];
+      });
+    }
+  }, [searchParams]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
