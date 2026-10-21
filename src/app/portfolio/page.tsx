@@ -53,8 +53,13 @@ export default function PortfolioPage() {
   const { user, loading, openSignIn, logout } = useAuth();
   const [syncError, setSyncError] = useState('');
   const [isSyncing, setIsSyncing] = useState(false);
-  const [holdings, setHoldings] = useState<Holding[]>([]);
-  const [trades, setTrades] = useState<SoldTrade[]>([]);
+  const [dataUid, setDataUid] = useState<string | null>(null);
+  const [storedHoldings, setHoldings] = useState<Holding[]>([]);
+  const [storedTrades, setTrades] = useState<SoldTrade[]>([]);
+  const [syncAttempt, setSyncAttempt] = useState(0);
+  const uid = user?.uid ?? null;
+  const holdings = uid && dataUid === uid ? storedHoldings : [];
+  const trades = uid && dataUid === uid ? storedTrades : [];
   const [quotes, setQuotes] = useState<Record<string, StockQuote>>({});
   const [activeTab, setActiveTab] = useState<'holdings' | 'trades'>('holdings');
 
@@ -81,24 +86,31 @@ export default function PortfolioPage() {
       .catch((err) => console.error('Failed to fetch quotes:', err));
   }, []);
 
-  // Sync holdings from Firestore
+  // Both collections belong to the verified Firebase UID used by Android.
   useEffect(() => {
-    if (!user) {
-      setHoldings([]);
-      setTrades([]);
-      return;
-    }
-
-    setHoldings([]); setTrades([]); setSyncError(''); setIsSyncing(true);
-    const onSyncError = () => { setSyncError('Unable to load your cloud data. Check your connection and try signing in again.'); setIsSyncing(false); };
-    const unsubscribeHoldings = onSnapshot(collection(db, 'users', user.uid, 'portfolio'), snapshot => {
-      setHoldings(snapshot.docs.map(d => readHolding(d.id, d.data()))); setIsSyncing(false);
+    setHoldings([]); setTrades([]); setDataUid(uid); setSyncError('');
+    if (!uid) { setIsSyncing(false); return; }
+    setIsSyncing(true);
+    let active = true;
+    const loaded = new Set<string>();
+    const complete = (name: string) => { loaded.add(name); if (loaded.size === 2) setIsSyncing(false); };
+    const onSyncError = (error: { code?: string }) => {
+      if (!active) return;
+      setSyncError(error.code === 'permission-denied'
+        ? 'Signed in, but your account cannot access its cloud portfolio. Please contact Daulat support to check account permissions.'
+        : 'Unable to load your cloud data. Check your connection and retry.');
+      setIsSyncing(false);
+    };
+    const unsubscribeHoldings = onSnapshot(collection(db, 'users', uid, 'portfolio'), snapshot => {
+      if (!active) return;
+      setHoldings(snapshot.docs.map(d => readHolding(d.id, d.data()))); complete('holdings');
     }, onSyncError);
-    const unsubscribeTrades = onSnapshot(collection(db, 'users', user.uid, 'trades'), snapshot => {
-      setTrades(snapshot.docs.map(d => readSoldTrade(d.id, d.data())));
+    const unsubscribeTrades = onSnapshot(collection(db, 'users', uid, 'trades'), snapshot => {
+      if (!active) return;
+      setTrades(snapshot.docs.map(d => readSoldTrade(d.id, d.data()))); complete('trades');
     }, onSyncError);
-    return () => { unsubscribeHoldings(); unsubscribeTrades(); };
-  }, [user]);
+    return () => { active = false; unsubscribeHoldings(); unsubscribeTrades(); };
+  }, [uid, syncAttempt]);
 
   const handleSignOut = async () => {
     try { await logout(); } catch { setSyncError('Unable to sign out. Please try again.'); }
@@ -192,7 +204,7 @@ export default function PortfolioPage() {
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {syncError && <p role="alert" className="mb-6 text-sm text-[#F28B82]">{syncError}</p>}
+        {syncError && user && <div className="mb-6 text-sm text-[#F28B82]" role="alert">{syncError} <button onClick={() => setSyncAttempt(attempt => attempt + 1)} className="ml-2 text-[#B69249] underline">Retry sync</button></div>}
         {user && isSyncing && <p role="status" className="mb-6 text-sm text-[#A4AEC1]">Loading your app portfolio…</p>}
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">

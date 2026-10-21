@@ -20,6 +20,8 @@
 - CSV handlers were reviewed and invoked. The in-app browser did not deliver a download event, so downloaded-file content was not verified in that browser.
 
 ## Firebase setup and remaining acceptance
+
+Update: Authentication has since been enabled. The original Android project key now passes project/domain/Google-provider checks and replaces the invalid Web-key fallback. See [current integration status](firebase-integration.md). The notes below describe the earlier audit findings.
 The production project confirmed by the owner is zaloon-aecb6. The original Android-key configuration returned CONFIGURATION_NOT_FOUND. During the audit, the owner supplied an official Web app config in commit 912470a; that update was preserved. The new Web API key currently returns API key not valid from both the public project configuration and Google createAuthUri endpoints. The owner has been asked to verify the exact Console key (or allow propagation if newly created). Web code cannot enable Firebase Authentication or providers with a public API key.
 
 Required Console configuration:

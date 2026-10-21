@@ -24,7 +24,11 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
   const { user, loading: authLoading, openSignIn } = useAuth();
   const [syncError, setSyncError] = useState('');
   const [readyUid, setReadyUid] = useState<string | null>(null);
-  const [watchlistSymbols, setWatchlistSymbols] = useState<string[]>(DEFAULT_SYMBOLS);
+  const [storedSymbols, setWatchlistSymbols] = useState<string[]>(DEFAULT_SYMBOLS);
+  const watchlistSymbols = useMemo(
+    () => user ? (readyUid === user.uid ? storedSymbols : []) : (readyUid === null ? storedSymbols : []),
+    [user, readyUid, storedSymbols],
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
@@ -40,10 +44,13 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
       return;
     }
     setWatchlistSymbols([]);
-    return onSnapshot(collection(db, 'users', user.uid, 'watchlist'), snapshot => {
+    let active = true;
+    const unsubscribe = onSnapshot(collection(db, 'users', user.uid, 'watchlist'), snapshot => {
+      if (!active) return;
       setWatchlistSymbols(snapshot.docs.map(d => String(d.data().symbol || d.id).toUpperCase()));
       setReadyUid(user.uid);
-    }, () => { setSyncError('Unable to load your app watchlist. Please check your connection or sign in again.'); });
+    }, () => { if (active) setSyncError('Unable to load your app watchlist. Please check your connection or sign in again.'); });
+    return () => { active = false; unsubscribe(); };
   }, [user, authLoading]);
 
   const saveWatchlist = async (symbols: string[]) => {
