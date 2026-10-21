@@ -229,87 +229,87 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
   return (
     <div className="space-y-6">
       {/* 1-Click Strategy Presets Bar */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-4 shadow-xl">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-4 shadow-xl">
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#F0F6FC]">
-            <Sparkles className="w-4 h-4 text-[#FFB401]" />
-            <span>Smart Strategy Presets</span>
+          <div className="flex items-center space-x-2 text-xs font-semibold text-[#F1F5EE]">
+            <Sparkles className="w-4 h-4 text-[#D5F478]" />
+            <span>Start with a strategy</span>
           </div>
-          <span className="text-[11px] text-[#8B949E]">1-Click Screeners</span>
+          <span className="text-[11px] text-[#A4B3A7]">QUICK FILTERS</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
           <button
             onClick={() => applyPreset('bluechips')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               activePreset === 'bluechips'
-                ? 'bg-[#00D2B4] text-black shadow-md'
-                : 'bg-[#0B0E14] text-[#8B949E] hover:text-[#F0F6FC] border border-[#30363D]'
+                ? 'bg-[#B9E76A] text-black shadow-md'
+                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
             }`}
           >
-            <span>💎 PSX Bluechips</span>
+            <span>Blue chips</span>
           </button>
 
           <button
             onClick={() => applyPreset('shariah')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               activePreset === 'shariah'
-                ? 'bg-[#00C076] text-black shadow-md'
-                : 'bg-[#0B0E14] text-[#8B949E] hover:text-[#F0F6FC] border border-[#30363D]'
+                ? 'bg-[#6DDBA5] text-black shadow-md'
+                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
             }`}
           >
             <Moon className="w-3.5 h-3.5 fill-current" />
-            <span>Shariah Approved (KMI)</span>
+            <span>Shariah (KMI)</span>
           </button>
 
           <button
             onClick={() => applyPreset('dividend')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               activePreset === 'dividend'
-                ? 'bg-[#FFB401] text-black shadow-md'
-                : 'bg-[#0B0E14] text-[#8B949E] hover:text-[#F0F6FC] border border-[#30363D]'
+                ? 'bg-[#D5F478] text-black shadow-md'
+                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
             }`}
           >
-            <span>💰 High Dividend (&gt;8%)</span>
+            <span>High dividend (&gt;8%)</span>
           </button>
 
           <button
             onClick={() => applyPreset('value')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               activePreset === 'value'
-                ? 'bg-[#00D2B4] text-black shadow-md'
-                : 'bg-[#0B0E14] text-[#8B949E] hover:text-[#F0F6FC] border border-[#30363D]'
+                ? 'bg-[#B9E76A] text-black shadow-md'
+                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
             }`}
           >
-            <span>📊 Value Plays (P/E &lt;7)</span>
+            <span>Value plays (P/E &lt;7)</span>
           </button>
 
           <button
             onClick={() => applyPreset('volume')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               activePreset === 'volume'
-                ? 'bg-[#FFB401] text-black shadow-md'
-                : 'bg-[#0B0E14] text-[#8B949E] hover:text-[#F0F6FC] border border-[#30363D]'
+                ? 'bg-[#D5F478] text-black shadow-md'
+                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
             }`}
           >
-            <span>⚡ Volume Leaders (&gt;2M)</span>
+            <span>Volume leaders (&gt;2M)</span>
           </button>
 
           <button
             onClick={() => applyPreset('gainers')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               activePreset === 'gainers'
-                ? 'bg-[#00C076] text-black shadow-md'
-                : 'bg-[#0B0E14] text-[#8B949E] hover:text-[#F0F6FC] border border-[#30363D]'
+                ? 'bg-[#6DDBA5] text-black shadow-md'
+                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
             }`}
           >
-            <span>🚀 Top Gainers</span>
+            <span>Top gainers</span>
           </button>
 
           {activePreset && (
             <button
               onClick={resetFilters}
-              className="px-2.5 py-1.5 rounded-xl text-xs text-[#8B949E] hover:text-[#F85149] transition-colors flex items-center space-x-1 ml-auto cursor-pointer"
+              className="px-2.5 py-1.5 rounded-xl text-xs text-[#A4B3A7] hover:text-[#F28B82] transition-colors flex items-center space-x-1 ml-auto cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Clear Preset</span>
@@ -319,18 +319,18 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
       </div>
 
       {/* Main Filter Console */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-5 shadow-xl space-y-4">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl space-y-4">
         {/* Row 1: Search, Sector, Shariah Toggle, Reset, Export */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
           {/* Search Box */}
           <div className="md:col-span-4 relative">
-            <Search className="w-4 h-4 text-[#8B949E] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#A4B3A7] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search symbol or company name (e.g. CNERGY, OGDC)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl pl-9 pr-3 py-2 text-xs text-[#F0F6FC] focus:outline-none focus:border-[#00D2B4] transition-colors"
+              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-xl pl-9 pr-3 py-2 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9E76A] transition-colors"
             />
           </div>
 
@@ -339,7 +339,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
             <select
               value={selectedSector}
               onChange={(e) => setSelectedSector(e.target.value)}
-              className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl px-3 py-2 text-xs text-[#F0F6FC] focus:outline-none focus:border-[#00D2B4]"
+              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-xl px-3 py-2 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9E76A]"
             >
               <option value="ALL">All Sectors ({sectors.length})</option>
               {sectors.map((s) => (
@@ -354,10 +354,10 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
           <div className="md:col-span-3">
             <button
               onClick={() => setShariahOnly(!shariahOnly)}
-              className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all border flex items-center justify-center space-x-2 cursor-pointer ${
+              className={`w-full py-2 px-3 rounded-xl text-xs font-semibold transition-all border flex items-center justify-center space-x-2 cursor-pointer ${
                 shariahOnly
-                  ? 'bg-[#00C076]/15 text-[#00C076] border-[#00C076]'
-                  : 'bg-[#0B0E14] text-[#8B949E] border-[#30363D] hover:text-[#F0F6FC]'
+                  ? 'bg-[#6DDBA5]/15 text-[#6DDBA5] border-[#6DDBA5]'
+                  : 'bg-[#0C1411] text-[#A4B3A7] border-[#2A3C31] hover:text-[#F1F5EE]'
               }`}
             >
               <Moon className="w-3.5 h-3.5 fill-current" />
@@ -369,16 +369,16 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
           <div className="md:col-span-2 flex items-center space-x-2">
             <button
               onClick={exportCSV}
-              className="flex-1 bg-[#21262D] hover:bg-[#30363D] text-[#F0F6FC] py-2 px-3 rounded-xl text-xs font-bold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
+              className="flex-1 bg-[#1E3026] hover:bg-[#2A3C31] text-[#F1F5EE] py-2 px-3 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
               title="Download results as CSV spreadsheet"
             >
-              <Download className="w-3.5 h-3.5 text-[#00D2B4]" />
+              <Download className="w-3.5 h-3.5 text-[#B9E76A]" />
               <span>CSV</span>
             </button>
 
             <button
               onClick={resetFilters}
-              className="p-2 bg-[#0B0E14] hover:bg-[#21262D] text-[#8B949E] hover:text-[#F85149] border border-[#30363D] rounded-xl transition-colors cursor-pointer"
+              className="p-2 bg-[#0C1411] hover:bg-[#1E3026] text-[#A4B3A7] hover:text-[#F28B82] border border-[#2A3C31] rounded-xl transition-colors cursor-pointer"
               title="Reset all filters"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -387,10 +387,10 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
         </div>
 
         {/* Row 2: Fine-Tuning Filters (Price Range, Volume, Min Yield, Max P/E) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#30363D]/60 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#2A3C31]/60 text-xs">
           {/* Price Range */}
           <div>
-            <label className="text-[10px] uppercase font-bold text-[#8B949E] block mb-1">
+            <label className="text-[10px] uppercase font-semibold text-[#A4B3A7] block mb-1">
               Price Range (PKR)
             </label>
             <div className="flex items-center space-x-1.5">
@@ -399,28 +399,28 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 placeholder="Min"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
-                className="w-1/2 bg-[#0B0E14] border border-[#30363D] rounded-lg px-2 py-1.5 text-xs text-[#F0F6FC] focus:outline-none focus:border-[#00D2B4]"
+                className="w-1/2 bg-[#0C1411] border border-[#2A3C31] rounded-lg px-2 py-1.5 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9E76A]"
               />
-              <span className="text-[#8B949E]">-</span>
+              <span className="text-[#A4B3A7]">-</span>
               <input
                 type="number"
                 placeholder="Max"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
-                className="w-1/2 bg-[#0B0E14] border border-[#30363D] rounded-lg px-2 py-1.5 text-xs text-[#F0F6FC] focus:outline-none focus:border-[#00D2B4]"
+                className="w-1/2 bg-[#0C1411] border border-[#2A3C31] rounded-lg px-2 py-1.5 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9E76A]"
               />
             </div>
           </div>
 
           {/* Min Volume */}
           <div>
-            <label className="text-[10px] uppercase font-bold text-[#8B949E] block mb-1">
+            <label className="text-[10px] uppercase font-semibold text-[#A4B3A7] block mb-1">
               Min Volume
             </label>
             <select
               value={minVolume}
               onChange={(e) => setMinVolume(Number(e.target.value))}
-              className="w-full bg-[#0B0E14] border border-[#30363D] rounded-lg px-2 py-1.5 text-xs text-[#F0F6FC] focus:outline-none focus:border-[#00D2B4]"
+              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-lg px-2 py-1.5 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9E76A]"
             >
               <option value={0}>Any Volume</option>
               <option value={100000}>&gt; 100,000</option>
@@ -432,13 +432,13 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
 
           {/* Min Dividend Yield */}
           <div>
-            <label className="text-[10px] uppercase font-bold text-[#8B949E] block mb-1">
+            <label className="text-[10px] uppercase font-semibold text-[#A4B3A7] block mb-1">
               Min Div Yield
             </label>
             <select
               value={minYield}
               onChange={(e) => setMinYield(Number(e.target.value))}
-              className="w-full bg-[#0B0E14] border border-[#30363D] rounded-lg px-2 py-1.5 text-xs text-[#F0F6FC] focus:outline-none focus:border-[#00D2B4]"
+              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-lg px-2 py-1.5 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9E76A]"
             >
               <option value={0}>Any Yield</option>
               <option value={5}>&gt; 5% Yield</option>
@@ -450,13 +450,13 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
 
           {/* Max P/E Ratio */}
           <div>
-            <label className="text-[10px] uppercase font-bold text-[#8B949E] block mb-1">
+            <label className="text-[10px] uppercase font-semibold text-[#A4B3A7] block mb-1">
               Max P/E Ratio
             </label>
             <select
               value={maxPe}
               onChange={(e) => setMaxPe(Number(e.target.value))}
-              className="w-full bg-[#0B0E14] border border-[#30363D] rounded-lg px-2 py-1.5 text-xs text-[#F0F6FC] focus:outline-none focus:border-[#00D2B4]"
+              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-lg px-2 py-1.5 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9E76A]"
             >
               <option value={0}>Any P/E</option>
               <option value={5}>&lt; 5.0 (Deep Value)</option>
@@ -470,23 +470,23 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
 
       {/* Results Header */}
       <div className="flex items-center justify-between text-xs px-1">
-        <div className="text-[#8B949E]">
-          Showing <strong className="text-[#F0F6FC]">{filteredQuotes.length}</strong> companies matching your criteria
+        <div className="text-[#A4B3A7]">
+          Showing <strong className="text-[#F1F5EE]">{filteredQuotes.length}</strong> companies matching your criteria
         </div>
-        <div className="text-[#8B949E]">
-          Sorted by: <span className="text-[#00D2B4] font-bold uppercase">{sortField} ({sortOrder})</span>
+        <div className="text-[#A4B3A7]">
+          Sorted by: <span className="text-[#B9E76A] font-semibold uppercase">{sortField} ({sortOrder})</span>
         </div>
       </div>
 
       {/* Main Interactive Screener Table */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-2xl overflow-hidden shadow-2xl">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#0B0E14] border-b border-[#30363D] text-[10px] text-[#8B949E] uppercase tracking-wider">
+            <thead className="bg-[#0C1411] border-b border-[#2A3C31] text-[10px] text-[#A4B3A7] uppercase tracking-wider">
               <tr>
                 <th
                   onClick={() => handleSort('symbol')}
-                  className="py-3 px-4 cursor-pointer hover:text-[#F0F6FC]"
+                  className="py-3 px-4 cursor-pointer hover:text-[#F1F5EE]"
                 >
                   <div className="flex items-center space-x-1">
                     <span>Symbol / Company</span>
@@ -496,7 +496,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 <th className="py-3 px-4">Sector</th>
                 <th
                   onClick={() => handleSort('current')}
-                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F0F6FC]"
+                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F1F5EE]"
                 >
                   <div className="flex items-center justify-end space-x-1">
                     <span>Price (PKR)</span>
@@ -505,7 +505,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 </th>
                 <th
                   onClick={() => handleSort('changePercent')}
-                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F0F6FC]"
+                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F1F5EE]"
                 >
                   <div className="flex items-center justify-end space-x-1">
                     <span>Day Change</span>
@@ -514,7 +514,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 </th>
                 <th
                   onClick={() => handleSort('volume')}
-                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F0F6FC]"
+                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F1F5EE]"
                 >
                   <div className="flex items-center justify-end space-x-1">
                     <span>Volume</span>
@@ -523,7 +523,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 </th>
                 <th
                   onClick={() => handleSort('peRatio')}
-                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F0F6FC]"
+                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F1F5EE]"
                 >
                   <div className="flex items-center justify-end space-x-1">
                     <span>P/E</span>
@@ -532,7 +532,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 </th>
                 <th
                   onClick={() => handleSort('dividendYield')}
-                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F0F6FC]"
+                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F1F5EE]"
                 >
                   <div className="flex items-center justify-end space-x-1">
                     <span>Div Yield</span>
@@ -541,7 +541,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 </th>
                 <th
                   onClick={() => handleSort('marketCap')}
-                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F0F6FC]"
+                  className="py-3 px-4 text-right cursor-pointer hover:text-[#F1F5EE]"
                 >
                   <div className="flex items-center justify-end space-x-1">
                     <span>Mkt Cap (B)</span>
@@ -551,10 +551,10 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                 <th className="py-3 px-4 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#30363D]/60 bg-[#0B0E14]/30">
+            <tbody className="divide-y divide-[#2A3C31]/60 bg-[#0C1411]/30">
               {filteredQuotes.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-sm text-[#8B949E]">
+                  <td colSpan={9} className="py-12 text-center text-sm text-[#A4B3A7]">
                     No companies match your filters. Try resetting the criteria or clearing presets.
                   </td>
                 </tr>
@@ -564,20 +564,20 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                   return (
                     <tr
                       key={q.symbol}
-                      className="hover:bg-[#21262D]/60 transition-colors group"
+                      className="hover:bg-[#1E3026]/60 transition-colors group"
                     >
                       {/* Symbol & Name */}
                       <td className="py-3 px-4">
                         <div className="flex items-center space-x-2">
                           <Link
                             href={`/stocks/${q.symbol}`}
-                            className="font-bold text-[#F0F6FC] group-hover:text-[#00D2B4] transition-colors"
+                            className="font-semibold text-[#F1F5EE] group-hover:text-[#B9E76A] transition-colors"
                           >
                             {q.symbol}
                           </Link>
                           {q.isShariah && (
                             <span
-                              className="inline-flex items-center text-[10px] font-bold text-[#00C076] bg-[#00C076]/10 px-1.5 py-0.5 rounded border border-[#00C076]/30"
+                              className="inline-flex items-center text-[10px] font-semibold text-[#6DDBA5] bg-[#6DDBA5]/10 px-1.5 py-0.5 rounded border border-[#6DDBA5]/30"
                               title="Shariah Compliant (KMI Criteria)"
                             >
                               <Moon className="w-2.5 h-2.5 mr-0.5 fill-current" />
@@ -585,25 +585,25 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                             </span>
                           )}
                         </div>
-                        <div className="text-[11px] text-[#8B949E] truncate max-w-[200px]">
+                        <div className="text-[11px] text-[#A4B3A7] truncate max-w-[200px]">
                           {q.name}
                         </div>
                       </td>
 
                       {/* Sector */}
-                      <td className="py-3 px-4 text-[#8B949E] text-[11px] max-w-[140px] truncate">
+                      <td className="py-3 px-4 text-[#A4B3A7] text-[11px] max-w-[140px] truncate">
                         {q.sector || '—'}
                       </td>
 
                       {/* Price */}
-                      <td className="py-3 px-4 text-right font-mono font-bold text-[#F0F6FC]">
+                      <td className="py-3 px-4 text-right font-mono font-semibold text-[#F1F5EE]">
                         Rs {q.current.toFixed(2)}
                       </td>
 
                       {/* Change */}
                       <td
-                        className={`py-3 px-4 text-right font-mono font-bold ${
-                          isPos ? 'text-[#00C076]' : 'text-[#F85149]'
+                        className={`py-3 px-4 text-right font-mono font-semibold ${
+                          isPos ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
                         }`}
                       >
                         <span className="flex items-center justify-end space-x-0.5">
@@ -613,14 +613,14 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                             {q.changePercent.toFixed(2)}%
                           </span>
                         </span>
-                        <div className="text-[10px] text-[#8B949E]">
+                        <div className="text-[10px] text-[#A4B3A7]">
                           {isPos ? '+' : ''}
                           {q.change.toFixed(2)}
                         </div>
                       </td>
 
                       {/* Volume */}
-                      <td className="py-3 px-4 text-right font-mono text-[#F0F6FC]">
+                      <td className="py-3 px-4 text-right font-mono text-[#F1F5EE]">
                         {q.volume.toLocaleString()}
                       </td>
 
@@ -630,14 +630,14 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                           <span
                             className={
                               q.computedPe < 7
-                                ? 'text-[#00D2B4] font-bold'
-                                : 'text-[#8B949E]'
+                                ? 'text-[#B9E76A] font-semibold'
+                                : 'text-[#A4B3A7]'
                             }
                           >
                             {q.computedPe.toFixed(1)}x
                           </span>
                         ) : (
-                          <span className="text-[#8B949E]">—</span>
+                          <span className="text-[#A4B3A7]">—</span>
                         )}
                       </td>
 
@@ -647,19 +647,19 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                           <span
                             className={
                               q.computedDy >= 10
-                                ? 'text-[#00C076] font-bold'
-                                : 'text-[#F0F6FC]'
+                                ? 'text-[#6DDBA5] font-semibold'
+                                : 'text-[#F1F5EE]'
                             }
                           >
                             {q.computedDy.toFixed(1)}%
                           </span>
                         ) : (
-                          <span className="text-[#8B949E]">0.0%</span>
+                          <span className="text-[#A4B3A7]">0.0%</span>
                         )}
                       </td>
 
                       {/* Market Cap */}
-                      <td className="py-3 px-4 text-right font-mono text-[#8B949E]">
+                      <td className="py-3 px-4 text-right font-mono text-[#A4B3A7]">
                         Rs {q.computedMktCap.toFixed(1)}B
                       </td>
 
@@ -667,7 +667,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
                       <td className="py-3 px-4 text-center">
                         <Link
                           href={`/stocks/${q.symbol}`}
-                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-[#21262D] hover:bg-[#30363D] text-[#00D2B4] text-[11px] font-bold transition-colors"
+                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-[#1E3026] hover:bg-[#2A3C31] text-[#B9E76A] text-[11px] font-semibold transition-colors"
                         >
                           <span>Analyze</span>
                           <ChevronRight className="w-3 h-3" />

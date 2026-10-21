@@ -18,17 +18,17 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
   const getSourceBadgeColor = (source: string) => {
     switch (source.toUpperCase()) {
       case 'PROFIT':
-        return 'bg-[#388BFD]/20 text-[#58A6FF] border-[#388BFD]/40';
+        return 'bg-[#9BBCE3]/20 text-[#9BBCE3] border-[#9BBCE3]/40';
       case 'RECORDER':
-        return 'bg-[#FFB401]/20 text-[#FFB401] border-[#FFB401]/40';
+        return 'bg-[#D5F478]/20 text-[#D5F478] border-[#D5F478]/40';
       case 'DAWN':
-        return 'bg-[#00C076]/20 text-[#00C076] border-[#00C076]/40';
+        return 'bg-[#6DDBA5]/20 text-[#6DDBA5] border-[#6DDBA5]/40';
       case 'TRIBUNE':
-        return 'bg-[#F85149]/20 text-[#F85149] border-[#F85149]/40';
+        return 'bg-[#F28B82]/20 text-[#F28B82] border-[#F28B82]/40';
       case 'METTIS':
-        return 'bg-[#A371F7]/20 text-[#BC8CFF] border-[#A371F7]/40';
+        return 'bg-[#B9ADDA]/20 text-[#B9ADDA] border-[#B9ADDA]/40';
       default:
-        return 'bg-[#21262D] text-[#8B949E] border-[#30363D]';
+        return 'bg-[#1E3026] text-[#A4B3A7] border-[#2A3C31]';
     }
   };
 
@@ -37,18 +37,18 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <span className="text-[10px] font-bold text-[#00D2B4] uppercase tracking-widest block">
+          <span className="text-[10px] font-semibold text-[#B9E76A] uppercase tracking-widest block">
             LATEST HEADLINES
           </span>
-          <h2 className="text-xl font-extrabold text-[#F0F6FC] tracking-tight flex items-center space-x-2">
-            <Newspaper className="w-5 h-5 text-[#00D2B4]" />
+          <h2 className="text-xl font-semibold text-[#F1F5EE] tracking-tight flex items-center space-x-2">
+            <Newspaper className="w-5 h-5 text-[#B9E76A]" />
             <span>Market News</span>
           </h2>
         </div>
 
         <Link
           href="/news"
-          className="text-xs font-bold text-[#00D2B4] hover:text-[#00D2B4]/80 inline-flex items-center space-x-1"
+          className="text-xs font-semibold text-[#B9E76A] hover:text-[#B9E76A]/80 inline-flex items-center space-x-1"
         >
           <span>VIEW ALL NEWS</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -59,12 +59,12 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Featured Left Card (5 cols) */}
         {featured && (
-          <div className="lg:col-span-5 bg-[#161B22] border border-[#30363D] rounded-2xl overflow-hidden shadow-xl hover:border-[#484F58] transition-all flex flex-col justify-between group">
+          <div className="lg:col-span-5 bg-[#121E18] border border-[#2A3C31] rounded-xl overflow-hidden shadow-xl hover:border-[#496052] transition-all flex flex-col justify-between group">
             <a
               href={featured.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="block relative w-full h-48 sm:h-56 overflow-hidden bg-[#0B0E14]"
+              className="block relative w-full h-48 sm:h-56 overflow-hidden bg-[#0C1411]"
             >
               {featured.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -79,19 +79,19 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               ) : (
-                <div className="w-full h-full bg-[#21262D] flex items-center justify-center text-[#8B949E]">
+                <div className="w-full h-full bg-[#1E3026] flex items-center justify-center text-[#A4B3A7]">
                   <Newspaper className="w-12 h-12" />
                 </div>
               )}
               <div className="absolute top-3 left-3 flex items-center space-x-2">
                 <span
-                  className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded border backdrop-blur-md ${getSourceBadgeColor(
+                  className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded border backdrop-blur-md ${getSourceBadgeColor(
                     featured.source
                   )}`}
                 >
                   {featured.source}
                 </span>
-                <span className="text-[10px] font-semibold text-[#F0F6FC] bg-black/60 backdrop-blur-md px-2 py-0.5 rounded">
+                <span className="text-[10px] font-semibold text-[#F1F5EE] bg-black/60 backdrop-blur-md px-2 py-0.5 rounded">
                   {featured.publishedAt}
                 </span>
               </div>
@@ -103,22 +103,22 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   href={featured.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block font-bold text-base sm:text-lg text-[#F0F6FC] group-hover:text-[#00D2B4] transition-colors leading-snug mb-2"
+                  className="block font-semibold text-base sm:text-lg text-[#F1F5EE] group-hover:text-[#B9E76A] transition-colors leading-snug mb-2"
                 >
                   {featured.title}
                 </a>
-                <p className="text-xs text-[#8B949E] line-clamp-3 leading-relaxed">
+                <p className="text-xs text-[#A4B3A7] line-clamp-3 leading-relaxed">
                   {featured.summary}
                 </p>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-[#30363D]/60 flex items-center justify-between">
-                <span className="text-[11px] text-[#6E7681]">Dawn • Recorder • Profit Feeds</span>
+              <div className="pt-4 mt-4 border-t border-[#2A3C31]/60 flex items-center justify-between">
+                <span className="text-[11px] text-[#84988B]">Dawn • Recorder • Profit Feeds</span>
                 <a
                   href={featured.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-[#00D2B4] hover:underline flex items-center space-x-1 font-semibold"
+                  className="text-xs text-[#B9E76A] hover:underline flex items-center space-x-1 font-semibold"
                 >
                   <span>Read Article</span>
                   <ExternalLink className="w-3 h-3" />
@@ -136,10 +136,10 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
               href={article.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#161B22] border border-[#30363D] hover:border-[#484F58] hover:bg-[#1C2128] rounded-xl p-3.5 transition-all flex items-center space-x-3.5 group shadow-sm"
+              className="bg-[#121E18] border border-[#2A3C31] hover:border-[#496052] hover:bg-[#18271F] rounded-xl p-3.5 transition-all flex items-center space-x-3.5 group shadow-sm"
             >
               {/* Thumbnail */}
-              <div className="w-20 h-20 sm:w-24 sm:h-20 rounded-lg overflow-hidden bg-[#0B0E14] flex-shrink-0 relative border border-[#30363D]/60">
+              <div className="w-20 h-20 sm:w-24 sm:h-20 rounded-lg overflow-hidden bg-[#0C1411] flex-shrink-0 relative border border-[#2A3C31]/60">
                 {article.imageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -153,7 +153,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-[#8B949E]">
+                  <div className="w-full h-full flex items-center justify-center text-[#A4B3A7]">
                     <Newspaper className="w-6 h-6" />
                   </div>
                 )}
@@ -163,20 +163,20 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2 mb-1">
                   <span
-                    className={`text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded border ${getSourceBadgeColor(
+                    className={`text-[9px] font-semibold uppercase px-1.5 py-0.2 rounded border ${getSourceBadgeColor(
                       article.source
                     )}`}
                   >
                     {article.source}
                   </span>
-                  <span className="text-[11px] text-[#6E7681]">{article.publishedAt}</span>
+                  <span className="text-[11px] text-[#84988B]">{article.publishedAt}</span>
                 </div>
 
-                <h3 className="font-bold text-xs sm:text-sm text-[#F0F6FC] group-hover:text-[#00D2B4] transition-colors line-clamp-2 leading-tight">
+                <h3 className="font-semibold text-xs sm:text-sm text-[#F1F5EE] group-hover:text-[#B9E76A] transition-colors line-clamp-2 leading-tight">
                   {article.title}
                 </h3>
 
-                <p className="text-[11px] text-[#8B949E] line-clamp-1 mt-1 hidden sm:block">
+                <p className="text-[11px] text-[#A4B3A7] line-clamp-1 mt-1 hidden sm:block">
                   {article.summary}
                 </p>
               </div>

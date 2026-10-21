@@ -77,22 +77,22 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
   return (
     <div className="space-y-6">
       {/* Controls: Search, Sector dropdown & Sort */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Search Input */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B949E]" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4B3A7]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by symbol or company name..."
-            className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl pl-10 pr-9 py-2 text-sm text-[#F0F6FC] placeholder-[#8B949E] focus:outline-none focus:border-[#FFB401]"
+            className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-xl pl-10 pr-9 py-2 text-sm text-[#F1F5EE] placeholder-[#A4B3A7] focus:outline-none focus:border-[#D5F478]"
           />
           {search && (
             <button
               onClick={() => setSearch('')}
               title="Clear search"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8B949E] hover:text-[#F0F6FC] p-1 cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4B3A7] hover:text-[#F1F5EE] p-1 cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -104,7 +104,7 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
           <select
             value={selectedSector}
             onChange={(e) => setSelectedSector(e.target.value)}
-            className="bg-[#0B0E14] border border-[#30363D] text-xs text-[#F0F6FC] rounded-xl px-3 py-2 font-medium focus:outline-none focus:border-[#FFB401]"
+            className="bg-[#0C1411] border border-[#2A3C31] text-xs text-[#F1F5EE] rounded-xl px-3 py-2 font-medium focus:outline-none focus:border-[#D5F478]"
           >
             <option value="ALL">All Sectors ({initialQuotes.length})</option>
             {sectors.map((sec) => (
@@ -118,7 +118,7 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="bg-[#0B0E14] border border-[#30363D] text-xs text-[#F0F6FC] rounded-xl px-3 py-2 font-medium focus:outline-none focus:border-[#FFB401]"
+            className="bg-[#0C1411] border border-[#2A3C31] text-xs text-[#F1F5EE] rounded-xl px-3 py-2 font-medium focus:outline-none focus:border-[#D5F478]"
           >
             <option value="volume">Sort: Highest Volume</option>
             <option value="gainers">Sort: Top Gainers</option>
@@ -130,12 +130,12 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
       </div>
 
       {/* Results Count */}
-      <div className="text-xs text-[#8B949E] px-1 flex items-center justify-between">
+      <div className="text-xs text-[#A4B3A7] px-1 flex items-center justify-between">
         <span>Showing {filtered.length} of {initialQuotes.length} stocks</span>
         {selectedSector !== 'ALL' && (
           <button
             onClick={() => setSelectedSector('ALL')}
-            className="text-[#FFB401] hover:underline"
+            className="text-[#D5F478] hover:underline"
           >
             Clear sector filter
           </button>
@@ -143,11 +143,11 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
       </div>
 
       {/* Directory Table */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="bg-[#0B0E14] text-[11px] font-bold text-[#8B949E] uppercase tracking-wider border-b border-[#30363D]">
+              <tr className="bg-[#0C1411] text-[11px] font-semibold text-[#A4B3A7] uppercase tracking-wider border-b border-[#2A3C31]">
                 <th className="py-3.5 pl-4">Company</th>
                 <th className="py-3.5">Sector</th>
                 <th className="py-3.5 text-right">Current Price</th>
@@ -156,50 +156,50 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
                 <th className="py-3.5 text-right pr-4">Volume</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#30363D]/60">
+            <tbody className="divide-y divide-[#2A3C31]/60">
               {filtered.map((stock) => {
                 const isPositive = stock.change >= 0;
                 return (
                   <tr
                     key={stock.symbol}
-                    className="hover:bg-[#21262D]/60 transition-colors group cursor-pointer"
+                    className="hover:bg-[#1E3026]/60 transition-colors group cursor-pointer"
                   >
                     <td className="py-3.5 pl-4">
                       <Link
                         href={`/stocks/${stock.symbol}`}
                         className="flex items-center space-x-3"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-[#0B0E14] border border-[#30363D] flex items-center justify-center font-bold text-xs text-[#FFB401] group-hover:border-[#FFB401] transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-[#0C1411] border border-[#2A3C31] flex items-center justify-center font-semibold text-xs text-[#D5F478] group-hover:border-[#D5F478] transition-colors">
                           {stock.symbol.slice(0, 3)}
                         </div>
                         <div>
-                          <div className="font-bold text-[#F0F6FC] group-hover:text-[#FFB401] transition-colors flex items-center space-x-1">
+                          <div className="font-semibold text-[#F1F5EE] group-hover:text-[#D5F478] transition-colors flex items-center space-x-1">
                             <span>{stock.symbol}</span>
                             <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
-                          <div className="text-xs text-[#8B949E] truncate max-w-[180px] sm:max-w-[260px]">
+                          <div className="text-xs text-[#A4B3A7] truncate max-w-[180px] sm:max-w-[260px]">
                             {stock.name}
                           </div>
                         </div>
                       </Link>
                     </td>
 
-                    <td className="py-3.5 text-xs text-[#8B949E]">
-                      <span className="bg-[#0B0E14] px-2 py-0.5 rounded border border-[#30363D] text-[10px]">
+                    <td className="py-3.5 text-xs text-[#A4B3A7]">
+                      <span className="bg-[#0C1411] px-2 py-0.5 rounded border border-[#2A3C31] text-[10px]">
                         {stock.sector}
                       </span>
                     </td>
 
-                    <td className="py-3.5 text-right font-mono font-bold text-[#F0F6FC]">
+                    <td className="py-3.5 text-right font-mono font-semibold text-[#F1F5EE]">
                       Rs {stock.current.toFixed(2)}
                     </td>
 
                     <td className="py-3.5 text-right">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded font-mono font-bold text-xs ${
+                        className={`inline-flex items-center px-2 py-0.5 rounded font-mono font-semibold text-xs ${
                           isPositive
-                            ? 'bg-[#00C076]/10 text-[#00C076] border border-[#00C076]/30'
-                            : 'bg-[#F85149]/10 text-[#F85149] border border-[#F85149]/30'
+                            ? 'bg-[#6DDBA5]/10 text-[#6DDBA5] border border-[#6DDBA5]/30'
+                            : 'bg-[#F28B82]/10 text-[#F28B82] border border-[#F28B82]/30'
                         }`}
                       >
                         {isPositive ? '+' : ''}
@@ -208,12 +208,12 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
                       </span>
                     </td>
 
-                    <td className="py-3.5 text-right font-mono text-xs text-[#8B949E]">
+                    <td className="py-3.5 text-right font-mono text-xs text-[#A4B3A7]">
                       {stock.high > 0 ? stock.high.toFixed(2) : '-'} /{' '}
                       {stock.low > 0 ? stock.low.toFixed(2) : '-'}
                     </td>
 
-                    <td className="py-3.5 text-right font-mono text-xs text-[#F0F6FC] pr-4">
+                    <td className="py-3.5 text-right font-mono text-xs text-[#F1F5EE] pr-4">
                       {stock.volume.toLocaleString()}
                     </td>
                   </tr>

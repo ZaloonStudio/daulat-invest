@@ -33,14 +33,14 @@ export default function SectorsGrid({ quotes }: SectorsGridProps) {
     .slice(0, 8); // Top 8 active sectors
 
   return (
-    <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-6 shadow-xl">
-      <div className="flex items-center justify-between mb-5 border-b border-[#30363D] pb-4">
+    <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-6 shadow-xl">
+      <div className="flex items-center justify-between mb-5 border-b border-[#2A3C31] pb-4">
         <div>
-          <h2 className="text-lg font-bold text-[#F0F6FC] flex items-center space-x-2">
-            <Layers className="w-5 h-5 text-[#FFB401]" />
+          <h2 className="text-lg font-semibold text-[#F1F5EE] flex items-center space-x-2">
+            <Layers className="w-5 h-5 text-[#D5F478]" />
             <span>Key Sectors</span>
           </h2>
-          <p className="text-xs text-[#8B949E] mt-0.5">Top industry sectors ranked by trading volume</p>
+          <p className="text-xs text-[#A4B3A7] mt-0.5">Top industry sectors ranked by trading volume</p>
         </div>
       </div>
 
@@ -51,24 +51,24 @@ export default function SectorsGrid({ quotes }: SectorsGridProps) {
             <Link
               key={sec.name}
               href={`/stocks?sector=${encodeURIComponent(sec.name)}`}
-              className="bg-[#0B0E14] border border-[#30363D] hover:border-[#FFB401]/50 p-3.5 rounded-xl transition-all group flex flex-col justify-between"
+              className="bg-[#0C1411] border border-[#2A3C31] hover:border-[#D5F478]/50 p-3.5 rounded-xl transition-all group flex flex-col justify-between"
             >
               <div>
-                <span className="text-xs font-bold text-[#F0F6FC] group-hover:text-[#FFB401] transition-colors line-clamp-1">
+                <span className="text-xs font-semibold text-[#F1F5EE] group-hover:text-[#D5F478] transition-colors line-clamp-1">
                   {sec.name}
                 </span>
-                <span className="text-[11px] text-[#8B949E] mt-0.5 block">
+                <span className="text-[11px] text-[#A4B3A7] mt-0.5 block">
                   {sec.count} Companies Listed
                 </span>
               </div>
 
-              <div className="mt-3 pt-2.5 border-t border-[#30363D]/60 flex items-center justify-between text-xs font-mono">
-                <span className="text-[#8B949E]">
+              <div className="mt-3 pt-2.5 border-t border-[#2A3C31]/60 flex items-center justify-between text-xs font-mono">
+                <span className="text-[#A4B3A7]">
                   {(sec.totalVolume / 1000000).toFixed(1)}M vol
                 </span>
                 <span
-                  className={`font-bold ${
-                    isPositive ? 'text-[#00C076]' : 'text-[#F85149]'
+                  className={`font-semibold ${
+                    isPositive ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
                   }`}
                 >
                   {isPositive ? '+' : ''}

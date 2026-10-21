@@ -41,43 +41,43 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
     }
 
     const isPositive = (indexData?.change ?? 0) >= 0;
-    const lineColor = isPositive ? '#00C076' : '#F85149';
-    const topColor = isPositive ? 'rgba(0, 192, 118, 0.35)' : 'rgba(248, 81, 73, 0.35)';
-    const bottomColor = isPositive ? 'rgba(0, 192, 118, 0.0)' : 'rgba(248, 81, 73, 0.0)';
+    const lineColor = isPositive ? '#6DDBA5' : '#F28B82';
+    const topColor = isPositive ? 'rgba(0, 192, 118, 0.35)' : 'rgba(242, 139, 130, 0.35)';
+    const bottomColor = isPositive ? 'rgba(0, 192, 118, 0.0)' : 'rgba(242, 139, 130, 0.0)';
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: 'transparent' },
-        textColor: '#8B949E',
+        textColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-label').trim(),
         fontSize: 11,
       },
       grid: {
-        vertLines: { color: 'rgba(48, 54, 61, 0.35)' },
-        horzLines: { color: 'rgba(48, 54, 61, 0.35)' },
+        vertLines: { color: 'rgba(132, 152, 139, 0.35)' },
+        horzLines: { color: 'rgba(132, 152, 139, 0.35)' },
       },
       crosshair: {
         vertLine: {
-          color: '#FFB401',
+          color: '#D5F478',
           width: 1,
           style: 3,
-          labelBackgroundColor: '#FFB401',
+          labelBackgroundColor: '#D5F478',
         },
         horzLine: {
-          color: '#FFB401',
+          color: '#D5F478',
           width: 1,
           style: 3,
-          labelBackgroundColor: '#FFB401',
+          labelBackgroundColor: '#D5F478',
         },
       },
       rightPriceScale: {
-        borderColor: '#30363D',
+        borderColor: '#2A3C31',
         scaleMargins: {
           top: 0.15,
           bottom: 0.15,
         },
       },
       timeScale: {
-        borderColor: '#30363D',
+        borderColor: '#2A3C31',
         timeVisible: true,
         secondsVisible: false,
       },
@@ -147,9 +147,14 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
       }
     });
     resizeObserver.observe(chartContainerRef.current);
+    const themeObserver = new MutationObserver(() => {
+      chart.applyOptions({ layout: { textColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-label').trim() } });
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
     return () => {
       resizeObserver.disconnect();
+      themeObserver.disconnect();
       chart.remove();
       chartInstance.current = null;
     };
@@ -161,21 +166,21 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
   const isPositive = change >= 0;
 
   return (
-    <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-6 shadow-xl relative overflow-hidden">
+    <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-6 shadow-xl relative overflow-hidden">
       {/* Chart Top Header & Stats */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center space-x-2">
-            <h2 className="text-sm font-bold text-[#8B949E] uppercase tracking-wider">
+            <h2 className="text-sm font-semibold text-[#A4B3A7] uppercase tracking-wider">
               {indexData?.name || 'KSE 100 Index'}
             </h2>
-            <span className="text-xs bg-[#21262D] text-[#8B949E] px-2 py-0.5 rounded-md font-mono">
+            <span className="text-xs bg-[#1E3026] text-[#A4B3A7] px-2 py-0.5 rounded-md font-mono">
               KSE100:PSX
             </span>
           </div>
 
           <div className="flex items-baseline space-x-3 mt-1.5">
-            <span className="text-3xl sm:text-4xl font-extrabold text-[#F0F6FC] font-mono tracking-tight">
+            <span className="text-3xl sm:text-4xl font-semibold text-[#F1F5EE] font-mono tracking-tight">
               {displayValue.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -183,8 +188,8 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
             </span>
 
             <div
-              className={`flex items-center space-x-1 text-sm sm:text-base font-bold font-mono ${
-                isPositive ? 'text-[#00C076]' : 'text-[#F85149]'
+              className={`flex items-center space-x-1 text-sm sm:text-base font-semibold font-mono ${
+                isPositive ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
               }`}
             >
               {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
@@ -196,7 +201,7 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
             </div>
 
             {hoveredPoint && (
-              <span className="text-xs text-[#8B949E] font-mono bg-[#0B0E14] px-2 py-0.5 rounded border border-[#30363D]">
+              <span className="text-xs text-[#A4B3A7] font-mono bg-[#0C1411] px-2 py-0.5 rounded border border-[#2A3C31]">
                 @ {hoveredPoint.time}
               </span>
             )}
@@ -204,22 +209,22 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
         </div>
 
         {/* Key Day Metrics Row */}
-        <div className="flex items-center space-x-6 text-xs text-[#8B949E] border-t md:border-t-0 border-[#30363D] pt-3 md:pt-0">
+        <div className="flex items-center space-x-6 text-xs text-[#A4B3A7] border-t md:border-t-0 border-[#2A3C31] pt-3 md:pt-0">
           <div>
-            <span className="block text-[10px] uppercase font-semibold text-[#6E7681]">Day High</span>
-            <span className="font-mono text-[#F0F6FC] font-bold">
+            <span className="block text-[10px] uppercase font-semibold text-[#84988B]">Day High</span>
+            <span className="font-mono text-[#F1F5EE] font-semibold">
               Rs {(indexData?.high || 165840.12).toLocaleString()}
             </span>
           </div>
           <div>
-            <span className="block text-[10px] uppercase font-semibold text-[#6E7681]">Day Low</span>
-            <span className="font-mono text-[#F0F6FC] font-bold">
+            <span className="block text-[10px] uppercase font-semibold text-[#84988B]">Day Low</span>
+            <span className="font-mono text-[#F1F5EE] font-semibold">
               Rs {(indexData?.low || 164920.3).toLocaleString()}
             </span>
           </div>
           <div className="hidden sm:block">
-            <span className="block text-[10px] uppercase font-semibold text-[#6E7681]">Day Volume</span>
-            <span className="font-mono text-[#F0F6FC] font-bold">
+            <span className="block text-[10px] uppercase font-semibold text-[#84988B]">Day Volume</span>
+            <span className="font-mono text-[#F1F5EE] font-semibold">
               {(indexData?.volume || 489230100).toLocaleString()}
             </span>
           </div>
@@ -230,16 +235,16 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
       <div className="w-full h-[280px] sm:h-[320px] relative" ref={chartContainerRef} />
 
       {/* Timeframe & TradingView Watermark */}
-      <div className="flex items-center justify-between border-t border-[#30363D] pt-4 mt-2">
-        <div className="flex items-center space-x-1 bg-[#0B0E14] p-1 rounded-xl border border-[#30363D]">
+      <div className="flex items-center justify-between border-t border-[#2A3C31] pt-4 mt-2">
+        <div className="flex items-center space-x-1 bg-[#0C1411] p-1 rounded-xl border border-[#2A3C31]">
           {(['1D', '1W', '1M', '1Y'] as const).map((tf) => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                 timeframe === tf
-                  ? 'bg-[#FFB401] text-black shadow-sm'
-                  : 'text-[#8B949E] hover:text-[#F0F6FC]'
+                  ? 'bg-[#D5F478] text-black shadow-sm'
+                  : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
               }`}
             >
               {tf}
@@ -247,9 +252,9 @@ export default function KseHeroChart({ initialIndex }: KseHeroChartProps) {
           ))}
         </div>
 
-        <span className="text-[11px] text-[#8B949E] flex items-center space-x-1.5">
+        <span className="text-[11px] text-[#A4B3A7] flex items-center space-x-1.5">
           <span>Powered by</span>
-          <span className="text-[#FFB401] font-bold">Daulat Market Engine</span>
+          <span className="text-[#D5F478] font-semibold">Daulat Market Engine</span>
         </span>
       </div>
     </div>

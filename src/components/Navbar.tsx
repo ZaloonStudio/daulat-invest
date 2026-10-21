@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import {
   Search,
-  Clock,
   Menu,
   X,
   Sun,
@@ -120,246 +119,67 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { label: 'Home', href: '/', icon: Home },
+    { label: 'Overview', href: '/', icon: Home },
     { label: 'Market', href: pathname === '/' ? '#indices-section' : '/#indices-section', icon: Activity },
     { label: 'Screener', href: '/stocks/screener', icon: SlidersHorizontal },
     { label: 'Mutual Funds', href: '/mutual-funds', icon: Layers },
     { label: 'News', href: '/news', icon: Newspaper },
     { label: 'Community', href: '/community', icon: Users },
     { label: 'Watchlist', href: '/watchlist', icon: Star },
-    { label: 'Portfolio Tracker', href: '/portfolio', icon: Briefcase },
+    { label: 'Portfolio', href: '/portfolio', icon: Briefcase },
   ];
 
-  return (
-    <header className="sticky top-0 z-50 bg-[#0B0E14]/90 backdrop-blur-md border-b border-[#30363D]">
-      {/* Top micro banner: Market Status & Live Clock */}
-      <div className="bg-[#161B22] border-b border-[#30363D]/60 px-4 py-1.5 text-xs text-[#8B949E]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <span className="flex items-center space-x-1.5">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  marketStatus.isOpen ? 'bg-[#00C076] animate-pulse' : 'bg-[#F85149]'
-                }`}
-              />
-              <span className="font-medium text-[#F0F6FC]">
-                {marketStatus.isOpen ? 'PSX Market Open' : 'PSX Market Closed'}
-              </span>
-            </span>
-            <span className="text-[#30363D] hidden sm:inline">•</span>
-            <span className="hidden sm:inline flex items-center space-x-1">
-              <Clock className="w-3.5 h-3.5" />
-              <span>{marketStatus.time}</span>
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <span className="text-[#FFB401] font-semibold text-[11px] hidden md:inline">
-              Pakistan Stock Exchange (PSX) Live Intelligence
-            </span>
-            <a
-              href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#388BFD] hover:underline flex items-center space-x-1"
-            >
-              <Smartphone className="w-3 h-3" />
-              <span>Get Android App</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Brand Logo */}
-          <Link href="/" className="flex items-center space-x-3 group shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FFB401] to-[#D99B00] flex items-center justify-center font-black text-black text-xl shadow-lg shadow-[#FFB401]/10 group-hover:scale-105 transition-transform">
-              D
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-[#F0F6FC] flex items-center">
-                Daulat<span className="text-[#FFB401] ml-0.5 font-light">Invest</span>
-              </span>
-              <span className="text-[9px] uppercase tracking-widest text-[#8B949E] -mt-1 font-semibold">
-                PSX Market Terminal
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-xs lg:max-w-sm mx-4 relative" ref={searchRef}>
-            <div className="relative w-full">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B949E]" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                onKeyDown={handleKeyDown}
-                onFocus={() => searchQuery && setIsSearching(true)}
-                placeholder="Search PSX stocks (e.g. MEBL, OGDC)..."
-                className="w-full bg-[#161B22] border border-[#30363D] rounded-xl pl-10 pr-4 py-2 text-xs text-[#F0F6FC] placeholder-[#8B949E] focus:outline-none focus:border-[#FFB401] transition-colors"
-              />
-            </div>
-
-            {/* Live Autocomplete Search Dropdown */}
-            {isSearching && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-[#161B22] border border-[#30363D] rounded-xl shadow-2xl overflow-hidden z-50">
-                <div className="p-2 text-[10px] font-bold text-[#8B949E] uppercase tracking-wider border-b border-[#30363D]">
-                  Matching Stocks
-                </div>
-                {searchResults.map((stock) => (
-                  <button
-                    key={stock.symbol}
-                    onClick={() => selectStock(stock.symbol)}
-                    className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#21262D] transition-colors text-left"
-                  >
-                    <div>
-                      <span className="font-bold text-[#F0F6FC] text-xs">{stock.symbol}</span>
-                      <span className="text-[11px] text-[#8B949E] block truncate max-w-[180px]">
-                        {stock.name}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs font-bold text-[#F0F6FC]">
-                        Rs {stock.current.toFixed(2)}
-                      </div>
-                      <div
-                        className={`text-[10px] font-bold ${
-                          stock.change >= 0 ? 'text-[#00C076]' : 'text-[#F85149]'
-                        }`}
-                      >
-                        {stock.change >= 0 ? '+' : ''}
-                        {stock.changePercent.toFixed(2)}%
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 text-xs font-semibold">
-            {navLinks.map((item) => {
-              const isActive =
-                item.href === '/'
-                  ? pathname === '/'
-                  : pathname.startsWith(item.href) && !item.href.includes('#');
-
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 ${
-                    isActive
-                      ? 'text-[#FFB401] bg-[#161B22] border border-[#30363D]'
-                      : 'text-[#8B949E] hover:text-[#F0F6FC] hover:bg-[#161B22]/50'
-                  }`}
-                >
-                  <item.icon className="w-3.5 h-3.5" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Right Action: Light / Dark Toggle & App button */}
-          <div className="flex items-center space-x-2.5">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle Dark and Light Mode"
-              title={isLightMode ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-              className="p-2 rounded-xl bg-[#161B22] border border-[#30363D] hover:border-[#FFB401] text-[#8B949E] hover:text-[#F0F6FC] transition-colors"
-            >
-              {isLightMode ? (
-                <Moon className="w-4 h-4 text-[#FFB401]" />
-              ) : (
-                <Sun className="w-4 h-4 text-[#FFD33D]" />
-              )}
+  const searchField = (mobile = false) => (
+    <div className={mobile ? 'relative w-full' : 'relative w-full max-w-md'} ref={mobile ? undefined : searchRef}>
+      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4B3A7] pointer-events-none" />
+      <input aria-label="Search PSX stocks" type="search" value={searchQuery}
+        onChange={(e) => handleSearch(e.target.value)} onKeyDown={handleKeyDown}
+        onFocus={() => searchQuery && setIsSearching(true)} placeholder="Search companies or symbols…"
+        className="w-full bg-[#121E18] border border-[#2A3C31] rounded-lg pl-11 pr-4 py-3 text-sm text-[#F1F5EE] placeholder-[#84988B] focus:outline-none focus:border-[#D5F478] transition-colors" />
+      {isSearching && searchResults.length > 0 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-[#121E18] border border-[#2A3C31] rounded-xl shadow-2xl overflow-hidden z-50">
+          <div className="px-4 py-3 text-[10px] tracking-widest uppercase text-[#A4B3A7]">Companies</div>
+          {searchResults.map(stock => (
+            <button key={stock.symbol} onClick={() => selectStock(stock.symbol)} className="w-full px-4 py-3 flex items-center justify-between hover:bg-[#1E3026] text-left border-t border-[#2A3C31]">
+              <span className="min-w-0"><strong className="text-sm">{stock.symbol}</strong><span className="block text-xs text-[#A4B3A7] truncate max-w-[180px]">{stock.name}</span></span>
+              <span className="text-right font-mono text-xs">Rs {stock.current.toFixed(2)}<span className={stock.change >= 0 ? 'block mt-1 text-[#6DDBA5]' : 'block mt-1 text-[#F28B82]'}>{stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%</span></span>
             </button>
-
-            {/* Mobile menu trigger */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-[#8B949E] hover:text-[#F0F6FC] rounded-xl bg-[#161B22] border border-[#30363D]"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#161B22] border-b border-[#30363D] px-4 py-4 space-y-4">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B949E]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Search symbol (e.g. MEBL, OGDC)..."
-              className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl pl-9 pr-4 py-2 text-xs text-[#F0F6FC]"
-            />
-          </div>
-
-          {/* Mobile search results */}
-          {searchResults.length > 0 && (
-            <div className="bg-[#0B0E14] border border-[#30363D] rounded-xl overflow-hidden divide-y divide-[#30363D]">
-              {searchResults.map((stock) => (
-                <button
-                  key={stock.symbol}
-                  onClick={() => selectStock(stock.symbol)}
-                  className="w-full p-2.5 flex justify-between items-center text-left"
-                >
-                  <div>
-                    <span className="font-bold text-[#F0F6FC] text-xs">{stock.symbol}</span>
-                    <span className="text-[10px] text-[#8B949E] block truncate max-w-[180px]">
-                      {stock.name}
-                    </span>
-                  </div>
-                  <span
-                    className={`font-bold text-xs ${
-                      stock.change >= 0 ? 'text-[#00C076]' : 'text-[#F85149]'
-                    }`}
-                  >
-                    Rs {stock.current.toFixed(2)}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="flex flex-col space-y-1.5 pt-1 text-xs font-semibold">
-            {navLinks.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-[#8B949E] hover:text-[#F0F6FC] hover:bg-[#0B0E14]"
-              >
-                <item.icon className="w-4 h-4 text-[#FFB401]" />
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </div>
-
-          <div className="pt-2 border-t border-[#30363D] flex items-center justify-between">
-            <span className="text-xs text-[#8B949E]">Appearance</span>
-            <button
-              onClick={toggleTheme}
-              className="px-3 py-1.5 rounded-xl bg-[#0B0E14] border border-[#30363D] text-xs font-semibold text-[#F0F6FC] flex items-center space-x-1.5"
-            >
-              {isLightMode ? <Moon className="w-3.5 h-3.5 text-[#FFB401]" /> : <Sun className="w-3.5 h-3.5 text-[#FFD33D]" />}
-              <span>{isLightMode ? 'Dark Theme' : 'Light Theme'}</span>
-            </button>
-          </div>
+          ))}
         </div>
       )}
+    </div>
+  );
+  return (
+    <header className="site-header sticky top-0 z-50 border-b border-[#2A3C31]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-6 h-20">
+          <Link href="/" aria-label="Daulat Invest home" className="flex items-center gap-3 shrink-0">
+            <span className="brand-mark" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 19V5h5a7 7 0 1 1 0 14H5Z" stroke="currentColor" strokeWidth="2.5"/><path d="m8 14 4-4 3 3 5-6" stroke="currentColor" strokeWidth="2"/></svg></span>
+            <span className="text-2xl tracking-[-0.06em] font-semibold">daulat<span className="text-[#A4B3A7] font-normal tracking-[-0.04em]"> invest</span><span className="hidden sm:block text-[9px] tracking-[0.22em] uppercase text-[#84988B] mt-0.5">A clearer view of wealth</span></span>
+          </Link>
+          <div className="hidden md:flex flex-1 justify-center">{searchField()}</div>
+          <div className="flex items-center gap-3">
+            <div className="hidden xl:flex items-center gap-2 text-xs text-[#A4B3A7] mr-2"><span className={marketStatus.isOpen ? 'w-1.5 h-1.5 rounded-full bg-[#6DDBA5]' : 'w-1.5 h-1.5 rounded-full bg-[#84988B]'} />PSX {marketStatus.isOpen ? 'open' : 'closed'}</div>
+            <button onClick={toggleTheme} aria-label="Toggle Dark and Light Mode" title={isLightMode ? 'Switch to Dark Mode' : 'Switch to Light Mode'} className="p-2.5 rounded-lg border border-[#2A3C31] text-[#A4B3A7] hover:text-[#D5F478]">{isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}</button>
+            <Link href="/watchlist" className="hidden sm:inline-flex primary-action text-xs px-4 py-2.5">My watchlist <Star className="w-3.5 h-3.5" /></Link>
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label={mobileMenuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" className="lg:hidden p-2.5 border border-[#2A3C31] rounded-lg">{mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
+          </div>
+        </div>
+        <div className="hidden lg:flex items-center justify-between border-t border-[#2A3C31]/60">
+          <nav aria-label="Main navigation" className="flex items-center gap-7">
+            {navLinks.map(item => {
+              const active = item.href === '/' ? pathname === '/' : !item.href.includes('#') && pathname.startsWith(item.href);
+              return <Link key={item.label} href={item.href} aria-current={active ? 'page' : undefined} className={active ? 'desktop-nav-link is-active' : 'desktop-nav-link'}>{item.label}</Link>;
+            })}
+          </nav>
+          <a href="https://play.google.com/store/apps/details?id=pk.psxtracker.app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[11px] text-[#A4B3A7] hover:text-[#D5F478]"><Smartphone className="w-3.5 h-3.5" />Get the app</a>
+        </div>
+      </div>
+      {mobileMenuOpen && <div id="mobile-navigation" className="lg:hidden px-4 py-5 bg-[#121E18] border-t border-[#2A3C31] max-h-[calc(100dvh-80px)] overflow-y-auto">
+        {searchField(true)}
+        <nav aria-label="Mobile navigation" className="grid grid-cols-2 gap-2 mt-5">{navLinks.map(item => <Link key={item.label} href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 p-3 text-sm text-[#A4B3A7] hover:bg-[#1E3026] rounded-lg"><item.icon className="w-4 h-4" />{item.label}</Link>)}</nav>
+        <div className="mt-5 pt-4 border-t border-[#2A3C31] text-xs text-[#A4B3A7]">PSX {marketStatus.isOpen ? 'open' : 'closed'} · {marketStatus.time}</div>
+      </div>}
     </header>
   );
 }

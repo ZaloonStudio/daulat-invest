@@ -90,7 +90,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
       <div>
         <Link
           href="/"
-          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#8B949E] hover:text-[#F0F6FC] transition-colors mb-3"
+          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#A4B3A7] hover:text-[#F1F5EE] transition-colors mb-3"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Market Overview</span>
@@ -98,23 +98,23 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
       </div>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#30363D] pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#2A3C31] pb-6">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#00D2B4] uppercase tracking-wider mb-2">
+          <div className="flex items-center space-x-2 text-xs font-semibold text-[#B9E76A] uppercase tracking-wider mb-2">
             <GitCompare className="w-4 h-4" />
-            <span>Sarmaaya-Style Head-to-Head Analytics</span>
+            <span>Compare the details. See the difference.</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#F0F6FC] tracking-tight">
-            PSX Stock Comparison Matrix
+          <h1 className="text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+            Stock comparison
           </h1>
-          <p className="text-sm text-[#8B949E] mt-1.5 max-w-2xl">
+          <p className="text-sm text-[#A4B3A7] mt-1.5 max-w-2xl">
             Compare valuation multiples (P/E, P/B), dividend yields, 1-year capital returns, and balance-sheet liquidity side-by-side.
           </p>
         </div>
 
         {/* Add Stock Search Bar */}
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B949E]" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4B3A7]" />
           <input
             type="text"
             value={searchQuery}
@@ -124,27 +124,27 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
             }}
             onFocus={() => setIsSearching(true)}
             placeholder="Add stock to compare (e.g. HUBC)..."
-            className="w-full bg-[#161B22] border border-[#30363D] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#F0F6FC] placeholder-[#8B949E] focus:outline-none focus:border-[#00D2B4] transition-colors"
+            className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#F1F5EE] placeholder-[#A4B3A7] focus:outline-none focus:border-[#B9E76A] transition-colors"
           />
 
           {isSearching && searchResults.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-[#161B22] border border-[#30363D] rounded-xl shadow-2xl overflow-hidden z-30">
-              <div className="px-3 py-1.5 text-[10px] font-bold text-[#8B949E] uppercase tracking-wider border-b border-[#30363D]">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-[#121E18] border border-[#2A3C31] rounded-xl shadow-2xl overflow-hidden z-30">
+              <div className="px-3 py-1.5 text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider border-b border-[#2A3C31]">
                 Add to Comparison
               </div>
               {searchResults.map((stock) => (
                 <button
                   key={stock.symbol}
                   onClick={() => addStock(stock.symbol)}
-                  className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#21262D] transition-colors text-left"
+                  className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#1E3026] transition-colors text-left"
                 >
                   <div>
-                    <span className="font-bold text-[#F0F6FC] text-xs">{stock.symbol}</span>
-                    <span className="text-[11px] text-[#8B949E] block truncate max-w-[180px]">
+                    <span className="font-semibold text-[#F1F5EE] text-xs">{stock.symbol}</span>
+                    <span className="text-[11px] text-[#A4B3A7] block truncate max-w-[180px]">
                       {stock.name}
                     </span>
                   </div>
-                  <Plus className="w-3.5 h-3.5 text-[#00D2B4]" />
+                  <Plus className="w-3.5 h-3.5 text-[#B9E76A]" />
                 </button>
               ))}
             </div>
@@ -153,13 +153,13 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
       </div>
 
       {/* Main Comparison Matrix Table */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-3xl overflow-hidden shadow-2xl">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-2xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             {/* Header: Selected Stocks */}
-            <thead className="bg-[#0B0E14] border-b border-[#30363D]">
+            <thead className="bg-[#0C1411] border-b border-[#2A3C31]">
               <tr>
-                <th className="py-4 px-6 text-[#8B949E] font-bold uppercase tracking-wider text-[11px] w-64">
+                <th className="py-4 px-6 text-[#A4B3A7] font-semibold uppercase tracking-wider text-[11px] w-64">
                   Financial Metric
                 </th>
                 {selectedStocks.map((stock) => (
@@ -169,17 +169,17 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
                         <div className="flex items-center space-x-1.5">
                           <Link
                             href={`/stocks/${stock.symbol}`}
-                            className="text-base font-black text-[#F0F6FC] hover:text-[#FFB401] transition-colors"
+                            className="text-base font-semibold text-[#F1F5EE] hover:text-[#D5F478] transition-colors"
                           >
                             {stock.symbol}
                           </Link>
                           {stock.isShariah && (
-                            <span className="text-[9px] bg-[#00C076]/15 text-[#00C076] px-1.5 py-0.2 rounded font-bold">
+                            <span className="text-[9px] bg-[#6DDBA5]/15 text-[#6DDBA5] px-1.5 py-0.2 rounded font-semibold">
                               KMI
                             </span>
                           )}
                         </div>
-                        <span className="text-[11px] text-[#8B949E] block truncate max-w-[180px]">
+                        <span className="text-[11px] text-[#A4B3A7] block truncate max-w-[180px]">
                           {stock.name}
                         </span>
                       </div>
@@ -187,7 +187,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
                         <button
                           onClick={() => removeStock(stock.symbol)}
                           title="Remove from comparison"
-                          className="p-1 text-[#6E7681] hover:text-[#F85149] rounded transition-colors"
+                          className="p-1 text-[#84988B] hover:text-[#F28B82] rounded transition-colors"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -199,27 +199,27 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
             </thead>
 
             {/* Metrics Rows */}
-            <tbody className="divide-y divide-[#30363D]/60 text-xs">
+            <tbody className="divide-y divide-[#2A3C31]/60 text-xs">
               {/* Current Price */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Current Price</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Current Price</td>
                 {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 font-black text-sm text-[#F0F6FC]">
+                  <td key={s.symbol} className="py-3.5 px-6 font-semibold text-sm text-[#F1F5EE]">
                     Rs {s.current.toFixed(2)}
                   </td>
                 ))}
               </tr>
 
               {/* Day Change */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Day Change (%)</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Day Change (%)</td>
                 {selectedStocks.map((s) => {
                   const isPos = s.change >= 0;
                   return (
                     <td
                       key={s.symbol}
-                      className={`py-3.5 px-6 font-bold ${
-                        isPos ? 'text-[#00C076]' : 'text-[#F85149]'
+                      className={`py-3.5 px-6 font-semibold ${
+                        isPos ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
                       }`}
                     >
                       {isPos ? '+' : ''}
@@ -231,16 +231,16 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
               </tr>
 
               {/* 1-Year Performance */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">1-Year Return</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">1-Year Return</td>
                 {selectedStocks.map((s) => {
                   const yr = s.changeYear || 0;
                   const isPos = yr >= 0;
                   return (
                     <td
                       key={s.symbol}
-                      className={`py-3.5 px-6 font-bold ${
-                        isPos ? 'text-[#00C076]' : 'text-[#F85149]'
+                      className={`py-3.5 px-6 font-semibold ${
+                        isPos ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
                       }`}
                     >
                       {isPos ? '+' : ''}
@@ -251,20 +251,20 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
               </tr>
 
               {/* Valuation: P/E Ratio */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors bg-[#0B0E14]/40">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">P/E Ratio (Trailing)</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors bg-[#0C1411]/40">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">P/E Ratio (Trailing)</td>
                 {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 font-extrabold text-[#F0F6FC]">
+                  <td key={s.symbol} className="py-3.5 px-6 font-semibold text-[#F1F5EE]">
                     {s.peRatio && s.peRatio > 0 ? `${s.peRatio.toFixed(2)}x` : '—'}
                   </td>
                 ))}
               </tr>
 
               {/* Dividend Yield */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Dividend Yield</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Dividend Yield</td>
                 {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 font-extrabold text-[#00D2B4]">
+                  <td key={s.symbol} className="py-3.5 px-6 font-semibold text-[#B9E76A]">
                     {s.dividendYield && s.dividendYield > 0
                       ? `${s.dividendYield.toFixed(2)}%`
                       : '0.00%'}
@@ -273,10 +273,10 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
               </tr>
 
               {/* Market Capitalization */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Market Capitalization</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Market Capitalization</td>
                 {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 font-mono text-[#F0F6FC]">
+                  <td key={s.symbol} className="py-3.5 px-6 font-mono text-[#F1F5EE]">
                     {s.marketCap && s.marketCap > 0
                       ? `Rs ${(s.marketCap / 1000000000).toFixed(2)} Billion`
                       : '—'}
@@ -285,60 +285,60 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
               </tr>
 
               {/* Free Float */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Free Float (%)</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Free Float (%)</td>
                 {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 text-[#8B949E]">
+                  <td key={s.symbol} className="py-3.5 px-6 text-[#A4B3A7]">
                     {s.freeFloat && s.freeFloat > 0 ? `${s.freeFloat.toFixed(1)}%` : '—'}
                   </td>
                 ))}
               </tr>
 
               {/* Trading Volume */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Day Volume</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Day Volume</td>
                 {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 font-mono text-[#F0F6FC]">
+                  <td key={s.symbol} className="py-3.5 px-6 font-mono text-[#F1F5EE]">
                     {s.volume.toLocaleString()} shares
                   </td>
                 ))}
               </tr>
 
               {/* Sector */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Industry Sector</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Industry Sector</td>
                 {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 text-[#8B949E] font-medium">
+                  <td key={s.symbol} className="py-3.5 px-6 text-[#A4B3A7] font-medium">
                     {s.sector}
                   </td>
                 ))}
               </tr>
 
               {/* Shariah Screening */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors">
-                <td className="py-3.5 px-6 font-bold text-[#8B949E]">Shariah Status</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4B3A7]">Shariah Status</td>
                 {selectedStocks.map((s) => (
                   <td key={s.symbol} className="py-3.5 px-6">
                     {s.isShariah ? (
-                      <span className="inline-flex items-center space-x-1 text-xs font-bold text-[#00C076] bg-[#00C076]/15 px-2.5 py-1 rounded-md">
+                      <span className="inline-flex items-center space-x-1 text-xs font-semibold text-[#6DDBA5] bg-[#6DDBA5]/15 px-2.5 py-1 rounded-md">
                         <Moon className="w-3 h-3 fill-current" />
                         <span>KMI Compliant</span>
                       </span>
                     ) : (
-                      <span className="text-xs text-[#8B949E]">Conventional</span>
+                      <span className="text-xs text-[#A4B3A7]">Conventional</span>
                     )}
                   </td>
                 ))}
               </tr>
 
               {/* Terminal Link */}
-              <tr className="hover:bg-[#21262D]/40 transition-colors bg-[#0B0E14]">
-                <td className="py-4 px-6 font-bold text-[#8B949E]">Full Research</td>
+              <tr className="hover:bg-[#1E3026]/40 transition-colors bg-[#0C1411]">
+                <td className="py-4 px-6 font-semibold text-[#A4B3A7]">Full Research</td>
                 {selectedStocks.map((s) => (
                   <td key={s.symbol} className="py-4 px-6">
                     <Link
                       href={`/stocks/${s.symbol}`}
-                      className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#21262D] hover:bg-[#30363D] text-[#FFB401] font-bold text-xs transition-colors"
+                      className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#1E3026] hover:bg-[#2A3C31] text-[#D5F478] font-semibold text-xs transition-colors"
                     >
                       <span>Open {s.symbol} Terminal</span>
                       <ExternalLink className="w-3.5 h-3.5" />

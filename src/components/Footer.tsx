@@ -14,78 +14,71 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#0B0E14] border-t border-[#30363D] py-12 px-4 sm:px-6 lg:px-8 mt-16 text-xs text-[#8B949E]">
+      <footer className="bg-[#0C1411] border-t border-[#2A3C31] py-12 px-4 sm:px-6 lg:px-8 mt-16 text-xs text-[#A4B3A7]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Column */}
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#FFB401] to-[#D99B00] flex items-center justify-center font-black text-black text-base shadow-sm">
-                D
-              </div>
-              <span className="text-lg font-bold text-[#F0F6FC]">
-                Daulat<span className="text-[#FFB401] font-light">Invest</span>
-              </span>
-            </div>
-            <p className="text-xs text-[#8B949E] leading-relaxed">
+            <Link href="/" className="flex items-center gap-3 text-[#F1F5EE]" aria-label="Daulat Invest home">
+              <span className="brand-mark" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 19V5h5a7 7 0 1 1 0 14H5Z" stroke="currentColor" strokeWidth="2.5"/><path d="m8 14 4-4 3 3 5-6" stroke="currentColor" strokeWidth="2"/></svg></span>
+              <span className="text-xl font-semibold tracking-tight">daulat<span className="text-[#A4B3A7] font-normal"> invest</span></span>
+            </Link>
+            <p className="text-xs text-[#A4B3A7] leading-relaxed">
               Pakistan Stock Exchange (PSX) live market intelligence, real-time KSE-100 analytics,
               dividend screeners, and investor community hub.
             </p>
-            <div className="text-[11px] text-[#6E7681]">
-              Domain: <span className="text-[#FFB401] font-semibold">daulatinvest.com</span>
+            <div className="text-[11px] text-[#84988B]">
+              Domain: <span className="text-[#D5F478] font-semibold">daulatinvest.com</span>
             </div>
           </div>
 
           {/* Markets & Screener */}
           <div>
-            <h4 className="text-[#F0F6FC] font-bold uppercase text-[11px] tracking-wider mb-3">
+            <h4 className="text-[#F1F5EE] font-semibold uppercase text-[11px] tracking-wider mb-3">
               Markets &amp; Screening
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="hover:text-[#FFB401] transition-colors">
+                <Link href="/" className="hover:text-[#D5F478] transition-colors">
                   KSE 100 Live Overview
                 </Link>
               </li>
               <li>
-                <Link href="/stocks/screener" className="hover:text-[#00D2B4] transition-colors flex items-center space-x-1">
+                <Link href="/stocks/screener" className="hover:text-[#B9E76A] transition-colors flex items-center space-x-1">
                   <span>PSX Stock Screener</span>
-                  <span className="text-[9px] bg-[#00D2B4]/15 text-[#00D2B4] px-1 rounded font-bold">HOT</span>
                 </Link>
               </li>
               <li>
-                <Link href="/mutual-funds" className="hover:text-[#00C076] transition-colors flex items-center space-x-1">
+                <Link href="/mutual-funds" className="hover:text-[#6DDBA5] transition-colors flex items-center space-x-1">
                   <span>Pakistan Mutual Funds</span>
-                  <span className="text-[9px] bg-[#00C076]/15 text-[#00C076] px-1 rounded font-bold">NEW</span>
                 </Link>
               </li>
               <li>
-                <Link href="/stocks" className="hover:text-[#FFB401] transition-colors">
+                <Link href="/stocks" className="hover:text-[#D5F478] transition-colors">
                   All PSX Stocks Directory
                 </Link>
               </li>
               <li>
-                <Link href="/stocks/compare" className="hover:text-[#00D2B4] transition-colors flex items-center space-x-1">
+                <Link href="/stocks/compare" className="hover:text-[#B9E76A] transition-colors flex items-center space-x-1">
                   <span>Stock Compare Matrix</span>
-                  <span className="text-[9px] bg-[#00D2B4]/15 text-[#00D2B4] px-1 rounded font-bold">NEW</span>
                 </Link>
               </li>
               <li>
-                <Link href="/shariah" className="hover:text-[#00C076] transition-colors">
+                <Link href="/shariah" className="hover:text-[#6DDBA5] transition-colors">
                   KMI Shariah Screener
                 </Link>
               </li>
               <li>
-                <Link href="/commodities" className="hover:text-[#FFB401] transition-colors">
+                <Link href="/commodities" className="hover:text-[#D5F478] transition-colors">
                   Gold &amp; Commodities (PKR)
                 </Link>
               </li>
               <li>
-                <Link href="/forex" className="hover:text-[#58A6FF] transition-colors">
+                <Link href="/forex" className="hover:text-[#9BBCE3] transition-colors">
                   Interbank &amp; Open Forex
                 </Link>
               </li>
               <li>
-                <Link href="/news" className="hover:text-[#FFB401] transition-colors">
+                <Link href="/news" className="hover:text-[#D5F478] transition-colors">
                   Market &amp; Business News
                 </Link>
               </li>
@@ -94,45 +87,45 @@ export default function Footer() {
 
           {/* Platform Tools */}
           <div>
-            <h4 className="text-[#F0F6FC] font-bold uppercase text-[11px] tracking-wider mb-3">
+            <h4 className="text-[#F1F5EE] font-semibold uppercase text-[11px] tracking-wider mb-3">
               Investor Tools &amp; Calculators
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/fear-greed" className="hover:text-[#7EE787] transition-colors flex items-center space-x-1">
+                <Link href="/fear-greed" className="hover:text-[#6DDBA5] transition-colors flex items-center space-x-1">
                   <span>PSX Fear &amp; Greed Index</span>
-                  <span className="text-[9px] bg-[#7EE787]/15 text-[#7EE787] px-1 rounded font-bold">LIVE</span>
+                  <span className="text-[9px] bg-[#6DDBA5]/15 text-[#6DDBA5] px-1 rounded font-semibold">LIVE</span>
                 </Link>
               </li>
               <li>
-                <Link href="/dividend-calculator" className="hover:text-[#FFB401] transition-colors flex items-center space-x-1.5 text-[#8B949E]">
-                  <Calculator className="w-3.5 h-3.5 text-[#FFB401]" />
+                <Link href="/dividend-calculator" className="hover:text-[#D5F478] transition-colors flex items-center space-x-1.5 text-[#A4B3A7]">
+                  <Calculator className="w-3.5 h-3.5 text-[#D5F478]" />
                   <span>Dividend Yield Screener</span>
                 </Link>
               </li>
               <li>
-                <Link href="/sip-calculator" className="hover:text-[#00D2B4] transition-colors flex items-center space-x-1.5 text-[#8B949E]">
-                  <TrendingUp className="w-3.5 h-3.5 text-[#00D2B4]" />
+                <Link href="/sip-calculator" className="hover:text-[#B9E76A] transition-colors flex items-center space-x-1.5 text-[#A4B3A7]">
+                  <TrendingUp className="w-3.5 h-3.5 text-[#B9E76A]" />
                   <span>SIP Wealth Compounding</span>
                 </Link>
               </li>
               <li>
-                <Link href="/announcements" className="hover:text-[#A371F7] transition-colors">
+                <Link href="/announcements" className="hover:text-[#B9ADDA] transition-colors">
                   Company Filings &amp; Disclosures
                 </Link>
               </li>
               <li>
-                <Link href="/watchlist" className="hover:text-[#FFB401] transition-colors">
+                <Link href="/watchlist" className="hover:text-[#D5F478] transition-colors">
                   My Stock Watchlist
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio" className="hover:text-[#FFB401] transition-colors">
+                <Link href="/portfolio" className="hover:text-[#D5F478] transition-colors">
                   Web Portfolio Tracker
                 </Link>
               </li>
               <li>
-                <Link href="/community" className="hover:text-[#A371F7] transition-colors">
+                <Link href="/community" className="hover:text-[#B9ADDA] transition-colors">
                   PSX Investor Community
                 </Link>
               </li>
@@ -141,11 +134,11 @@ export default function Footer() {
                   href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#388BFD] transition-colors flex items-center space-x-1"
+                  className="hover:text-[#9BBCE3] transition-colors flex items-center space-x-1"
                 >
-                  <Smartphone className="w-3.5 h-3.5 text-[#388BFD]" />
+                  <Smartphone className="w-3.5 h-3.5 text-[#9BBCE3]" />
                   <span>Daulat Android App</span>
-                  <span className="text-[9px] bg-[#388BFD]/20 text-[#388BFD] px-1 rounded font-bold">
+                  <span className="text-[9px] bg-[#9BBCE3]/20 text-[#9BBCE3] px-1 rounded font-semibold">
                     FREE
                   </span>
                 </a>
@@ -155,15 +148,15 @@ export default function Footer() {
 
           {/* Compliance / Disclaimer */}
           <div>
-            <h4 className="text-[#F0F6FC] font-bold uppercase text-[11px] tracking-wider mb-3">
+            <h4 className="text-[#F1F5EE] font-semibold uppercase text-[11px] tracking-wider mb-3">
               Market Compliance &amp; Disclaimers
             </h4>
-            <p className="text-[11px] text-[#6E7681] leading-relaxed mb-3">
+            <p className="text-[11px] text-[#84988B] leading-relaxed mb-3">
               Stock market data feeds are sourced from Pakistan Stock Exchange DPS and published for informational purposes only. Trading in equities involves capital risks.
             </p>
             <button
               onClick={() => setIsDisclosuresOpen(true)}
-              className="text-[11px] text-[#FFB401] hover:underline flex items-center space-x-1"
+              className="text-[11px] text-[#D5F478] hover:underline flex items-center space-x-1"
             >
               <span>Read Full Risk Disclaimer</span>
               <ExternalLink className="w-3 h-3" />
@@ -171,14 +164,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto pt-6 border-t border-[#30363D]/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto pt-6 border-t border-[#2A3C31]/50 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             &copy; {new Date().getFullYear()} Daulat Invest. All rights reserved. Crafted for Pakistani investors.
           </div>
           <div className="flex items-center space-x-6 text-[11px]">
-            <span className="text-[#6E7681]">Data sourced from PSX DPS</span>
-            <span className="text-[#00C076] font-semibold flex items-center space-x-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00C076]" />
+            <span className="text-[#84988B]">Data sourced from PSX DPS</span>
+            <span className="text-[#6DDBA5] font-semibold flex items-center space-x-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#6DDBA5]" />
               <span>All Systems Operational</span>
             </span>
           </div>

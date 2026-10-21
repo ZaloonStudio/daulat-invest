@@ -52,10 +52,10 @@ export default async function HomePage() {
   const marketTime = getPakistanTimeStr();
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#F0F6FC]">
+    <div className="min-h-screen bg-[#0C1411] text-[#F1F5EE]">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <HomeClientContainer
           summary={summary}
           quotes={quotes}

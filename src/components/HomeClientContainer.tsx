@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { MarketSummary, StockQuote, NewsArticle, CompanyAnnouncement } from '@/lib/types';
 import QuickLinksBar from '@/components/QuickLinksBar';
 import CommunityPreview from '@/components/CommunityPreview';
@@ -44,19 +46,19 @@ export default function HomeClientContainer({
   };
 
   return (
-    <div className="space-y-8">
-      {/* Top Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F0F6FC] tracking-tight">
-          Pakistan Stock Exchange Market Overview
-        </h1>
-        <p className="text-xs sm:text-sm text-[#8B949E] mt-1 max-w-3xl leading-relaxed">
-          PSX live rates, KSE 100 interactive charts, market breadth, corporate announcements, and business news.
-        </p>
+    <div className="home-overview space-y-10">
+      <div className="overview-heading">
+        <div>
+          <p className="eyebrow mb-4"><span className="w-5 h-px bg-current" />THE PAKISTAN MARKET, IN FOCUS</p>
+          <h1 className="overview-title">Perspective.<br /><span className="text-[#D5F478]">Then possibility.</span></h1>
+          <p className="text-sm text-[#A4B3A7] mt-5 max-w-md leading-relaxed">Your view of the Pakistan Stock Exchange. Follow the market, explore opportunities, and build your next move.</p>
+        </div>
+        <div className="flex flex-col items-start sm:items-end gap-4">
+          <span className="eyebrow text-[#84988B]">DAULAT / MARKET OVERVIEW</span>
+          <Link href="/stocks/screener" className="inline-flex primary-action px-5 py-3 text-sm">Explore the screener <ArrowUpRight className="w-4 h-4" /></Link>
+          <Link href="/stocks" className="inline-flex items-center gap-2 text-xs text-[#A4B3A7] hover:text-[#D5F478]">Browse all stocks <ArrowRight className="w-3.5 h-3.5" /></Link>
+        </div>
       </div>
-
-      {/* CLEAN APP-STYLE QUICK LINKS (Direct Navigation to dedicated pages) */}
-      <QuickLinksBar />
 
       {/* 1. Sleek Indices Horizontal Carousel */}
       <section id="indices-section" className="space-y-4">
@@ -75,6 +77,8 @@ export default function HomeClientContainer({
           marketTime={marketTime}
         />
       </section>
+
+      <QuickLinksBar />
 
       {/* 2. Live Gold, Forex & Commodities Snapshot (Daulat Mobile App Integration) */}
       <section>

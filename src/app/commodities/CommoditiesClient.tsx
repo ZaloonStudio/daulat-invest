@@ -48,7 +48,7 @@ export default function CommoditiesClient() {
       <div>
         <Link
           href="/"
-          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#8B949E] hover:text-[#F0F6FC] transition-colors mb-3"
+          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#A4B3A7] hover:text-[#F1F5EE] transition-colors mb-3"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Market Overview</span>
@@ -56,36 +56,36 @@ export default function CommoditiesClient() {
       </div>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#30363D] pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#2A3C31] pb-6">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#FFB401] uppercase tracking-wider mb-2">
+          <div className="flex items-center space-x-2 text-xs font-semibold text-[#D5F478] uppercase tracking-wider mb-2">
             <Coins className="w-4 h-4" />
             <span>Pakistan Sarafa &amp; Bullion Rates</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#F0F6FC] tracking-tight">
-            Gold Rates &amp; Commodities in Pakistan
+          <h1 className="text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+            Gold &amp; commodities
           </h1>
-          <p className="text-sm text-[#8B949E] mt-1.5 max-w-2xl">
+          <p className="text-sm text-[#A4B3A7] mt-1.5 max-w-2xl">
             Live 24K and 22K gold prices per tola, 10 grams, silver rates, and global energy commodities in Pakistani Rupees (PKR).
           </p>
         </div>
 
-        <div className="flex items-center space-x-2 text-xs text-[#8B949E]">
-          <Clock className="w-3.5 h-3.5 text-[#6E7681]" />
+        <div className="flex items-center space-x-2 text-xs text-[#A4B3A7]">
+          <Clock className="w-3.5 h-3.5 text-[#84988B]" />
           <span>All Pakistan Sarafa Association: Updated Today</span>
         </div>
       </div>
 
       {/* Gold Price Converter Card */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl">
-        <div className="flex items-center space-x-2 text-sm font-bold text-[#FFB401]">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl">
+        <div className="flex items-center space-x-2 text-sm font-semibold text-[#D5F478]">
           <Calculator className="w-4 h-4" />
           <span>Quick Gold Value Calculator (PKR)</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
           <div className="sm:col-span-4">
-            <label className="text-[11px] font-bold text-[#8B949E] uppercase block mb-1">
+            <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
               Quantity (Tola)
             </label>
             <input
@@ -94,31 +94,31 @@ export default function CommoditiesClient() {
               min="0.1"
               value={tolaInput}
               onChange={(e) => setTolaInput(Math.max(0.01, Number(e.target.value)))}
-              className="w-full bg-[#0B0E14] border border-[#30363D] rounded-xl px-4 py-2.5 text-sm font-bold text-[#F0F6FC] focus:outline-none focus:border-[#FFB401]"
+              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-xl px-4 py-2.5 text-sm font-semibold text-[#F1F5EE] focus:outline-none focus:border-[#D5F478]"
             />
           </div>
 
           <div className="sm:col-span-4">
-            <label className="text-[11px] font-bold text-[#8B949E] uppercase block mb-1">
+            <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
               Purity
             </label>
             <div className="flex space-x-2">
               <button
                 onClick={() => setSelectedPurity('24K')}
-                className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all border ${
+                className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all border ${
                   selectedPurity === '24K'
-                    ? 'bg-[#FFB401] text-black border-[#FFB401] font-black'
-                    : 'bg-[#0B0E14] text-[#8B949E] border-[#30363D]'
+                    ? 'bg-[#D5F478] text-black border-[#D5F478] font-semibold'
+                    : 'bg-[#0C1411] text-[#A4B3A7] border-[#2A3C31]'
                 }`}
               >
                 24K (Pure Gold)
               </button>
               <button
                 onClick={() => setSelectedPurity('22K')}
-                className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all border ${
+                className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all border ${
                   selectedPurity === '22K'
-                    ? 'bg-[#FFB401] text-black border-[#FFB401] font-black'
-                    : 'bg-[#0B0E14] text-[#8B949E] border-[#30363D]'
+                    ? 'bg-[#D5F478] text-black border-[#D5F478] font-semibold'
+                    : 'bg-[#0C1411] text-[#A4B3A7] border-[#2A3C31]'
                 }`}
               >
                 22K (Jewellery)
@@ -126,14 +126,14 @@ export default function CommoditiesClient() {
             </div>
           </div>
 
-          <div className="sm:col-span-4 bg-[#0B0E14] border border-[#FFB401]/30 p-4 rounded-2xl text-right">
-            <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-wider block">
+          <div className="sm:col-span-4 bg-[#0C1411] border border-[#D5F478]/30 p-4 rounded-xl text-right">
+            <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
               Estimated Total Value
             </span>
-            <div className="text-2xl font-black text-[#FFB401] mt-0.5">
+            <div className="text-2xl font-semibold text-[#D5F478] mt-0.5">
               Rs {Math.round(convertedTotal).toLocaleString()}
             </div>
-            <span className="text-[10px] text-[#8B949E]">
+            <span className="text-[10px] text-[#A4B3A7]">
               @ Rs {ratePerTola.toLocaleString()} / Tola
             </span>
           </div>
@@ -146,10 +146,10 @@ export default function CommoditiesClient() {
           <button
             key={cat}
             onClick={() => setActiveTab(cat)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               activeTab === cat
-                ? 'bg-[#FFB401] text-black shadow-md font-extrabold'
-                : 'bg-[#161B22] text-[#8B949E] hover:text-[#F0F6FC] border border-[#30363D]'
+                ? 'bg-[#D5F478] text-black shadow-md font-semibold'
+                : 'bg-[#121E18] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
             }`}
           >
             {cat}
@@ -158,9 +158,9 @@ export default function CommoditiesClient() {
       </div>
 
       {/* Commodities Table */}
-      <div className="bg-[#161B22] border border-[#30363D] rounded-3xl overflow-hidden shadow-2xl">
+      <div className="bg-[#121E18] border border-[#2A3C31] rounded-2xl overflow-hidden shadow-2xl">
         <table className="w-full text-left text-xs">
-          <thead className="bg-[#0B0E14] border-b border-[#30363D] text-[10px] text-[#8B949E] uppercase tracking-wider">
+          <thead className="bg-[#0C1411] border-b border-[#2A3C31] text-[10px] text-[#A4B3A7] uppercase tracking-wider">
             <tr>
               <th className="py-4 px-6">Commodity</th>
               <th className="py-4 px-6">Measuring Unit</th>
@@ -169,32 +169,32 @@ export default function CommoditiesClient() {
               <th className="py-4 px-6 text-right">Day %</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#30363D]/60 bg-[#161B22]">
+          <tbody className="divide-y divide-[#2A3C31]/60 bg-[#121E18]">
             {filtered.map((item, idx) => {
               const isPos = item.change >= 0;
               return (
-                <tr key={idx} className="hover:bg-[#21262D]/60 transition-colors">
-                  <td className="py-4 px-6 font-bold text-sm text-[#F0F6FC] flex items-center space-x-2">
-                    {item.category === 'Gold' && <Coins className="w-4 h-4 text-[#FFB401]" />}
+                <tr key={idx} className="hover:bg-[#1E3026]/60 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-sm text-[#F1F5EE] flex items-center space-x-2">
+                    {item.category === 'Gold' && <Coins className="w-4 h-4 text-[#D5F478]" />}
                     {item.category === 'Silver' && <Coins className="w-4 h-4 text-[#E2E8F0]" />}
-                    {item.category === 'Energy' && <Droplet className="w-4 h-4 text-[#388BFD]" />}
+                    {item.category === 'Energy' && <Droplet className="w-4 h-4 text-[#9BBCE3]" />}
                     <span>{item.name}</span>
                   </td>
-                  <td className="py-4 px-6 text-[#8B949E]">{item.unit}</td>
-                  <td className="py-4 px-6 text-right font-black text-sm text-[#F0F6FC]">
+                  <td className="py-4 px-6 text-[#A4B3A7]">{item.unit}</td>
+                  <td className="py-4 px-6 text-right font-semibold text-sm text-[#F1F5EE]">
                     Rs {item.pricePkr.toLocaleString()}
                   </td>
                   <td
-                    className={`py-4 px-6 text-right font-bold ${
-                      isPos ? 'text-[#00C076]' : 'text-[#F85149]'
+                    className={`py-4 px-6 text-right font-semibold ${
+                      isPos ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
                     }`}
                   >
                     {isPos ? '+' : ''}Rs {Math.abs(item.change).toLocaleString()}
                   </td>
                   <td className="py-4 px-6 text-right">
                     <span
-                      className={`inline-block px-2.5 py-0.5 rounded-md font-bold text-xs ${
-                        isPos ? 'bg-[#00C076]/15 text-[#00C076]' : 'bg-[#F85149]/15 text-[#F85149]'
+                      className={`inline-block px-2.5 py-0.5 rounded-md font-semibold text-xs ${
+                        isPos ? 'bg-[#6DDBA5]/15 text-[#6DDBA5]' : 'bg-[#F28B82]/15 text-[#F28B82]'
                       }`}
                     >
                       {isPos ? '+' : ''}

@@ -51,7 +51,7 @@ export default async function ScreenerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#F0F6FC]">
+    <div className="min-h-screen bg-[#0C1411] text-[#F1F5EE]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -61,14 +61,14 @@ export default async function ScreenerPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#FFB401] uppercase tracking-wider mb-1">
+          <div className="flex items-center space-x-2 text-xs font-semibold text-[#D5F478] uppercase tracking-wider mb-1">
             <SlidersHorizontal className="w-4 h-4" />
             <span>Market Intelligence Tool</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#F0F6FC] tracking-tight">
-            PSX Stock Screener &amp; Valuation Filters
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+            Stock screener
           </h1>
-          <p className="text-xs sm:text-sm text-[#8B949E] mt-1 max-w-3xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#A4B3A7] mt-1 max-w-3xl leading-relaxed">
             Screen all listed companies across Pakistan Stock Exchange using fundamental valuation ratios,
             KMI Shariah compliance audits, trailing dividend yields, and institutional volume activity.
           </p>
@@ -76,7 +76,7 @@ export default async function ScreenerPage() {
 
         <Suspense
           fallback={
-            <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-12 text-center text-sm text-[#8B949E]">
+            <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-12 text-center text-sm text-[#A4B3A7]">
               Loading PSX Screener engine...
             </div>
           }

@@ -95,7 +95,7 @@ export default async function StockDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#F0F6FC]">
+    <div className="min-h-screen bg-[#0C1411] text-[#F1F5EE]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -105,44 +105,44 @@ export default async function StockDetailPage({ params }: Props) {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center space-x-2 text-xs text-[#8B949E]">
-          <Link href="/" className="hover:text-[#F0F6FC] transition-colors flex items-center space-x-1">
+        <div className="flex items-center space-x-2 text-xs text-[#A4B3A7]">
+          <Link href="/" className="hover:text-[#F1F5EE] transition-colors flex items-center space-x-1">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Markets</span>
           </Link>
           <span>/</span>
-          <Link href="/stocks" className="hover:text-[#F0F6FC] transition-colors">
+          <Link href="/stocks" className="hover:text-[#F1F5EE] transition-colors">
             Stocks
           </Link>
           <span>/</span>
-          <span className="text-[#FFB401] font-bold">{quote.symbol}</span>
+          <span className="text-[#D5F478] font-semibold">{quote.symbol}</span>
         </div>
 
         {/* Stock Hero Header */}
-        <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1.5">
             <div className="flex items-center space-x-3">
-              <span className="text-2xl sm:text-3xl font-black text-[#F0F6FC] tracking-tight">
+              <span className="text-2xl sm:text-3xl font-semibold text-[#F1F5EE] tracking-tight">
                 {quote.symbol}
               </span>
-              <span className="text-xs bg-[#21262D] text-[#FFB401] font-bold px-2.5 py-1 rounded-lg border border-[#30363D]">
+              <span className="text-xs bg-[#1E3026] text-[#D5F478] font-semibold px-2.5 py-1 rounded-lg border border-[#2A3C31]">
                 PSX: {quote.symbol}
               </span>
-              <span className="text-xs text-[#8B949E] bg-[#0B0E14] px-2.5 py-1 rounded-lg border border-[#30363D]">
+              <span className="text-xs text-[#A4B3A7] bg-[#0C1411] px-2.5 py-1 rounded-lg border border-[#2A3C31]">
                 {quote.sector}
               </span>
             </div>
-            <h1 className="text-sm sm:text-base text-[#8B949E] font-medium">{quote.name}</h1>
+            <h1 className="text-sm sm:text-base text-[#A4B3A7] font-medium">{quote.name}</h1>
           </div>
 
           {/* Price & Change Box */}
           <div className="text-left md:text-right">
-            <div className="text-3xl sm:text-4xl font-mono font-black text-[#F0F6FC] tracking-tight">
+            <div className="text-3xl sm:text-4xl font-mono font-semibold text-[#F1F5EE] tracking-tight">
               Rs {quote.current.toFixed(2)}
             </div>
             <div
-              className={`inline-flex items-center space-x-1 text-sm sm:text-base font-mono font-bold mt-1 ${
-                isPositive ? 'text-[#00C076]' : 'text-[#F85149]'
+              className={`inline-flex items-center space-x-1 text-sm sm:text-base font-mono font-semibold mt-1 ${
+                isPositive ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
               }`}
             >
               {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
@@ -151,35 +151,35 @@ export default async function StockDetailPage({ params }: Props) {
                 {quote.change.toFixed(2)} ({isPositive ? '+' : ''}
                 {quote.changePercent.toFixed(2)}%)
               </span>
-              <span className="text-xs text-[#8B949E] ml-1.5 font-normal">Today</span>
+              <span className="text-xs text-[#A4B3A7] ml-1.5 font-normal">Today</span>
             </div>
           </div>
         </div>
 
         {/* Sarmaaya-Style Sub-Navigation Tabs */}
-        <div className="border-b border-[#30363D] flex items-center space-x-6 overflow-x-auto scrollbar-none text-xs font-bold text-[#8B949E] pb-3 px-1">
-          <a href="#overview-section" className="text-[#FFB401] border-b-2 border-[#FFB401] pb-3 -mb-3 whitespace-nowrap">
+        <div className="border-b border-[#2A3C31] flex items-center space-x-6 overflow-x-auto scrollbar-none text-xs font-semibold text-[#A4B3A7] pb-3 px-1">
+          <a href="#overview-section" className="text-[#D5F478] border-b-2 border-[#D5F478] pb-3 -mb-3 whitespace-nowrap">
             Fundamentals
           </a>
-          <a href="#peers-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+          <a href="#peers-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
             Peers
           </a>
-          <a href="#financials-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+          <a href="#financials-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
             Financials
           </a>
-          <a href="#ratios-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+          <a href="#ratios-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
             Ratios
           </a>
-          <a href="#dividends-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+          <a href="#dividends-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
             Dividends
           </a>
-          <a href="#shariah-section" className="hover:text-[#00C076] transition-colors whitespace-nowrap">
+          <a href="#shariah-section" className="hover:text-[#6DDBA5] transition-colors whitespace-nowrap">
             Shariah Audit
           </a>
-          <a href="#announcements-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+          <a href="#announcements-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
             Announcements
           </a>
-          <a href="#company-info-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+          <a href="#company-info-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
             Company Info
           </a>
         </div>
@@ -200,55 +200,55 @@ export default async function StockDetailPage({ params }: Props) {
           <div className="lg:col-span-4 space-y-4">
             <CompanyHealthScore stock={quote} />
 
-            <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-5 shadow-xl">
-              <h2 className="text-sm font-bold text-[#F0F6FC] uppercase tracking-wider mb-4 border-b border-[#30363D] pb-3 flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-[#FFB401]" />
+            <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl">
+              <h2 className="text-sm font-semibold text-[#F1F5EE] uppercase tracking-wider mb-4 border-b border-[#2A3C31] pb-3 flex items-center space-x-2">
+                <Activity className="w-4 h-4 text-[#D5F478]" />
                 <span>Trading Statistics</span>
               </h2>
 
-              <div className="divide-y divide-[#30363D]/60 text-xs">
+              <div className="divide-y divide-[#2A3C31]/60 text-xs">
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#8B949E]">Day High</span>
-                  <span className="font-mono font-bold text-[#F0F6FC]">
+                  <span className="text-[#A4B3A7]">Day High</span>
+                  <span className="font-mono font-semibold text-[#F1F5EE]">
                     Rs {quote.high.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#8B949E]">Day Low</span>
-                  <span className="font-mono font-bold text-[#F0F6FC]">
+                  <span className="text-[#A4B3A7]">Day Low</span>
+                  <span className="font-mono font-semibold text-[#F1F5EE]">
                     Rs {quote.low.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#8B949E]">Opening Price</span>
-                  <span className="font-mono font-bold text-[#F0F6FC]">
+                  <span className="text-[#A4B3A7]">Opening Price</span>
+                  <span className="font-mono font-semibold text-[#F1F5EE]">
                     Rs {quote.open.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#8B949E]">Previous Close (LDCP)</span>
-                  <span className="font-mono font-bold text-[#F0F6FC]">
+                  <span className="text-[#A4B3A7]">Previous Close (LDCP)</span>
+                  <span className="font-mono font-semibold text-[#F1F5EE]">
                     Rs {quote.ldcp.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#8B949E]">Trading Volume</span>
-                  <span className="font-mono font-bold text-[#FFB401]">
+                  <span className="text-[#A4B3A7]">Trading Volume</span>
+                  <span className="font-mono font-semibold text-[#D5F478]">
                     {quote.volume.toLocaleString()} shares
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#8B949E]">Market</span>
-                  <span className="text-[#F0F6FC] font-semibold">PSX Ready Board (REG)</span>
+                  <span className="text-[#A4B3A7]">Market</span>
+                  <span className="text-[#F1F5EE] font-semibold">PSX Ready Board (REG)</span>
                 </div>
               </div>
             </div>
 
             {/* In-App Portfolio Sync Callout */}
-            <div className="bg-gradient-to-br from-[#161B22] to-[#21262D] border border-[#30363D] rounded-2xl p-5 shadow-xl text-center">
-              <Smartphone className="w-8 h-8 text-[#FFB401] mx-auto mb-2" />
-              <h3 className="text-sm font-bold text-[#F0F6FC]">Track {quote.symbol} in Daulat App</h3>
-              <p className="text-xs text-[#8B949E] mt-1 leading-relaxed">
+            <div className="bg-gradient-to-br from-[#121E18] to-[#1E3026] border border-[#2A3C31] rounded-xl p-5 shadow-xl text-center">
+              <Smartphone className="w-8 h-8 text-[#D5F478] mx-auto mb-2" />
+              <h3 className="text-sm font-semibold text-[#F1F5EE]">Track {quote.symbol} in Daulat App</h3>
+              <p className="text-xs text-[#A4B3A7] mt-1 leading-relaxed">
                 Add {quote.symbol} to your portfolio to track live profit/loss, price breakout
                 alerts, and average buy cost.
               </p>
@@ -256,7 +256,7 @@ export default async function StockDetailPage({ params }: Props) {
                 href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 block w-full bg-[#FFB401] hover:bg-[#E5A300] text-black font-bold py-2 rounded-xl text-xs transition-colors"
+                className="mt-4 block w-full bg-[#D5F478] hover:bg-[#C5E466] text-black font-semibold py-2 rounded-xl text-xs transition-colors"
               >
                 Open in App
               </a>
