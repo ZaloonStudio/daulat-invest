@@ -3,13 +3,15 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { StockQuote } from '@/lib/types';
-import { Zap, TrendingUp, TrendingDown, Moon, ArrowRight } from 'lucide-react';
+import { BarChart2, TrendingUp, TrendingDown, Moon, ArrowRight } from 'lucide-react';
 
 interface MarketMoversProps {
   allStocks?: StockQuote[];
   topVolume: StockQuote[];
   topGainers: StockQuote[];
   topLosers: StockQuote[];
+  filter?: 'KSE100' | 'ALL' | 'ISLAMIC';
+  onFilterChange?: (filter: 'KSE100' | 'ALL' | 'ISLAMIC') => void;
 }
 
 export default function MarketMovers({
@@ -17,8 +19,15 @@ export default function MarketMovers({
   topVolume,
   topGainers,
   topLosers,
+  filter: controlledFilter,
+  onFilterChange,
 }: MarketMoversProps) {
-  const [filter, setFilter] = useState<'KSE100' | 'ALL' | 'ISLAMIC'>('KSE100');
+  const [internalFilter, setInternalFilter] = useState<'KSE100' | 'ALL' | 'ISLAMIC'>('KSE100');
+  const filter = controlledFilter !== undefined ? controlledFilter : internalFilter;
+  const setFilter = (f: 'KSE100' | 'ALL' | 'ISLAMIC') => {
+    if (onFilterChange) onFilterChange(f);
+    else setInternalFilter(f);
+  };
 
   // Pool of stocks to filter from
   const sourcePool = useMemo(() => {
@@ -222,8 +231,8 @@ export default function MarketMovers({
       {/* 3 Columns Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {renderStockColumn(
-          'Most Active',
-          <Zap className="w-4 h-4" />,
+          'Volume Leaders',
+          <BarChart2 className="w-4 h-4" />,
           'text-[#00D2B4]',
           activeStocks,
           'volume'

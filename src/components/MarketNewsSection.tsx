@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { NewsArticle } from '@/lib/types';
 import { Newspaper, ExternalLink, ArrowRight } from 'lucide-react';
 
@@ -45,15 +46,13 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
           </h2>
         </div>
 
-        <a
-          href="https://profit.pakistantoday.com.pk/"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href="/news"
           className="text-xs font-bold text-[#00D2B4] hover:text-[#00D2B4]/80 inline-flex items-center space-x-1"
         >
           <span>VIEW ALL NEWS</span>
           <ArrowRight className="w-3.5 h-3.5" />
-        </a>
+        </Link>
       </div>
 
       {/* 2-Column Grid: Featured on Left, List on Right */}
@@ -72,6 +71,11 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                 <img
                   src={featured.imageUrl}
                   alt={featured.title}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src =
+                      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop';
+                  }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               ) : (
@@ -141,6 +145,11 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   <img
                     src={article.imageUrl}
                     alt={article.title}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src =
+                        'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=600&auto=format&fit=crop';
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
                 ) : (

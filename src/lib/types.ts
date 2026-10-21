@@ -86,3 +86,46 @@ export interface MarketSummary {
   unchanged?: number;
   totalVolume?: number;
 }
+
+export interface FearGreedData {
+  score: number;
+  sentiment: 'Extreme Fear' | 'Fear' | 'Neutral' | 'Greed' | 'Extreme Greed';
+  advanceCount: number;
+  declineCount: number;
+  unchangedCount: number;
+  marketMomentum: number;
+  marketBreadth: number;
+  volumeStrength: number;
+  updatedAt: string;
+  description: string;
+}
+
+export interface CommunityComment {
+  id: string;
+  author: string;
+  content: string;
+  timestamp: string;
+}
+
+export interface CommunityPost {
+  id: string;
+  author: string;
+  authorBadge?: string;
+  symbolTag?: string;
+  title: string;
+  content: string;
+  sentiment: 'Bullish' | 'Bearish' | 'Neutral';
+  upvotes: number;
+  commentsCount: number;
+  comments?: CommunityComment[];
+  timestamp: string;
+  reported?: boolean;
+}
+
+export interface WatchlistItem {
+  symbol: string;
+  addedAt: string;
+  notes?: string;
+  targetPrice?: number;
+}
+

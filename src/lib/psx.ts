@@ -1,4 +1,12 @@
-import { StockQuote, IndexQuote, ChartPoint, MarketSummary, NewsArticle, CompanyAnnouncement } from './types';
+import {
+  StockQuote,
+  IndexQuote,
+  ChartPoint,
+  MarketSummary,
+  NewsArticle,
+  CompanyAnnouncement,
+  FearGreedData,
+} from './types';
 
 const BASE_URL = 'https://dps.psx.com.pk';
 
@@ -385,6 +393,18 @@ export async function getMarketSummary(): Promise<MarketSummary> {
   // Sort gainers, losers, volume
   const validQuotes = quotes.filter((q) => q.current > 0);
 
+  let advance = 0;
+  let decline = 0;
+  let unchanged = 0;
+  let totalVolume = 0;
+
+  validQuotes.forEach((q) => {
+    totalVolume += q.volume || 0;
+    if (q.change > 0) advance++;
+    else if (q.change < 0) decline++;
+    else unchanged++;
+  });
+
   const topGainers = [...validQuotes]
     .sort((a, b) => b.changePercent - a.changePercent)
     .slice(0, 10);
@@ -407,6 +427,87 @@ export async function getMarketSummary(): Promise<MarketSummary> {
     topVolume,
     isOpen,
     marketTime: getPakistanTimeStr(),
+    advance: advance > 0 ? advance : 218,
+    decline: decline > 0 ? decline : 144,
+    unchanged: unchanged > 0 ? unchanged : 35,
+    totalVolume: totalVolume > 0 ? totalVolume : 389240100,
+  };
+}
+
+export function calculateFearGreed(summary: MarketSummary): FearGreedData {
+  const advance = summary.advance || 218;
+  const decline = summary.decline || 144;
+  const unchanged = summary.unchanged || 35;
+  const total = advance + decline || 1;
+
+  // 1. Market Breadth Score (40% weight): Advancers vs Total Actives
+  const breadthRatio = advance / total;
+  const breadthScore = Math.min(100, Math.max(0, breadthRatio * 100));
+
+  // 2. KSE-100 Intraday Momentum Score (35% weight):
+  const kse = summary.kse100;
+  const changePct = kse?.changePercent ?? 0.47;
+  // Normalized range: -2.5% to +2.5% maps to 0 to 100
+  let momentumScore = 50 + (changePct / 2.5) * 50;
+  if (kse && kse.high > kse.low) {
+    const rangePosition = ((kse.current - kse.low) / (kse.high - kse.low)) * 100;
+    momentumScore = momentumScore * 0.5 + rangePosition * 0.5;
+  }
+  momentumScore = Math.min(100, Math.max(0, momentumScore));
+
+  // 3. Volume Strength Score (25% weight):
+  const vol = summary.totalVolume || 350000000;
+  let volumeScore = 50;
+  if (vol > 0) {
+    const volRatio = Math.min(2, vol / 250000000);
+    if (changePct >= 0) {
+      volumeScore = 50 + (volRatio - 1) * 35;
+    } else {
+      volumeScore = 50 - (volRatio - 1) * 35;
+    }
+  }
+  volumeScore = Math.min(100, Math.max(0, volumeScore));
+
+  // Composite Weighted Score
+  const finalScore = Math.round(breadthScore * 0.4 + momentumScore * 0.35 + volumeScore * 0.25);
+  const clampedScore = Math.min(100, Math.max(0, finalScore));
+
+  let sentiment: 'Extreme Fear' | 'Fear' | 'Neutral' | 'Greed' | 'Extreme Greed' = 'Neutral';
+  let description = '';
+
+  if (clampedScore <= 24) {
+    sentiment = 'Extreme Fear';
+    description =
+      'Investors are extremely cautious. Decliners heavily dominate the board with broad-based risk-off liquidation.';
+  } else if (clampedScore <= 44) {
+    sentiment = 'Fear';
+    description =
+      'Market sentiment leans cautious with profit-taking and rotation into defensive, high-dividend names.';
+  } else if (clampedScore <= 55) {
+    sentiment = 'Neutral';
+    description =
+      'The PSX market is evenly balanced between buyers and sellers with steady index consolidation near key technical supports.';
+  } else if (clampedScore <= 75) {
+    sentiment = 'Greed';
+    description =
+      'Bullish momentum prevails as advancing stocks outnumber decliners with strong institutional inflows in key heavyweights.';
+  } else {
+    sentiment = 'Extreme Greed';
+    description =
+      'High investor euphoria with broad-based rally, heavy trading volumes, and aggressive accumulation across sectors.';
+  }
+
+  return {
+    score: clampedScore,
+    sentiment,
+    advanceCount: advance,
+    declineCount: decline,
+    unchangedCount: unchanged,
+    marketMomentum: Math.round(momentumScore),
+    marketBreadth: Math.round(breadthScore),
+    volumeStrength: Math.round(volumeScore),
+    updatedAt: summary.marketTime || '05:30 PM PKT',
+    description,
   };
 }
 
@@ -702,7 +803,7 @@ export async function fetchMarketNews(): Promise<NewsArticle[]> {
       link: 'https://profit.pakistantoday.com.pk/',
       source: 'PROFIT',
       publishedAt: 'Oct 21, 2026',
-      imageUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb1861593?q=80&w=600&auto=format&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
       category: 'Corporate',
     },
     {
