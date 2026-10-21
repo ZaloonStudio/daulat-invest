@@ -63,19 +63,19 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
         };
       case 'Extreme Greed':
         return {
-          color: '#B9E76A',
-          textClass: 'text-[#B9E76A]',
-          bgClass: 'bg-[#B9E76A]/15',
-          borderClass: 'border-[#B9E76A]/40',
-          gradient: 'from-[#B9E76A]/20 via-transparent to-transparent',
+          color: '#B69249',
+          textClass: 'text-[#B69249]',
+          bgClass: 'bg-[#B69249]/15',
+          borderClass: 'border-[#B69249]/40',
+          gradient: 'from-[#B69249]/20 via-transparent to-transparent',
         };
       default:
         return {
-          color: '#D5F478',
-          textClass: 'text-[#D5F478]',
-          bgClass: 'bg-[#D5F478]/15',
-          borderClass: 'border-[#D5F478]/40',
-          gradient: 'from-[#D5F478]/20 via-transparent to-transparent',
+          color: '#B69249',
+          textClass: 'text-[#B69249]',
+          bgClass: 'bg-[#B69249]/15',
+          borderClass: 'border-[#B69249]/40',
+          gradient: 'from-[#B69249]/20 via-transparent to-transparent',
         };
     }
   };
@@ -91,31 +91,31 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
       <div className="flex items-center justify-between">
         <Link
           href="/"
-          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#A4B3A7] hover:text-[#F1F5EE] transition-colors"
+          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#A4AEC1] hover:text-[#EFF3FA] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Market Overview</span>
         </Link>
 
-        <div className="flex items-center space-x-2 text-xs text-[#A4B3A7]">
-          <Clock className="w-3.5 h-3.5 text-[#84988B]" />
+        <div className="flex items-center space-x-2 text-xs text-[#A4AEC1]">
+          <Clock className="w-3.5 h-3.5 text-[#7F8DA4]" />
           <span>Live PSX Update: {data.updatedAt}</span>
         </div>
       </div>
 
       {/* Main Hero Card with Redesigned Gauge */}
       <div
-        className={`relative bg-[#121E18] border border-[#2A3C31] rounded-2xl p-6 sm:p-10 shadow-2xl overflow-hidden bg-gradient-to-b ${theme.gradient}`}
+        className={`relative bg-[#111A2B] border border-[#28354A] rounded-2xl p-6 sm:p-10 shadow-2xl overflow-hidden bg-gradient-to-b ${theme.gradient}`}
       >
         <div className="text-center max-w-xl mx-auto space-y-2 mb-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#0C1411] border border-[#2A3C31] text-[11px] font-semibold text-[#D5F478]">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#0B1120] border border-[#28354A] text-[11px] font-semibold text-[#B69249]">
             <Gauge className="w-3.5 h-3.5" />
             <span>Pakistan Stock Exchange Sentiment</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-semibold text-[#F1F5EE] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-[#EFF3FA] tracking-tight">
             PSX Fear &amp; Greed Index
           </h1>
-          <p className="text-xs sm:text-sm text-[#A4B3A7] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#A4AEC1] leading-relaxed">
             Quantitative gauge measuring emotional extremes in the Pakistani stock market using live exchange breadth, index momentum, and volume.
           </p>
         </div>
@@ -131,7 +131,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
                   <stop offset="25%" stopColor="#F97316" />   {/* Fear */}
                   <stop offset="50%" stopColor="#EAB308" />   {/* Neutral */}
                   <stop offset="75%" stopColor="#10B981" />   {/* Greed */}
-                  <stop offset="100%" stopColor="#B9E76A" />  {/* Extreme Greed */}
+                  <stop offset="100%" stopColor="#B69249" />  {/* Extreme Greed */}
                 </linearGradient>
 
                 <filter id="needleShadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -143,7 +143,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
               <path
                 d="M 30 150 A 120 120 0 0 1 270 150"
                 fill="none"
-                stroke="#1E3026"
+                stroke="#1C2940"
                 strokeWidth="20"
                 strokeLinecap="round"
               />
@@ -163,7 +163,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
                 0
               </text>
               {/* 25 */}
-              <text x="65" y="65" fill="#A4B3A7" fontSize="9" fontWeight="600" textAnchor="middle">
+              <text x="65" y="65" fill="#A4AEC1" fontSize="9" fontWeight="600" textAnchor="middle">
                 25
               </text>
               {/* 50 Center Top */}
@@ -171,11 +171,11 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
                 50
               </text>
               {/* 75 */}
-              <text x="235" y="65" fill="#A4B3A7" fontSize="9" fontWeight="600" textAnchor="middle">
+              <text x="235" y="65" fill="#A4AEC1" fontSize="9" fontWeight="600" textAnchor="middle">
                 75
               </text>
               {/* 100 Right */}
-              <text x="278" y="165" fill="#B9E76A" fontSize="10" fontWeight="800" textAnchor="middle">
+              <text x="278" y="165" fill="#B69249" fontSize="10" fontWeight="800" textAnchor="middle">
                 100
               </text>
 
@@ -188,12 +188,12 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
                 {/* Triangular Tapered Pointer */}
                 <path
                   d="M 147 150 L 150 42 L 153 150 Z"
-                  fill="#F1F5EE"
+                  fill="#EFF3FA"
                 />
                 <circle cx="150" cy="42" r="2.5" fill={theme.color} />
 
                 {/* Central Metallic Hub */}
-                <circle cx="150" cy="150" r="14" fill="#121E18" stroke="#2A3C31" strokeWidth="2.5" />
+                <circle cx="150" cy="150" r="14" fill="#111A2B" stroke="#28354A" strokeWidth="2.5" />
                 <circle cx="150" cy="150" r="7" fill={theme.color} />
               </g>
             </svg>
@@ -213,11 +213,11 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
         </div>
 
         {/* Current State Summary */}
-        <div className="max-w-2xl mx-auto bg-[#0C1411] border border-[#2A3C31] p-4 sm:p-5 rounded-xl text-center space-y-2">
-          <p className="text-xs sm:text-sm text-[#F1F5EE] font-medium leading-relaxed">
+        <div className="max-w-2xl mx-auto bg-[#0B1120] border border-[#28354A] p-4 sm:p-5 rounded-xl text-center space-y-2">
+          <p className="text-xs sm:text-sm text-[#EFF3FA] font-medium leading-relaxed">
             {data.description}
           </p>
-          <span className="text-[11px] text-[#84988B] block">
+          <span className="text-[11px] text-[#7F8DA4] block">
             Calculated from 100% verified PSX DPS trading activity. No subjective polls.
           </span>
         </div>
@@ -225,71 +225,71 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
 
       {/* Historical Sentiment Benchmarks */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-[#121E18] border border-[#2A3C31] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
+          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
             Previous Close
           </span>
-          <div className="text-xl font-semibold text-[#F1F5EE] mt-1">
+          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">
             {Math.max(10, Math.min(95, data.score - 3))}
           </div>
-          <span className="text-[10px] text-[#A4B3A7]">{data.sentiment}</span>
+          <span className="text-[10px] text-[#A4AEC1]">{data.sentiment}</span>
         </div>
 
-        <div className="bg-[#121E18] border border-[#2A3C31] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
+          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
             1 Week Ago
           </span>
-          <div className="text-xl font-semibold text-[#F1F5EE] mt-1">54</div>
+          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">54</div>
           <span className="text-[10px] text-[#EAB308]">Neutral</span>
         </div>
 
-        <div className="bg-[#121E18] border border-[#2A3C31] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
+          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
             1 Month Ago
           </span>
-          <div className="text-xl font-semibold text-[#F1F5EE] mt-1">42</div>
+          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">42</div>
           <span className="text-[10px] text-[#F97316]">Fear</span>
         </div>
 
-        <div className="bg-[#121E18] border border-[#2A3C31] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
+          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
             1 Year Ago
           </span>
-          <div className="text-xl font-semibold text-[#F1F5EE] mt-1">68</div>
+          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">68</div>
           <span className="text-[10px] text-[#10B981]">Greed</span>
         </div>
       </div>
 
       {/* 3 Core Underlying Factors Breakdown */}
-      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-6 shadow-xl space-y-6">
+      <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-6 shadow-xl space-y-6">
         <div>
-          <h3 className="text-sm font-semibold text-[#F1F5EE] uppercase tracking-wider flex items-center space-x-2">
-            <Layers className="w-4 h-4 text-[#B9E76A]" />
+          <h3 className="text-sm font-semibold text-[#EFF3FA] uppercase tracking-wider flex items-center space-x-2">
+            <Layers className="w-4 h-4 text-[#B69249]" />
             <span>Key Quantitative Pillars</span>
           </h3>
-          <p className="text-xs text-[#A4B3A7] mt-0.5">
+          <p className="text-xs text-[#A4AEC1] mt-0.5">
             Real exchange metrics powering the Daulat Invest composite sentiment model
           </p>
         </div>
 
         {/* Pillar 1: Market Breadth */}
-        <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl space-y-3">
+        <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl space-y-3">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-semibold text-[#F1F5EE] flex items-center space-x-1.5">
+            <span className="font-semibold text-[#EFF3FA] flex items-center space-x-1.5">
               <TrendingUp className="w-4 h-4 text-[#6DDBA5]" />
               <span>1. PSX Market Breadth (40% Weight)</span>
             </span>
-            <span className="text-xs text-[#A4B3A7]">
-              Score: <strong className="text-[#F1F5EE]">{Math.round(data.marketBreadth)}/100</strong>
+            <span className="text-xs text-[#A4AEC1]">
+              Score: <strong className="text-[#EFF3FA]">{Math.round(data.marketBreadth)}/100</strong>
             </span>
           </div>
 
-          <div className="h-2.5 w-full bg-[#1E3026] rounded-full overflow-hidden flex">
+          <div className="h-2.5 w-full bg-[#1C2940] rounded-full overflow-hidden flex">
             <div style={{ width: `${advancePercent}%` }} className="bg-[#6DDBA5] h-full transition-all duration-500" />
             <div style={{ width: `${declinePercent}%` }} className="bg-[#EF4444] h-full transition-all duration-500" />
           </div>
 
-          <div className="flex justify-between items-center text-[11px] text-[#A4B3A7]">
+          <div className="flex justify-between items-center text-[11px] text-[#A4AEC1]">
             <span className="text-[#6DDBA5] font-semibold">
               {data.advanceCount} Advancing ({advancePercent.toFixed(1)}%)
             </span>
@@ -302,28 +302,28 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
 
         {/* Pillar 2: Intraday Momentum & Pillar 3: Volume Conviction */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl space-y-2">
+          <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl space-y-2">
             <div className="flex justify-between items-center text-xs">
-              <span className="font-semibold text-[#F1F5EE] flex items-center space-x-1.5">
-                <Activity className="w-4 h-4 text-[#D5F478]" />
+              <span className="font-semibold text-[#EFF3FA] flex items-center space-x-1.5">
+                <Activity className="w-4 h-4 text-[#B69249]" />
                 <span>2. KSE-100 Momentum (35% Weight)</span>
               </span>
-              <span className="font-semibold text-[#D5F478]">{Math.round(data.marketMomentum)}/100</span>
+              <span className="font-semibold text-[#B69249]">{Math.round(data.marketMomentum)}/100</span>
             </div>
-            <p className="text-[11px] text-[#A4B3A7] leading-relaxed">
+            <p className="text-[11px] text-[#A4AEC1] leading-relaxed">
               Analyzes where the benchmark index is trading relative to its intraday 52-week envelope and daily highs.
             </p>
           </div>
 
-          <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl space-y-2">
+          <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl space-y-2">
             <div className="flex justify-between items-center text-xs">
-              <span className="font-semibold text-[#F1F5EE] flex items-center space-x-1.5">
-                <BarChart3 className="w-4 h-4 text-[#B9E76A]" />
+              <span className="font-semibold text-[#EFF3FA] flex items-center space-x-1.5">
+                <BarChart3 className="w-4 h-4 text-[#B69249]" />
                 <span>3. Trading Volume Force (25% Weight)</span>
               </span>
-              <span className="font-semibold text-[#B9E76A]">{Math.round(data.volumeStrength)}/100</span>
+              <span className="font-semibold text-[#B69249]">{Math.round(data.volumeStrength)}/100</span>
             </div>
-            <p className="text-[11px] text-[#A4B3A7] leading-relaxed">
+            <p className="text-[11px] text-[#A4AEC1] leading-relaxed">
               Compares aggregate trading turnover against the 30-day trailing baseline to detect institutional capital accumulation.
             </p>
           </div>
@@ -331,21 +331,21 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
       </div>
 
       {/* Methodology Accordion */}
-      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5">
+      <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5">
         <button
           onClick={() => setShowMethodology(!showMethodology)}
-          className="w-full flex items-center justify-between text-xs font-semibold text-[#F1F5EE] hover:text-[#B9E76A] transition-colors"
+          className="w-full flex items-center justify-between text-xs font-semibold text-[#EFF3FA] hover:text-[#B69249] transition-colors"
         >
           <span className="flex items-center space-x-2">
-            <Info className="w-4 h-4 text-[#B9E76A]" />
+            <Info className="w-4 h-4 text-[#B69249]" />
             <span>How to use the Fear &amp; Greed Index in your investment strategy?</span>
           </span>
           {showMethodology ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </button>
 
         {showMethodology && (
-          <div className="pt-4 mt-3 border-t border-[#2A3C31] text-xs text-[#A4B3A7] space-y-3 leading-relaxed animate-fadeIn">
-            <blockquote className="border-l-2 border-[#B9E76A] pl-3 italic text-[#F1F5EE]">
+          <div className="pt-4 mt-3 border-t border-[#28354A] text-xs text-[#A4AEC1] space-y-3 leading-relaxed animate-fadeIn">
+            <blockquote className="border-l-2 border-[#B69249] pl-3 italic text-[#EFF3FA]">
               &quot;Be fearful when others are greedy, and greedy when others are fearful.&quot; &mdash; Warren Buffett
             </blockquote>
             <p>

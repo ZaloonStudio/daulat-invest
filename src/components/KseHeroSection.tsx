@@ -73,9 +73,9 @@ export default function KseHeroSection({
 
     const isPositive = (activeIndex.change ?? 0) >= 0;
     // Chart palette
-    const lineColor = isPositive ? '#B9E76A' : '#F28B82';
-    const topColor = isPositive ? 'rgba(185, 231, 106, 0.28)' : 'rgba(242, 139, 130, 0.28)';
-    const bottomColor = isPositive ? 'rgba(185, 231, 106, 0.0)' : 'rgba(242, 139, 130, 0.0)';
+    const lineColor = isPositive ? '#B69249' : '#F28B82';
+    const topColor = isPositive ? 'rgba(182, 146, 73, 0.28)' : 'rgba(242, 139, 130, 0.28)';
+    const bottomColor = isPositive ? 'rgba(182, 146, 73, 0.0)' : 'rgba(242, 139, 130, 0.0)';
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
@@ -84,32 +84,32 @@ export default function KseHeroSection({
         fontSize: 11,
       },
       grid: {
-        vertLines: { color: 'rgba(132, 152, 139, 0.3)' },
-        horzLines: { color: 'rgba(132, 152, 139, 0.3)' },
+        vertLines: { color: 'rgba(127, 141, 164, 0.3)' },
+        horzLines: { color: 'rgba(127, 141, 164, 0.3)' },
       },
       crosshair: {
         vertLine: {
-          color: '#D5F478',
+          color: '#B69249',
           width: 1,
           style: 3,
-          labelBackgroundColor: '#121E18',
+          labelBackgroundColor: '#111A2B',
         },
         horzLine: {
-          color: '#D5F478',
+          color: '#B69249',
           width: 1,
           style: 3,
-          labelBackgroundColor: '#121E18',
+          labelBackgroundColor: '#111A2B',
         },
       },
       rightPriceScale: {
-        borderColor: '#2A3C31',
+        borderColor: '#28354A',
         scaleMargins: {
           top: 0.1,
           bottom: 0.25, // Leaves bottom 25% for volume bars
         },
       },
       timeScale: {
-        borderColor: '#2A3C31',
+        borderColor: '#28354A',
         timeVisible: true,
         secondsVisible: false,
       },
@@ -130,7 +130,7 @@ export default function KseHeroSection({
     });
 
     const volumeSeries = chart.addSeries(HistogramSeries, {
-      color: 'rgba(185, 231, 106, 0.35)',
+      color: 'rgba(182, 146, 73, 0.35)',
       priceFormat: {
         type: 'volume',
       },
@@ -176,7 +176,7 @@ export default function KseHeroSection({
         value: p.volume || 1000000 + (idx % 5) * 500000,
         color:
           idx > 0 && (chartData[idx].value || 0) >= (chartData[idx - 1].value || 0)
-            ? 'rgba(185, 231, 106, 0.45)'
+            ? 'rgba(182, 146, 73, 0.45)'
             : 'rgba(242, 139, 130, 0.45)',
       }))
       .sort((a, b) => a.time - b.time);
@@ -263,21 +263,21 @@ export default function KseHeroSection({
   return (
     <div className="market-hero grid grid-cols-1 lg:grid-cols-12 gap-5">
       {/* LEFT COLUMN (Hero Chart + Timeframe Switcher - 8 cols) */}
-      <div className="hero-chart lg:col-span-8 bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 sm:p-7 flex flex-col justify-between">
+      <div className="hero-chart lg:col-span-8 bg-[#111A2B] border border-[#28354A] rounded-xl p-5 sm:p-7 flex flex-col justify-between">
         <div>
           {/* Header Row: Symbol Code & Live Market Status Pill */}
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-semibold text-[#A4B3A7] tracking-wider uppercase">
+              <span className="text-xs font-semibold text-[#A4AEC1] tracking-wider uppercase">
                 {activeIndex.code}
               </span>
-              <span className="text-[11px] bg-[#1E3026] text-[#A4B3A7] px-2 py-0.5 rounded font-mono border border-[#2A3C31]">
+              <span className="text-[11px] bg-[#1C2940] text-[#A4AEC1] px-2 py-0.5 rounded font-mono border border-[#28354A]">
                 {activeIndex.code}:PSX
               </span>
             </div>
 
             <div className="flex items-center space-x-2">
-              <span className="text-xs text-[#A4B3A7] hidden sm:flex items-center space-x-1 font-mono">
+              <span className="text-xs text-[#A4AEC1] hidden sm:flex items-center space-x-1 font-mono">
                 <Clock className="w-3.5 h-3.5" />
                 <span>{marketTime}</span>
               </span>
@@ -301,7 +301,7 @@ export default function KseHeroSection({
 
           {/* Big Live Value & Change Badges */}
           <div className="flex flex-wrap items-baseline gap-3 mb-4">
-            <span className="text-4xl sm:text-5xl font-medium text-[#F1F5EE] font-mono tracking-tight">
+            <span className="text-4xl sm:text-5xl font-medium text-[#EFF3FA] font-mono tracking-tight">
               {displayValue.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -332,7 +332,7 @@ export default function KseHeroSection({
             </span>
 
             {hoveredPoint && (
-              <span className="text-xs text-[#A4B3A7] font-mono bg-[#0C1411] px-2 py-0.5 rounded border border-[#2A3C31]">
+              <span className="text-xs text-[#A4AEC1] font-mono bg-[#0B1120] px-2 py-0.5 rounded border border-[#28354A]">
                 @ {hoveredPoint.time}
               </span>
             )}
@@ -343,8 +343,8 @@ export default function KseHeroSection({
         <div className="w-full h-[280px] sm:h-[320px] relative my-1" ref={chartContainerRef} />
 
         {/* Timeframe Buttons Row (Timeframes: 1D, 7D, 1M, 6M, 1Y, 3Y, 5Y) */}
-        <div className="flex flex-wrap items-center justify-between border-t border-[#2A3C31] pt-3 mt-2 gap-2">
-          <div className="flex items-center space-x-1 bg-[#0C1411] p-1 rounded-xl border border-[#2A3C31]">
+        <div className="flex flex-wrap items-center justify-between border-t border-[#28354A] pt-3 mt-2 gap-2">
+          <div className="flex items-center space-x-1 bg-[#0B1120] p-1 rounded-xl border border-[#28354A]">
             {(['1D', '7D', '1M', '6M', '1Y', '3Y', '5Y'] as const).map((tf) => (
               <button
                 key={tf}
@@ -352,8 +352,8 @@ export default function KseHeroSection({
                 onClick={() => setTimeframe(tf)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
                   timeframe === tf
-                    ? 'bg-[#B9E76A] text-black shadow-sm'
-                    : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
+                    ? 'bg-[#B69249] text-black shadow-sm'
+                    : 'text-[#A4AEC1] hover:text-[#EFF3FA]'
                 }`}
               >
                 {tf}
@@ -361,13 +361,13 @@ export default function KseHeroSection({
             ))}
           </div>
 
-          <div className="flex items-center space-x-2 text-[11px] text-[#A4B3A7]">
+          <div className="flex items-center space-x-2 text-[11px] text-[#A4AEC1]">
             <span className="flex items-center space-x-1">
-              <span className="w-2 h-2 rounded-full bg-[#B9E76A]" />
+              <span className="w-2 h-2 rounded-full bg-[#B69249]" />
               <span>Price</span>
             </span>
             <span className="flex items-center space-x-1">
-              <span className="w-2 h-2 rounded bg-[#B9E76A]/40" />
+              <span className="w-2 h-2 rounded bg-[#B69249]/40" />
               <span>Volume</span>
             </span>
           </div>
@@ -375,35 +375,35 @@ export default function KseHeroSection({
       </div>
 
       {/* RIGHT COLUMN (Index Stats & Day/52W Range Sliders - 4 cols) */}
-      <div className="hero-stats lg:col-span-4 bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl flex flex-col justify-between space-y-5">
+      <div className="hero-stats lg:col-span-4 bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl flex flex-col justify-between space-y-5">
         {/* Section 1: Index Stats */}
         <div>
-          <div className="flex items-center justify-between border-b border-[#2A3C31] pb-3 mb-4">
-            <span className="text-sm font-semibold text-[#F1F5EE] flex items-center space-x-1.5">
-              <BarChart3 className="w-4 h-4 text-[#B9E76A]" />
+          <div className="flex items-center justify-between border-b border-[#28354A] pb-3 mb-4">
+            <span className="text-sm font-semibold text-[#EFF3FA] flex items-center space-x-1.5">
+              <BarChart3 className="w-4 h-4 text-[#B69249]" />
               <span>Session at a glance</span>
             </span>
-            <span className="text-[11px] font-mono text-[#A4B3A7]">PSX Official</span>
+            <span className="text-[11px] font-mono text-[#A4AEC1]">PSX Official</span>
           </div>
 
           <div className="space-y-3">
             <div className="flex items-center justify-between py-1">
-              <span className="text-xs text-[#A4B3A7]">Volume</span>
-              <span className="text-sm font-mono font-semibold text-[#F1F5EE]">
+              <span className="text-xs text-[#A4AEC1]">Volume</span>
+              <span className="text-sm font-mono font-semibold text-[#EFF3FA]">
                 {formatVolume(activeIndex.volume || 130240000)}
               </span>
             </div>
 
-            <div className="flex items-center justify-between py-1 border-t border-[#2A3C31]/40">
-              <span className="text-xs text-[#A4B3A7]">Value</span>
-              <span className="text-sm font-mono font-semibold text-[#F1F5EE]">
+            <div className="flex items-center justify-between py-1 border-t border-[#28354A]/40">
+              <span className="text-xs text-[#A4AEC1]">Value</span>
+              <span className="text-sm font-mono font-semibold text-[#EFF3FA]">
                 {formatVolume(activeIndex.value || 10420000000)} PKR
               </span>
             </div>
 
-            <div className="flex items-center justify-between py-1 border-t border-[#2A3C31]/40">
-              <span className="text-xs text-[#A4B3A7]">Previous Close</span>
-              <span className="text-sm font-mono font-semibold text-[#F1F5EE]">
+            <div className="flex items-center justify-between py-1 border-t border-[#28354A]/40">
+              <span className="text-xs text-[#A4AEC1]">Previous Close</span>
+              <span className="text-sm font-mono font-semibold text-[#EFF3FA]">
                 {(activeIndex.ldcp || 165151.64).toLocaleString('en-US', {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
@@ -414,70 +414,70 @@ export default function KseHeroSection({
         </div>
 
         {/* Section 2: Day Range Progress Slider */}
-        <div className="border-t border-[#2A3C31] pt-4">
-          <div className="flex items-center justify-between text-xs font-semibold text-[#F1F5EE] mb-2">
+        <div className="border-t border-[#28354A] pt-4">
+          <div className="flex items-center justify-between text-xs font-semibold text-[#EFF3FA] mb-2">
             <span className="flex items-center space-x-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#B9E76A]" />
+              <Calendar className="w-3.5 h-3.5 text-[#B69249]" />
               <span>Day Range</span>
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-xs font-mono text-[#A4B3A7] mb-2">
+          <div className="flex items-center justify-between text-xs font-mono text-[#A4AEC1] mb-2">
             <div>
-              <span className="block text-[10px] uppercase font-semibold text-[#84988B]">Day Low</span>
-              <span className="text-[#F1F5EE] font-semibold">
+              <span className="block text-[10px] uppercase font-semibold text-[#7F8DA4]">Day Low</span>
+              <span className="text-[#EFF3FA] font-semibold">
                 {dayLow.toLocaleString('en-US', { maximumFractionDigits: 2 })}
               </span>
             </div>
             <div className="text-right">
-              <span className="block text-[10px] uppercase font-semibold text-[#84988B]">Day High</span>
-              <span className="text-[#F1F5EE] font-semibold">
+              <span className="block text-[10px] uppercase font-semibold text-[#7F8DA4]">Day High</span>
+              <span className="text-[#EFF3FA] font-semibold">
                 {dayHigh.toLocaleString('en-US', { maximumFractionDigits: 2 })}
               </span>
             </div>
           </div>
 
           {/* Interactive Range Track with Glowing Slider Indicator */}
-          <div className="relative w-full h-2.5 bg-[#0C1411] rounded-full border border-[#2A3C31] overflow-visible">
+          <div className="relative w-full h-2.5 bg-[#0B1120] rounded-full border border-[#28354A] overflow-visible">
             <div
-              className="h-full bg-gradient-to-r from-[#B9E76A]/40 to-[#B9E76A] rounded-full relative"
+              className="h-full bg-gradient-to-r from-[#B69249]/40 to-[#B69249] rounded-full relative"
               style={{ width: `${dayRangePercent}%` }}
             >
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#B9E76A] rounded-full shadow-[0_0_10px_#B9E76A] border-2 border-[#121E18]" />
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#B69249] rounded-full shadow-[0_0_10px_#B69249] border-2 border-[#111A2B]" />
             </div>
           </div>
         </div>
 
         {/* Section 3: 52-Week Range Progress Slider */}
-        <div className="border-t border-[#2A3C31] pt-4">
-          <div className="flex items-center justify-between text-xs font-semibold text-[#F1F5EE] mb-2">
+        <div className="border-t border-[#28354A] pt-4">
+          <div className="flex items-center justify-between text-xs font-semibold text-[#EFF3FA] mb-2">
             <span className="flex items-center space-x-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#D5F478]" />
+              <Calendar className="w-3.5 h-3.5 text-[#B69249]" />
               <span>52-Week Range</span>
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-xs font-mono text-[#A4B3A7] mb-2">
+          <div className="flex items-center justify-between text-xs font-mono text-[#A4AEC1] mb-2">
             <div>
-              <span className="block text-[10px] uppercase font-semibold text-[#84988B]">52W Low</span>
-              <span className="text-[#F1F5EE] font-semibold">
+              <span className="block text-[10px] uppercase font-semibold text-[#7F8DA4]">52W Low</span>
+              <span className="text-[#EFF3FA] font-semibold">
                 {yearLow.toLocaleString('en-US', { maximumFractionDigits: 2 })}
               </span>
             </div>
             <div className="text-right">
-              <span className="block text-[10px] uppercase font-semibold text-[#84988B]">52W High</span>
-              <span className="text-[#F1F5EE] font-semibold">
+              <span className="block text-[10px] uppercase font-semibold text-[#7F8DA4]">52W High</span>
+              <span className="text-[#EFF3FA] font-semibold">
                 {yearHigh.toLocaleString('en-US', { maximumFractionDigits: 2 })}
               </span>
             </div>
           </div>
 
-          <div className="relative w-full h-2.5 bg-[#0C1411] rounded-full border border-[#2A3C31] overflow-visible">
+          <div className="relative w-full h-2.5 bg-[#0B1120] rounded-full border border-[#28354A] overflow-visible">
             <div
-              className="h-full bg-gradient-to-r from-[#D5F478]/40 to-[#D5F478] rounded-full relative"
+              className="h-full bg-gradient-to-r from-[#B69249]/40 to-[#B69249] rounded-full relative"
               style={{ width: `${yearRangePercent}%` }}
             >
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#D5F478] rounded-full shadow-[0_0_10px_#D5F478] border-2 border-[#121E18]" />
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#B69249] rounded-full shadow-[0_0_10px_#B69249] border-2 border-[#111A2B]" />
             </div>
           </div>
         </div>

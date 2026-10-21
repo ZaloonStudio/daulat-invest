@@ -43,7 +43,7 @@ export default function MutualFundsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0C1411] text-[#F1F5EE]">
+    <div className="min-h-screen bg-[#0B1120] text-[#EFF3FA]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -53,14 +53,14 @@ export default function MutualFundsPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-semibold text-[#B9E76A] uppercase tracking-wider mb-1">
+          <div className="flex items-center space-x-2 text-xs font-semibold text-[#B69249] uppercase tracking-wider mb-1">
             <Layers className="w-4 h-4" />
             <span>Asset Management Portal</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[#EFF3FA] tracking-tight">
             Mutual funds
           </h1>
-          <p className="text-xs sm:text-sm text-[#A4B3A7] mt-1 max-w-3xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#A4AEC1] mt-1 max-w-3xl leading-relaxed">
             Compare daily Net Asset Values (NAVs), multi-period returns, risk rankings, and Shariah compliance
             across Pakistan&apos;s leading Asset Management Companies (AMCs) benchmarked against MUFAP.
           </p>
@@ -68,7 +68,7 @@ export default function MutualFundsPage() {
 
         <Suspense
           fallback={
-            <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-12 text-center text-sm text-[#A4B3A7]">
+            <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-12 text-center text-sm text-[#A4AEC1]">
               Loading Pakistan mutual funds directory...
             </div>
           }

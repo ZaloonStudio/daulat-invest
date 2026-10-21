@@ -50,13 +50,13 @@ export default function HomeClientContainer({
       <div className="overview-heading">
         <div>
           <p className="eyebrow mb-4"><span className="w-5 h-px bg-current" />THE PAKISTAN MARKET, IN FOCUS</p>
-          <h1 className="overview-title">Perspective.<br /><span className="text-[#D5F478]">Then possibility.</span></h1>
-          <p className="text-sm text-[#A4B3A7] mt-5 max-w-md leading-relaxed">Your view of the Pakistan Stock Exchange. Follow the market, explore opportunities, and build your next move.</p>
+          <h1 className="overview-title">Perspective.<br /><span className="text-[#B69249]">Then possibility.</span></h1>
+          <p className="text-sm text-[#A4AEC1] mt-5 max-w-md leading-relaxed">Your view of the Pakistan Stock Exchange. Follow the market, explore opportunities, and build your next move.</p>
         </div>
         <div className="flex flex-col items-start sm:items-end gap-4">
-          <span className="eyebrow text-[#84988B]">DAULAT / MARKET OVERVIEW</span>
+          <span className="eyebrow text-[#7F8DA4]">DAULAT / MARKET OVERVIEW</span>
           <Link href="/stocks/screener" className="inline-flex primary-action px-5 py-3 text-sm">Explore the screener <ArrowUpRight className="w-4 h-4" /></Link>
-          <Link href="/stocks" className="inline-flex items-center gap-2 text-xs text-[#A4B3A7] hover:text-[#D5F478]">Browse all stocks <ArrowRight className="w-3.5 h-3.5" /></Link>
+          <Link href="/stocks" className="inline-flex items-center gap-2 text-xs text-[#A4AEC1] hover:text-[#B69249]">Browse all stocks <ArrowRight className="w-3.5 h-3.5" /></Link>
         </div>
       </div>
 

@@ -361,16 +361,16 @@ export default function CommunityClient() {
   return (
     <div className="space-y-8">
       {/* Top Banner & Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#2A3C31] pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#28354A] pb-6">
         <div>
           <div className="flex items-center space-x-2 text-xs font-semibold text-[#B9ADDA] uppercase tracking-wider mb-2">
             <Users className="w-4 h-4" />
             <span>Pakistan Stock Exchange Discussion Hub</span>
           </div>
-          <h1 className="text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+          <h1 className="text-3xl font-semibold text-[#EFF3FA] tracking-tight">
             Investor Community &amp; Forum
           </h1>
-          <p className="text-sm text-[#A4B3A7] mt-1 max-w-2xl">
+          <p className="text-sm text-[#A4AEC1] mt-1 max-w-2xl">
             Debate company valuations, dissect quarterly earnings, post charts, and connect with fellow PSX market participants.
           </p>
         </div>
@@ -378,13 +378,13 @@ export default function CommunityClient() {
         {/* Action Controls: Auth & New Post */}
         <div className="flex items-center space-x-3">
           {user ? (
-            <div className="flex items-center space-x-2 bg-[#121E18] border border-[#2A3C31] px-3 py-1.5 rounded-xl text-xs">
+            <div className="flex items-center space-x-2 bg-[#111A2B] border border-[#28354A] px-3 py-1.5 rounded-xl text-xs">
               <span className="w-2 h-2 rounded-full bg-[#6DDBA5]" />
-              <span className="font-semibold text-[#F1F5EE]">{user.displayName || 'Member'}</span>
+              <span className="font-semibold text-[#EFF3FA]">{user.displayName || 'Member'}</span>
               <button
                 onClick={handleLogout}
                 title="Sign out"
-                className="text-[#A4B3A7] hover:text-[#F28B82] ml-1 p-0.5"
+                className="text-[#A4AEC1] hover:text-[#F28B82] ml-1 p-0.5"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
@@ -392,7 +392,7 @@ export default function CommunityClient() {
           ) : (
             <button
               onClick={handleGoogleLogin}
-              className="bg-[#121E18] hover:bg-[#1E3026] border border-[#2A3C31] text-[#F1F5EE] px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors"
+              className="bg-[#111A2B] hover:bg-[#1C2940] border border-[#28354A] text-[#EFF3FA] px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors"
             >
               <LogIn className="w-3.5 h-3.5 text-[#9BBCE3]" />
               <span>Sign In with Google</span>
@@ -423,8 +423,8 @@ export default function CommunityClient() {
                     ? 'bg-[#6DDBA5] text-black font-semibold'
                     : sent === 'Bearish'
                     ? 'bg-[#F28B82] text-white font-semibold'
-                    : 'bg-[#D5F478] text-black font-semibold'
-                  : 'bg-[#121E18] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
+                    : 'bg-[#B69249] text-black font-semibold'
+                  : 'bg-[#111A2B] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A]'
               }`}
             >
               {sent === 'All' ? 'All Sentiments' : `${sent} Theses`}
@@ -434,13 +434,13 @@ export default function CommunityClient() {
 
         {/* Search Input */}
         <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4B3A7]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4AEC1]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by ticker ($HUBC) or title..."
-            className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl pl-9 pr-4 py-2 text-xs text-[#F1F5EE] placeholder-[#A4B3A7] focus:outline-none focus:border-[#B9ADDA] transition-colors"
+            className="w-full bg-[#111A2B] border border-[#28354A] rounded-xl pl-9 pr-4 py-2 text-xs text-[#EFF3FA] placeholder-[#A4AEC1] focus:outline-none focus:border-[#B9ADDA] transition-colors"
           />
         </div>
       </div>
@@ -454,24 +454,24 @@ export default function CommunityClient() {
           return (
             <div
               key={post.id}
-              className="bg-[#121E18] border border-[#2A3C31] hover:border-[#9BBCE3]/50 rounded-xl p-5 md:p-6 transition-all duration-200 shadow-lg space-y-4"
+              className="bg-[#111A2B] border border-[#28354A] hover:border-[#9BBCE3]/50 rounded-xl p-5 md:p-6 transition-all duration-200 shadow-lg space-y-4"
             >
               {/* Post Header: Ticker, Author, Timestamp, Sentiment */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2.5">
-                  <span className="font-semibold text-xs text-[#D5F478] bg-[#D5F478]/10 px-2.5 py-1 rounded-lg border border-[#D5F478]/20">
+                  <span className="font-semibold text-xs text-[#B69249] bg-[#B69249]/10 px-2.5 py-1 rounded-lg border border-[#B69249]/20">
                     ${post.symbolTag || 'PSX'}
                   </span>
                   <div>
                     <div className="flex items-center space-x-1.5">
-                      <span className="font-semibold text-xs text-[#F1F5EE]">@{post.author}</span>
+                      <span className="font-semibold text-xs text-[#EFF3FA]">@{post.author}</span>
                       {post.authorBadge && (
-                        <span className="text-[9px] bg-[#1E3026] text-[#A4B3A7] px-1.5 py-0.2 rounded font-semibold">
+                        <span className="text-[9px] bg-[#1C2940] text-[#A4AEC1] px-1.5 py-0.2 rounded font-semibold">
                           {post.authorBadge}
                         </span>
                       )}
                     </div>
-                    <span className="text-[10px] text-[#84988B]">{post.timestamp}</span>
+                    <span className="text-[10px] text-[#7F8DA4]">{post.timestamp}</span>
                   </div>
                 </div>
 
@@ -482,7 +482,7 @@ export default function CommunityClient() {
                         ? 'bg-[#6DDBA5]/15 text-[#6DDBA5] border-[#6DDBA5]/30'
                         : post.sentiment === 'Bearish'
                         ? 'bg-[#F28B82]/15 text-[#F28B82] border-[#F28B82]/30'
-                        : 'bg-[#D5F478]/15 text-[#D5F478] border-[#D5F478]/30'
+                        : 'bg-[#B69249]/15 text-[#B69249] border-[#B69249]/30'
                     }`}
                   >
                     {post.sentiment}
@@ -491,7 +491,7 @@ export default function CommunityClient() {
                   <button
                     onClick={() => setReportingPostId(post.id)}
                     title="Report post"
-                    className="p-1 text-[#84988B] hover:text-[#F28B82] hover:bg-[#1E3026] rounded transition-colors"
+                    className="p-1 text-[#7F8DA4] hover:text-[#F28B82] hover:bg-[#1C2940] rounded transition-colors"
                   >
                     <Flag className="w-3.5 h-3.5" />
                   </button>
@@ -500,23 +500,23 @@ export default function CommunityClient() {
 
               {/* Title & Content */}
               <div>
-                <h3 className="text-base font-semibold text-[#F1F5EE] leading-snug mb-2">
+                <h3 className="text-base font-semibold text-[#EFF3FA] leading-snug mb-2">
                   {post.title}
                 </h3>
-                <p className="text-xs text-[#A4B3A7] leading-relaxed whitespace-pre-line">
+                <p className="text-xs text-[#A4AEC1] leading-relaxed whitespace-pre-line">
                   {post.content}
                 </p>
               </div>
 
               {/* Interaction Bar */}
-              <div className="flex items-center justify-between pt-2 border-t border-[#2A3C31]/60 text-xs">
+              <div className="flex items-center justify-between pt-2 border-t border-[#28354A]/60 text-xs">
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={() => handleUpvote(post.id)}
                     className={`flex items-center space-x-1.5 font-semibold px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                       isUpvoted
                         ? 'bg-[#6DDBA5] text-black shadow-md shadow-[#6DDBA5]/20'
-                        : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#6DDBA5] border border-[#2A3C31]'
+                        : 'bg-[#0B1120] text-[#A4AEC1] hover:text-[#6DDBA5] border border-[#28354A]'
                     }`}
                   >
                     <ThumbsUp className="w-3.5 h-3.5" />
@@ -530,7 +530,7 @@ export default function CommunityClient() {
                         [post.id]: !prev[post.id],
                       }))
                     }
-                    className="flex items-center space-x-1.5 font-semibold px-3 py-1.5 rounded-xl bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31] transition-colors cursor-pointer"
+                    className="flex items-center space-x-1.5 font-semibold px-3 py-1.5 rounded-xl bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A] transition-colors cursor-pointer"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
                     <span>
@@ -539,30 +539,30 @@ export default function CommunityClient() {
                   </button>
                 </div>
 
-                <span className="text-[11px] text-[#84988B]">Moderated Community Feed</span>
+                <span className="text-[11px] text-[#7F8DA4]">Moderated Community Feed</span>
               </div>
 
               {/* Expandable Comment Thread */}
               {isCommentsOpen && (
-                <div className="pt-3 border-t border-[#2A3C31] space-y-3 animate-fadeIn">
+                <div className="pt-3 border-t border-[#28354A] space-y-3 animate-fadeIn">
                   {/* List Existing Comments */}
                   {post.comments && post.comments.length > 0 ? (
                     <div className="space-y-2">
                       {post.comments.map((c) => (
                         <div
                           key={c.id}
-                          className="p-3 bg-[#0C1411] border border-[#2A3C31]/60 rounded-xl text-xs space-y-1"
+                          className="p-3 bg-[#0B1120] border border-[#28354A]/60 rounded-xl text-xs space-y-1"
                         >
                           <div className="flex justify-between items-center text-[10px]">
-                            <span className="font-semibold text-[#F1F5EE]">@{c.author}</span>
-                            <span className="text-[#84988B]">{c.timestamp}</span>
+                            <span className="font-semibold text-[#EFF3FA]">@{c.author}</span>
+                            <span className="text-[#7F8DA4]">{c.timestamp}</span>
                           </div>
-                          <p className="text-[#A4B3A7] leading-relaxed">{c.content}</p>
+                          <p className="text-[#A4AEC1] leading-relaxed">{c.content}</p>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs text-[#84988B] italic">
+                    <p className="text-xs text-[#7F8DA4] italic">
                       No comments yet. Be the first to share your perspective!
                     </p>
                   )}
@@ -579,7 +579,7 @@ export default function CommunityClient() {
                         if (e.key === 'Enter') handleAddComment(post.id);
                       }}
                       placeholder="Write a comment or counter-analysis..."
-                      className="flex-1 bg-[#0C1411] border border-[#2A3C31] rounded-xl px-3.5 py-2 text-xs text-[#F1F5EE] placeholder-[#A4B3A7] focus:outline-none focus:border-[#B9ADDA]"
+                      className="flex-1 bg-[#0B1120] border border-[#28354A] rounded-xl px-3.5 py-2 text-xs text-[#EFF3FA] placeholder-[#A4AEC1] focus:outline-none focus:border-[#B9ADDA]"
                     />
                     <button
                       onClick={() => handleAddComment(post.id)}
@@ -596,10 +596,10 @@ export default function CommunityClient() {
         })}
 
         {filteredPosts.length === 0 && (
-          <div className="text-center py-16 bg-[#121E18] border border-[#2A3C31] rounded-xl">
-            <Users className="w-10 h-10 text-[#84988B] mx-auto mb-3" />
-            <h3 className="text-base font-semibold text-[#F1F5EE]">No discussions found</h3>
-            <p className="text-xs text-[#A4B3A7] mt-1">
+          <div className="text-center py-16 bg-[#111A2B] border border-[#28354A] rounded-xl">
+            <Users className="w-10 h-10 text-[#7F8DA4] mx-auto mb-3" />
+            <h3 className="text-base font-semibold text-[#EFF3FA]">No discussions found</h3>
+            <p className="text-xs text-[#A4AEC1] mt-1">
               Be the first to share research or analysis for this ticker.
             </p>
             <button
@@ -615,17 +615,17 @@ export default function CommunityClient() {
       {/* CREATE NEW POST MODAL */}
       {isNewPostOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-xl bg-[#0e1424] border border-[#2A3C31] rounded-xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#2A3C31] bg-[#121E18]">
+          <div className="relative w-full max-w-xl bg-[#0e1424] border border-[#28354A] rounded-xl shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#28354A] bg-[#111A2B]">
               <div className="flex items-center space-x-2.5">
                 <div className="w-8 h-8 rounded-lg bg-[#B9ADDA]/20 text-[#B9ADDA] flex items-center justify-center font-semibold">
                   <PlusCircle className="w-4 h-4" />
                 </div>
-                <h3 className="text-base font-semibold text-[#F1F5EE]">Create PSX Discussion</h3>
+                <h3 className="text-base font-semibold text-[#EFF3FA]">Create PSX Discussion</h3>
               </div>
               <button
                 onClick={() => setIsNewPostOpen(false)}
-                className="p-1.5 text-[#A4B3A7] hover:text-[#F1F5EE] rounded-lg"
+                className="p-1.5 text-[#A4AEC1] hover:text-[#EFF3FA] rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -633,7 +633,7 @@ export default function CommunityClient() {
 
             <form onSubmit={handleCreatePost} className="p-6 space-y-4 text-xs">
               <div>
-                <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
+                <label className="text-[11px] font-semibold text-[#A4AEC1] uppercase block mb-1">
                   Your Display Handle
                 </label>
                 <input
@@ -641,14 +641,14 @@ export default function CommunityClient() {
                   value={newAuthor}
                   onChange={(e) => setNewAuthor(e.target.value)}
                   placeholder="e.g. Tariq_Investor"
-                  className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl px-3.5 py-2 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9ADDA]"
+                  className="w-full bg-[#111A2B] border border-[#28354A] rounded-xl px-3.5 py-2 text-xs text-[#EFF3FA] focus:outline-none focus:border-[#B9ADDA]"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
+                  <label className="text-[11px] font-semibold text-[#A4AEC1] uppercase block mb-1">
                     PSX Stock Ticker
                   </label>
                   <input
@@ -656,19 +656,19 @@ export default function CommunityClient() {
                     value={newSymbol}
                     onChange={(e) => setNewSymbol(e.target.value.toUpperCase())}
                     placeholder="e.g. HUBC, MEBL, SYS"
-                    className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl px-3.5 py-2 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9ADDA] font-semibold uppercase"
+                    className="w-full bg-[#111A2B] border border-[#28354A] rounded-xl px-3.5 py-2 text-xs text-[#EFF3FA] focus:outline-none focus:border-[#B9ADDA] font-semibold uppercase"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
+                  <label className="text-[11px] font-semibold text-[#A4AEC1] uppercase block mb-1">
                     Your Market Outlook
                   </label>
                   <select
                     value={newSentiment}
                     onChange={(e) => setNewSentiment(e.target.value as any)}
-                    className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl px-3 py-2 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9ADDA] font-semibold"
+                    className="w-full bg-[#111A2B] border border-[#28354A] rounded-xl px-3 py-2 text-xs text-[#EFF3FA] focus:outline-none focus:border-[#B9ADDA] font-semibold"
                   >
                     <option value="Bullish">Bullish ↗</option>
                     <option value="Bearish">Bearish ↘</option>
@@ -678,7 +678,7 @@ export default function CommunityClient() {
               </div>
 
               <div>
-                <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
+                <label className="text-[11px] font-semibold text-[#A4AEC1] uppercase block mb-1">
                   Discussion Title
                 </label>
                 <input
@@ -686,13 +686,13 @@ export default function CommunityClient() {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="e.g. Hub Power Q2 Dividend & Capacity Payments thesis"
-                  className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl px-3.5 py-2 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9ADDA]"
+                  className="w-full bg-[#111A2B] border border-[#28354A] rounded-xl px-3.5 py-2 text-xs text-[#EFF3FA] focus:outline-none focus:border-[#B9ADDA]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
+                <label className="text-[11px] font-semibold text-[#A4AEC1] uppercase block mb-1">
                   Analysis / Discussion Content
                 </label>
                 <textarea
@@ -700,16 +700,16 @@ export default function CommunityClient() {
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
                   placeholder="Share facts, financial ratios, or key catalysts with fellow investors..."
-                  className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl p-3 text-xs text-[#F1F5EE] focus:outline-none focus:border-[#B9ADDA] leading-relaxed"
+                  className="w-full bg-[#111A2B] border border-[#28354A] rounded-xl p-3 text-xs text-[#EFF3FA] focus:outline-none focus:border-[#B9ADDA] leading-relaxed"
                   required
                 />
               </div>
 
-              <div className="pt-3 border-t border-[#2A3C31] flex justify-end space-x-3">
+              <div className="pt-3 border-t border-[#28354A] flex justify-end space-x-3">
                 <button
                   type="button"
                   onClick={() => setIsNewPostOpen(false)}
-                  className="px-4 py-2 bg-[#1E3026] hover:bg-[#2A3C31] text-[#A4B3A7] rounded-xl font-semibold"
+                  className="px-4 py-2 bg-[#1C2940] hover:bg-[#28354A] text-[#A4AEC1] rounded-xl font-semibold"
                 >
                   Cancel
                 </button>
@@ -728,23 +728,23 @@ export default function CommunityClient() {
       {/* REPORT POST MODAL */}
       {reportingPostId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-[#0e1424] border border-[#2A3C31] rounded-xl p-6 shadow-2xl space-y-4">
+          <div className="relative w-full max-w-md bg-[#0e1424] border border-[#28354A] rounded-xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center space-x-2 text-[#F28B82]">
               <ShieldAlert className="w-5 h-5" />
-              <h3 className="text-base font-semibold text-[#F1F5EE]">Report Content</h3>
+              <h3 className="text-base font-semibold text-[#EFF3FA]">Report Content</h3>
             </div>
 
             {reportSuccess ? (
               <div className="py-6 text-center space-y-2">
                 <CheckCircle2 className="w-8 h-8 text-[#6DDBA5] mx-auto" />
-                <p className="text-xs font-semibold text-[#F1F5EE]">Report submitted to moderators.</p>
-                <p className="text-[11px] text-[#A4B3A7]">
+                <p className="text-xs font-semibold text-[#EFF3FA]">Report submitted to moderators.</p>
+                <p className="text-[11px] text-[#A4AEC1]">
                   Thank you for keeping Daulat Invest community clean and compliant.
                 </p>
               </div>
             ) : (
               <>
-                <p className="text-xs text-[#A4B3A7]">
+                <p className="text-xs text-[#A4AEC1]">
                   Select the violation category to submit this post for review:
                 </p>
 
@@ -760,8 +760,8 @@ export default function CommunityClient() {
                       onClick={() => setReportReason(r)}
                       className={`w-full p-2.5 rounded-xl text-xs text-left border transition-all ${
                         reportReason === r
-                          ? 'bg-[#F28B82]/20 border-[#F28B82] text-[#F1F5EE] font-semibold'
-                          : 'bg-[#121E18] border-[#2A3C31] text-[#A4B3A7] hover:text-[#F1F5EE]'
+                          ? 'bg-[#F28B82]/20 border-[#F28B82] text-[#EFF3FA] font-semibold'
+                          : 'bg-[#111A2B] border-[#28354A] text-[#A4AEC1] hover:text-[#EFF3FA]'
                       }`}
                     >
                       {r}
@@ -769,10 +769,10 @@ export default function CommunityClient() {
                   ))}
                 </div>
 
-                <div className="flex justify-end space-x-2 pt-3 border-t border-[#2A3C31]">
+                <div className="flex justify-end space-x-2 pt-3 border-t border-[#28354A]">
                   <button
                     onClick={() => setReportingPostId(null)}
-                    className="px-3 py-1.5 text-xs text-[#A4B3A7] hover:text-[#F1F5EE]"
+                    className="px-3 py-1.5 text-xs text-[#A4AEC1] hover:text-[#EFF3FA]"
                   >
                     Cancel
                   </button>

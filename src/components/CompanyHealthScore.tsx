@@ -68,8 +68,8 @@ export default function CompanyHealthScore({ stock }: Props) {
 
   const getScoreVerdict = (score: number) => {
     if (score >= 80) return { label: 'Exceptional', grade: 'A+', color: 'text-[#6DDBA5]', bg: 'bg-[#6DDBA5]/10 border-[#6DDBA5]/30' };
-    if (score >= 65) return { label: 'Strong Health', grade: 'A', color: 'text-[#B9E76A]', bg: 'bg-[#B9E76A]/10 border-[#B9E76A]/30' };
-    if (score >= 50) return { label: 'Moderate / Balanced', grade: 'B+', color: 'text-[#D5F478]', bg: 'bg-[#D5F478]/10 border-[#D5F478]/30' };
+    if (score >= 65) return { label: 'Strong Health', grade: 'A', color: 'text-[#B69249]', bg: 'bg-[#B69249]/10 border-[#B69249]/30' };
+    if (score >= 50) return { label: 'Moderate / Balanced', grade: 'B+', color: 'text-[#B69249]', bg: 'bg-[#B69249]/10 border-[#B69249]/30' };
     if (score >= 35) return { label: 'Speculative', grade: 'C', color: 'text-[#D9B68B]', bg: 'bg-[#D9B68B]/10 border-[#D9B68B]/30' };
     return { label: 'High Risk', grade: 'D', color: 'text-[#F28B82]', bg: 'bg-[#F28B82]/10 border-[#F28B82]/30' };
   };
@@ -80,36 +80,36 @@ export default function CompanyHealthScore({ stock }: Props) {
     {
       name: 'Growth',
       score: growth,
-      color: growth >= 14 ? 'text-[#6DDBA5]' : growth >= 10 ? 'text-[#D5F478]' : 'text-[#F28B82]',
-      trackColor: growth >= 14 ? 'from-[#6DDBA5] to-[#B9E76A]' : 'from-[#D5F478] to-[#D9B68B]',
+      color: growth >= 14 ? 'text-[#6DDBA5]' : growth >= 10 ? 'text-[#B69249]' : 'text-[#F28B82]',
+      trackColor: growth >= 14 ? 'from-[#6DDBA5] to-[#B69249]' : 'from-[#B69249] to-[#D9B68B]',
       description: 'EPS expansion & revenue momentum',
     },
     {
       name: 'Stability',
       score: stability,
-      color: stability >= 14 ? 'text-[#6DDBA5]' : stability >= 10 ? 'text-[#D5F478]' : 'text-[#F28B82]',
-      trackColor: stability >= 14 ? 'from-[#6DDBA5] to-[#B9E76A]' : 'from-[#F28B82] to-[#FF7B72]',
+      color: stability >= 14 ? 'text-[#6DDBA5]' : stability >= 10 ? 'text-[#B69249]' : 'text-[#F28B82]',
+      trackColor: stability >= 14 ? 'from-[#6DDBA5] to-[#B69249]' : 'from-[#F28B82] to-[#FF7B72]',
       description: 'Debt ratio & asset volatility',
     },
     {
       name: 'Valuation',
       score: valuation,
-      color: valuation >= 14 ? 'text-[#6DDBA5]' : valuation >= 10 ? 'text-[#D5F478]' : 'text-[#F28B82]',
-      trackColor: valuation >= 14 ? 'from-[#6DDBA5] to-[#B9E76A]' : 'from-[#D5F478] to-[#D9B68B]',
+      color: valuation >= 14 ? 'text-[#6DDBA5]' : valuation >= 10 ? 'text-[#B69249]' : 'text-[#F28B82]',
+      trackColor: valuation >= 14 ? 'from-[#6DDBA5] to-[#B69249]' : 'from-[#B69249] to-[#D9B68B]',
       description: 'Price to earnings & book discount',
     },
     {
       name: 'Inventory / Operations',
       score: efficiency,
-      color: efficiency >= 14 ? 'text-[#6DDBA5]' : efficiency >= 10 ? 'text-[#B9E76A]' : 'text-[#F28B82]',
-      trackColor: 'from-[#B9E76A] to-[#9BBCE3]',
+      color: efficiency >= 14 ? 'text-[#6DDBA5]' : efficiency >= 10 ? 'text-[#B69249]' : 'text-[#F28B82]',
+      trackColor: 'from-[#B69249] to-[#9BBCE3]',
       description: 'Capital turnover & asset utilization',
     },
     {
       name: 'Cashflow',
       score: cashflow,
-      color: cashflow >= 14 ? 'text-[#6DDBA5]' : cashflow >= 10 ? 'text-[#D5F478]' : 'text-[#F28B82]',
-      trackColor: cashflow >= 14 ? 'from-[#6DDBA5] to-[#B9E76A]' : 'from-[#F28B82] to-[#FF7B72]',
+      color: cashflow >= 14 ? 'text-[#6DDBA5]' : cashflow >= 10 ? 'text-[#B69249]' : 'text-[#F28B82]',
+      trackColor: cashflow >= 14 ? 'from-[#6DDBA5] to-[#B69249]' : 'from-[#F28B82] to-[#FF7B72]',
       description: 'Operating cashflow & dividend payout',
     },
   ];
@@ -132,22 +132,22 @@ export default function CompanyHealthScore({ stock }: Props) {
   const gridLevels = [0.25, 0.5, 0.75, 1.0];
 
   return (
-    <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl space-y-4">
+    <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#2A3C31] pb-3">
+      <div className="flex items-center justify-between border-b border-[#28354A] pb-3">
         <div className="flex items-center space-x-2">
-          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#D5F478] to-[#BDD766] flex items-center justify-center text-black font-semibold text-xs shadow-sm">
+          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#B69249] to-[#A58440] flex items-center justify-center text-black font-semibold text-xs shadow-sm">
             D
           </div>
-          <h3 className="text-sm font-semibold text-[#F1F5EE] tracking-tight">
+          <h3 className="text-sm font-semibold text-[#EFF3FA] tracking-tight">
             Daulat Health Score
           </h3>
         </div>
 
         <div className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border flex items-center space-x-1 ${verdict.bg}`}>
           <span className={verdict.color}>{verdict.grade}</span>
-          <span className="text-[#A4B3A7]">•</span>
-          <span className="text-[#F1F5EE] font-mono">{totalScore}/100</span>
+          <span className="text-[#A4AEC1]">•</span>
+          <span className="text-[#EFF3FA] font-mono">{totalScore}/100</span>
         </div>
       </div>
 
@@ -166,7 +166,7 @@ export default function CompanyHealthScore({ stock }: Props) {
                 key={idx}
                 points={polyPoints}
                 fill="none"
-                stroke="#2A3C31"
+                stroke="#28354A"
                 strokeWidth="1"
                 strokeDasharray={idx === 3 ? 'none' : '2,2'}
               />
@@ -185,7 +185,7 @@ export default function CompanyHealthScore({ stock }: Props) {
                 y1={cy}
                 x2={x}
                 y2={y}
-                stroke="#2A3C31"
+                stroke="#28354A"
                 strokeWidth="1"
               />
             );
@@ -194,8 +194,8 @@ export default function CompanyHealthScore({ stock }: Props) {
           {/* Filled Stock Score Polygon */}
           <polygon
             points={points}
-            fill="rgba(185, 231, 106, 0.25)"
-            stroke="#B9E76A"
+            fill="rgba(182, 146, 73, 0.25)"
+            stroke="#B69249"
             strokeWidth="2"
             strokeLinejoin="round"
           />
@@ -212,31 +212,31 @@ export default function CompanyHealthScore({ stock }: Props) {
                 cx={x}
                 cy={y}
                 r="3.5"
-                fill="#D5F478"
-                stroke="#121E18"
+                fill="#B69249"
+                stroke="#111A2B"
                 strokeWidth="1.5"
               />
             );
           })}
 
           {/* Pillar Labels around polygon */}
-          <text x={cx} y={cy - maxR - 6} textAnchor="middle" fill="#A4B3A7" fontSize="9" fontWeight="bold">Stability</text>
-          <text x={cx + maxR + 8} y={cy - 12} textAnchor="start" fill="#A4B3A7" fontSize="9" fontWeight="bold">Growth</text>
-          <text x={cx + maxR - 2} y={cy + maxR - 2} textAnchor="start" fill="#A4B3A7" fontSize="9" fontWeight="bold">Valuation</text>
-          <text x={cx - maxR + 2} y={cy + maxR - 2} textAnchor="end" fill="#A4B3A7" fontSize="9" fontWeight="bold">Cashflow</text>
-          <text x={cx - maxR - 8} y={cy - 12} textAnchor="end" fill="#A4B3A7" fontSize="9" fontWeight="bold">Inventory</text>
+          <text x={cx} y={cy - maxR - 6} textAnchor="middle" fill="#A4AEC1" fontSize="9" fontWeight="bold">Stability</text>
+          <text x={cx + maxR + 8} y={cy - 12} textAnchor="start" fill="#A4AEC1" fontSize="9" fontWeight="bold">Growth</text>
+          <text x={cx + maxR - 2} y={cy + maxR - 2} textAnchor="start" fill="#A4AEC1" fontSize="9" fontWeight="bold">Valuation</text>
+          <text x={cx - maxR + 2} y={cy + maxR - 2} textAnchor="end" fill="#A4AEC1" fontSize="9" fontWeight="bold">Cashflow</text>
+          <text x={cx - maxR - 8} y={cy - 12} textAnchor="end" fill="#A4AEC1" fontSize="9" fontWeight="bold">Inventory</text>
         </svg>
       </div>
 
       {/* 5 Rating Slider Bars (Exact Sarmaaya Layout) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 pt-2 border-t border-[#2A3C31]/60 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 pt-2 border-t border-[#28354A]/60 text-xs">
         {pillars.map((p) => {
           const pct = Math.min(100, Math.max(0, (p.score / 20) * 100));
           return (
             <div key={p.name} className="space-y-1">
               {/* Pillar Title and Score */}
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-[#F1F5EE]">{p.name}</span>
+                <span className="font-semibold text-[#EFF3FA]">{p.name}</span>
                 <span className={`font-mono font-semibold ${p.color}`}>
                   {p.score}/20
                 </span>
@@ -245,7 +245,7 @@ export default function CompanyHealthScore({ stock }: Props) {
               {/* Progress Slider Track with Indicator Pointer */}
               <div className="relative pt-1.5 pb-2">
                 {/* Track background */}
-                <div className="h-1.5 w-full bg-[#1E3026] rounded-full overflow-hidden">
+                <div className="h-1.5 w-full bg-[#1C2940] rounded-full overflow-hidden">
                   <div
                     style={{ width: `${pct}%` }}
                     className={`h-full bg-gradient-to-r ${p.trackColor} transition-all duration-500 rounded-full`}
@@ -255,13 +255,13 @@ export default function CompanyHealthScore({ stock }: Props) {
                 {/* Downward indicator pointer ▼ at the exact score mark */}
                 <div
                   style={{ left: `calc(${pct}% - 4px)` }}
-                  className="absolute top-0 text-[8px] text-[#F1F5EE] transition-all duration-500 select-none leading-none pointer-events-none"
+                  className="absolute top-0 text-[8px] text-[#EFF3FA] transition-all duration-500 select-none leading-none pointer-events-none"
                 >
                   ▼
                 </div>
 
                 {/* 0.0 to 20.0 Labels */}
-                <div className="flex justify-between items-center text-[9px] text-[#84988B] font-mono mt-1">
+                <div className="flex justify-between items-center text-[9px] text-[#7F8DA4] font-mono mt-1">
                   <span>0.0</span>
                   <span>20.0</span>
                 </div>

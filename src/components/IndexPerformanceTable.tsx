@@ -25,21 +25,21 @@ export default function IndexPerformanceTable({
   };
 
   return (
-    <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl">
+    <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl">
       {/* Table Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#2A3C31]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#28354A]">
         <div>
-          <span className="text-[10px] font-semibold text-[#B9E76A] uppercase tracking-widest block">
+          <span className="text-[10px] font-semibold text-[#B69249] uppercase tracking-widest block">
             PSX INDICES
           </span>
-          <h2 className="text-xl font-semibold text-[#F1F5EE] tracking-tight">
+          <h2 className="text-xl font-semibold text-[#EFF3FA] tracking-tight">
             Index Performance
           </h2>
         </div>
 
         <Link
           href="/stocks?tab=indices"
-          className="text-xs font-semibold text-[#B9E76A] hover:text-[#B9E76A]/80 inline-flex items-center space-x-1"
+          className="text-xs font-semibold text-[#B69249] hover:text-[#B69249]/80 inline-flex items-center space-x-1"
         >
           <span>VIEW ALL INDICES</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -50,7 +50,7 @@ export default function IndexPerformanceTable({
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm whitespace-nowrap">
           <thead>
-            <tr className="text-[11px] font-semibold text-[#A4B3A7] uppercase tracking-wider border-b border-[#2A3C31]/60">
+            <tr className="text-[11px] font-semibold text-[#A4AEC1] uppercase tracking-wider border-b border-[#28354A]/60">
               <th className="pb-3 pl-2">Indices</th>
               <th className="pb-3 text-right">Current</th>
               <th className="pb-3 text-right">Change (%)</th>
@@ -61,7 +61,7 @@ export default function IndexPerformanceTable({
               <th className="pb-3 text-right pr-2">Low</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#2A3C31]/40">
+          <tbody className="divide-y divide-[#28354A]/40">
             {indices.slice(0, 8).map((idx) => {
               const isPositive = idx.change >= 0;
               const isIslamic = idx.code.includes('KMI') || idx.code.includes('MZN');
@@ -70,12 +70,12 @@ export default function IndexPerformanceTable({
                 <tr
                   key={idx.code}
                   onClick={() => onSelectIndex?.(idx.code)}
-                  className="hover:bg-[#1E3026]/60 transition-colors group cursor-pointer"
+                  className="hover:bg-[#1C2940]/60 transition-colors group cursor-pointer"
                 >
                   {/* Code & Name */}
                   <td className="py-3.5 pl-2">
                     <div className="flex items-center space-x-2">
-                      <span className="font-semibold text-sm text-[#F1F5EE] group-hover:text-[#B9E76A] transition-colors">
+                      <span className="font-semibold text-sm text-[#EFF3FA] group-hover:text-[#B69249] transition-colors">
                         {idx.code}
                       </span>
                       {isIslamic && (
@@ -87,11 +87,11 @@ export default function IndexPerformanceTable({
                         </span>
                       )}
                     </div>
-                    <span className="text-[11px] text-[#A4B3A7] block">{idx.name}</span>
+                    <span className="text-[11px] text-[#A4AEC1] block">{idx.name}</span>
                   </td>
 
                   {/* Current Value */}
-                  <td className="py-3.5 text-right font-mono font-semibold text-sm text-[#F1F5EE]">
+                  <td className="py-3.5 text-right font-mono font-semibold text-sm text-[#EFF3FA]">
                     {idx.current.toLocaleString('en-US', {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
@@ -121,17 +121,17 @@ export default function IndexPerformanceTable({
                   </td>
 
                   {/* Volume */}
-                  <td className="py-3.5 text-right font-mono text-xs text-[#A4B3A7]">
+                  <td className="py-3.5 text-right font-mono text-xs text-[#A4AEC1]">
                     {formatVolume(idx.volume)}
                   </td>
 
                   {/* Value */}
-                  <td className="py-3.5 text-right font-mono text-xs text-[#A4B3A7]">
+                  <td className="py-3.5 text-right font-mono text-xs text-[#A4AEC1]">
                     {idx.value ? `${formatVolume(idx.value)} PKR` : '—'}
                   </td>
 
                   {/* Open */}
-                  <td className="py-3.5 text-right font-mono text-xs text-[#A4B3A7]">
+                  <td className="py-3.5 text-right font-mono text-xs text-[#A4AEC1]">
                     {(idx.open || idx.ldcp || idx.current).toLocaleString('en-US', {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
@@ -139,7 +139,7 @@ export default function IndexPerformanceTable({
                   </td>
 
                   {/* High */}
-                  <td className="py-3.5 text-right font-mono text-xs text-[#A4B3A7]">
+                  <td className="py-3.5 text-right font-mono text-xs text-[#A4AEC1]">
                     {idx.high.toLocaleString('en-US', {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
@@ -147,7 +147,7 @@ export default function IndexPerformanceTable({
                   </td>
 
                   {/* Low */}
-                  <td className="py-3.5 text-right pr-2 font-mono text-xs text-[#A4B3A7]">
+                  <td className="py-3.5 text-right pr-2 font-mono text-xs text-[#A4AEC1]">
                     {idx.low.toLocaleString('en-US', {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,

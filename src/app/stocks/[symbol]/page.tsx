@@ -95,7 +95,7 @@ export default async function StockDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0C1411] text-[#F1F5EE]">
+    <div className="min-h-screen bg-[#0B1120] text-[#EFF3FA]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -105,39 +105,39 @@ export default async function StockDetailPage({ params }: Props) {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center space-x-2 text-xs text-[#A4B3A7]">
-          <Link href="/" className="hover:text-[#F1F5EE] transition-colors flex items-center space-x-1">
+        <div className="flex items-center space-x-2 text-xs text-[#A4AEC1]">
+          <Link href="/" className="hover:text-[#EFF3FA] transition-colors flex items-center space-x-1">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Markets</span>
           </Link>
           <span>/</span>
-          <Link href="/stocks" className="hover:text-[#F1F5EE] transition-colors">
+          <Link href="/stocks" className="hover:text-[#EFF3FA] transition-colors">
             Stocks
           </Link>
           <span>/</span>
-          <span className="text-[#D5F478] font-semibold">{quote.symbol}</span>
+          <span className="text-[#B69249] font-semibold">{quote.symbol}</span>
         </div>
 
         {/* Stock Hero Header */}
-        <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1.5">
             <div className="flex items-center space-x-3">
-              <span className="text-2xl sm:text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+              <span className="text-2xl sm:text-3xl font-semibold text-[#EFF3FA] tracking-tight">
                 {quote.symbol}
               </span>
-              <span className="text-xs bg-[#1E3026] text-[#D5F478] font-semibold px-2.5 py-1 rounded-lg border border-[#2A3C31]">
+              <span className="text-xs bg-[#1C2940] text-[#B69249] font-semibold px-2.5 py-1 rounded-lg border border-[#28354A]">
                 PSX: {quote.symbol}
               </span>
-              <span className="text-xs text-[#A4B3A7] bg-[#0C1411] px-2.5 py-1 rounded-lg border border-[#2A3C31]">
+              <span className="text-xs text-[#A4AEC1] bg-[#0B1120] px-2.5 py-1 rounded-lg border border-[#28354A]">
                 {quote.sector}
               </span>
             </div>
-            <h1 className="text-sm sm:text-base text-[#A4B3A7] font-medium">{quote.name}</h1>
+            <h1 className="text-sm sm:text-base text-[#A4AEC1] font-medium">{quote.name}</h1>
           </div>
 
           {/* Price & Change Box */}
           <div className="text-left md:text-right">
-            <div className="text-3xl sm:text-4xl font-mono font-semibold text-[#F1F5EE] tracking-tight">
+            <div className="text-3xl sm:text-4xl font-mono font-semibold text-[#EFF3FA] tracking-tight">
               Rs {quote.current.toFixed(2)}
             </div>
             <div
@@ -151,35 +151,35 @@ export default async function StockDetailPage({ params }: Props) {
                 {quote.change.toFixed(2)} ({isPositive ? '+' : ''}
                 {quote.changePercent.toFixed(2)}%)
               </span>
-              <span className="text-xs text-[#A4B3A7] ml-1.5 font-normal">Today</span>
+              <span className="text-xs text-[#A4AEC1] ml-1.5 font-normal">Today</span>
             </div>
           </div>
         </div>
 
         {/* Sarmaaya-Style Sub-Navigation Tabs */}
-        <div className="border-b border-[#2A3C31] flex items-center space-x-6 overflow-x-auto scrollbar-none text-xs font-semibold text-[#A4B3A7] pb-3 px-1">
-          <a href="#overview-section" className="text-[#D5F478] border-b-2 border-[#D5F478] pb-3 -mb-3 whitespace-nowrap">
+        <div className="border-b border-[#28354A] flex items-center space-x-6 overflow-x-auto scrollbar-none text-xs font-semibold text-[#A4AEC1] pb-3 px-1">
+          <a href="#overview-section" className="text-[#B69249] border-b-2 border-[#B69249] pb-3 -mb-3 whitespace-nowrap">
             Fundamentals
           </a>
-          <a href="#peers-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
+          <a href="#peers-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
             Peers
           </a>
-          <a href="#financials-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
+          <a href="#financials-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
             Financials
           </a>
-          <a href="#ratios-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
+          <a href="#ratios-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
             Ratios
           </a>
-          <a href="#dividends-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
+          <a href="#dividends-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
             Dividends
           </a>
           <a href="#shariah-section" className="hover:text-[#6DDBA5] transition-colors whitespace-nowrap">
             Shariah Audit
           </a>
-          <a href="#announcements-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
+          <a href="#announcements-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
             Announcements
           </a>
-          <a href="#company-info-section" className="hover:text-[#F1F5EE] transition-colors whitespace-nowrap">
+          <a href="#company-info-section" className="hover:text-[#EFF3FA] transition-colors whitespace-nowrap">
             Company Info
           </a>
         </div>
@@ -200,55 +200,55 @@ export default async function StockDetailPage({ params }: Props) {
           <div className="lg:col-span-4 space-y-4">
             <CompanyHealthScore stock={quote} />
 
-            <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl">
-              <h2 className="text-sm font-semibold text-[#F1F5EE] uppercase tracking-wider mb-4 border-b border-[#2A3C31] pb-3 flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-[#D5F478]" />
+            <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl">
+              <h2 className="text-sm font-semibold text-[#EFF3FA] uppercase tracking-wider mb-4 border-b border-[#28354A] pb-3 flex items-center space-x-2">
+                <Activity className="w-4 h-4 text-[#B69249]" />
                 <span>Trading Statistics</span>
               </h2>
 
-              <div className="divide-y divide-[#2A3C31]/60 text-xs">
+              <div className="divide-y divide-[#28354A]/60 text-xs">
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#A4B3A7]">Day High</span>
-                  <span className="font-mono font-semibold text-[#F1F5EE]">
+                  <span className="text-[#A4AEC1]">Day High</span>
+                  <span className="font-mono font-semibold text-[#EFF3FA]">
                     Rs {quote.high.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#A4B3A7]">Day Low</span>
-                  <span className="font-mono font-semibold text-[#F1F5EE]">
+                  <span className="text-[#A4AEC1]">Day Low</span>
+                  <span className="font-mono font-semibold text-[#EFF3FA]">
                     Rs {quote.low.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#A4B3A7]">Opening Price</span>
-                  <span className="font-mono font-semibold text-[#F1F5EE]">
+                  <span className="text-[#A4AEC1]">Opening Price</span>
+                  <span className="font-mono font-semibold text-[#EFF3FA]">
                     Rs {quote.open.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#A4B3A7]">Previous Close (LDCP)</span>
-                  <span className="font-mono font-semibold text-[#F1F5EE]">
+                  <span className="text-[#A4AEC1]">Previous Close (LDCP)</span>
+                  <span className="font-mono font-semibold text-[#EFF3FA]">
                     Rs {quote.ldcp.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#A4B3A7]">Trading Volume</span>
-                  <span className="font-mono font-semibold text-[#D5F478]">
+                  <span className="text-[#A4AEC1]">Trading Volume</span>
+                  <span className="font-mono font-semibold text-[#B69249]">
                     {quote.volume.toLocaleString()} shares
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-[#A4B3A7]">Market</span>
-                  <span className="text-[#F1F5EE] font-semibold">PSX Ready Board (REG)</span>
+                  <span className="text-[#A4AEC1]">Market</span>
+                  <span className="text-[#EFF3FA] font-semibold">PSX Ready Board (REG)</span>
                 </div>
               </div>
             </div>
 
             {/* In-App Portfolio Sync Callout */}
-            <div className="bg-gradient-to-br from-[#121E18] to-[#1E3026] border border-[#2A3C31] rounded-xl p-5 shadow-xl text-center">
-              <Smartphone className="w-8 h-8 text-[#D5F478] mx-auto mb-2" />
-              <h3 className="text-sm font-semibold text-[#F1F5EE]">Track {quote.symbol} in Daulat App</h3>
-              <p className="text-xs text-[#A4B3A7] mt-1 leading-relaxed">
+            <div className="bg-gradient-to-br from-[#111A2B] to-[#1C2940] border border-[#28354A] rounded-xl p-5 shadow-xl text-center">
+              <Smartphone className="w-8 h-8 text-[#B69249] mx-auto mb-2" />
+              <h3 className="text-sm font-semibold text-[#EFF3FA]">Track {quote.symbol} in Daulat App</h3>
+              <p className="text-xs text-[#A4AEC1] mt-1 leading-relaxed">
                 Add {quote.symbol} to your portfolio to track live profit/loss, price breakout
                 alerts, and average buy cost.
               </p>
@@ -256,7 +256,7 @@ export default async function StockDetailPage({ params }: Props) {
                 href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 block w-full bg-[#D5F478] hover:bg-[#C5E466] text-black font-semibold py-2 rounded-xl text-xs transition-colors"
+                className="mt-4 block w-full bg-[#B69249] hover:bg-[#C6A45B] text-black font-semibold py-2 rounded-xl text-xs transition-colors"
               >
                 Open in App
               </a>

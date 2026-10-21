@@ -43,7 +43,7 @@ export default function IndicesBar({
       <button
         onClick={() => scroll('left')}
         aria-label="Scroll indices left"
-        className="hidden md:flex absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#121E18]/95 border border-[#2A3C31] text-[#A4B3A7] hover:text-[#F1F5EE] hover:border-[#D5F478] items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+        className="hidden md:flex absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#111A2B]/95 border border-[#28354A] text-[#A4AEC1] hover:text-[#EFF3FA] hover:border-[#B69249] items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm"
       >
         <ChevronLeft className="w-4 h-4" />
       </button>
@@ -66,12 +66,12 @@ export default function IndicesBar({
               onClick={() => onSelectIndex?.(idx.code)}
               className={`flex-shrink-0 min-w-[192px] text-left p-4 rounded-lg border transition-all cursor-pointer ${
                 isSelected
-                  ? 'bg-[#18271F] border-[#D5F478]/60'
-                  : 'bg-[#121E18] border-[#2A3C31]/80 hover:border-[#496052] hover:bg-[#18271F]/70'
+                  ? 'bg-[#172237] border-[#B69249]/60'
+                  : 'bg-[#111A2B] border-[#28354A]/80 hover:border-[#465770] hover:bg-[#172237]/70'
               }`}
             >
               <div className="flex items-center justify-between space-x-2">
-                <span className="text-xs font-semibold text-[#F1F5EE] uppercase tracking-wider flex items-center space-x-1">
+                <span className="text-xs font-semibold text-[#EFF3FA] uppercase tracking-wider flex items-center space-x-1">
                   <span>{idx.code}</span>
                   {isIslamic && (
                     <span
@@ -103,7 +103,7 @@ export default function IndicesBar({
               </div>
 
               <div className="mt-3 flex items-baseline justify-between">
-                <span className="text-lg font-semibold text-[#F1F5EE] font-mono tracking-tight">
+                <span className="text-lg font-semibold text-[#EFF3FA] font-mono tracking-tight">
                   {idx.current.toLocaleString('en-US', {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 2,
@@ -127,7 +127,7 @@ export default function IndicesBar({
       <button
         onClick={() => scroll('right')}
         aria-label="Scroll indices right"
-        className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#121E18]/95 border border-[#2A3C31] text-[#A4B3A7] hover:text-[#F1F5EE] hover:border-[#D5F478] items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+        className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#111A2B]/95 border border-[#28354A] text-[#A4AEC1] hover:text-[#EFF3FA] hover:border-[#B69249] items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm"
       >
         <ChevronRight className="w-4 h-4" />
       </button>

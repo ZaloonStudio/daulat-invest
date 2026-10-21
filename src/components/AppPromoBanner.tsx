@@ -3,29 +3,29 @@ import { Smartphone, Bell, Camera, ShieldCheck, Download } from 'lucide-react';
 
 export default function AppPromoBanner() {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-[#121E18] via-[#18271F] to-[#121E18] border border-[#D5F478]/30 rounded-xl p-6 sm:p-8 shadow-2xl">
+    <div className="relative overflow-hidden bg-gradient-to-r from-[#111A2B] via-[#172237] to-[#111A2B] border border-[#B69249]/30 rounded-xl p-6 sm:p-8 shadow-2xl">
       {/* Background glow circle */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#D5F478]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#B69249]/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="max-w-xl">
-          <span className="inline-flex items-center space-x-1.5 bg-[#D5F478]/10 border border-[#D5F478]/30 px-3 py-1 rounded-full text-xs font-semibold text-[#D5F478] mb-3">
+          <span className="inline-flex items-center space-x-1.5 bg-[#B69249]/10 border border-[#B69249]/30 px-3 py-1 rounded-full text-xs font-semibold text-[#B69249] mb-3">
             <Smartphone className="w-3.5 h-3.5" />
             <span>Official Mobile App</span>
           </span>
 
-          <h3 className="text-2xl sm:text-3xl font-semibold text-[#F1F5EE] tracking-tight">
-            Track your PSX Portfolio on the go with <span className="text-[#D5F478]">Daulat</span>
+          <h3 className="text-2xl sm:text-3xl font-semibold text-[#EFF3FA] tracking-tight">
+            Track your PSX Portfolio on the go with <span className="text-[#B69249]">Daulat</span>
           </h3>
 
-          <p className="text-sm text-[#A4B3A7] mt-2 leading-relaxed">
+          <p className="text-sm text-[#A4AEC1] mt-2 leading-relaxed">
             Get instant price alerts, smart broker screenshot importer, live corporate disclosures,
             and automatic profit/loss sync across desktop &amp; mobile.
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4 text-xs text-[#F1F5EE]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4 text-xs text-[#EFF3FA]">
             <div className="flex items-center space-x-2">
-              <Camera className="w-4 h-4 text-[#D5F478]" />
+              <Camera className="w-4 h-4 text-[#B69249]" />
               <span>Smart Screenshot Import</span>
             </div>
             <div className="flex items-center space-x-2">
@@ -44,7 +44,7 @@ export default function AppPromoBanner() {
             href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
             target="_blank"
             rel="noopener noreferrer"
-            className="group bg-[#D5F478] hover:bg-[#C5E466] text-black font-semibold px-6 py-3.5 rounded-xl text-sm flex items-center space-x-3 shadow-lg shadow-[#D5F478]/20 transition-all hover:scale-105 active:scale-95"
+            className="group bg-[#B69249] hover:bg-[#C6A45B] text-black font-semibold px-6 py-3.5 rounded-xl text-sm flex items-center space-x-3 shadow-lg shadow-[#B69249]/20 transition-all hover:scale-105 active:scale-95"
           >
             <Download className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
             <div className="text-left">
@@ -54,7 +54,7 @@ export default function AppPromoBanner() {
               <div className="text-base font-semibold leading-tight">Google Play</div>
             </div>
           </a>
-          <span className="text-[11px] text-[#84988B] mt-2 font-medium">
+          <span className="text-[11px] text-[#7F8DA4] mt-2 font-medium">
             Version 1.2.6 • Free for Android 8.0+
           </span>
         </div>

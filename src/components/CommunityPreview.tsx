@@ -49,20 +49,20 @@ export default function CommunityPreview({ posts = DEFAULT_POSTS }: CommunityPre
   const displayPosts = posts.slice(0, 3);
 
   return (
-    <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 md:p-6 shadow-xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#2A3C31] gap-3">
+    <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 md:p-6 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#28354A] gap-3">
         <div className="flex items-center space-x-2.5">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#B9ADDA] to-[#794dd3] flex items-center justify-center text-white font-semibold">
             <Users className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-[#F1F5EE] flex items-center space-x-2">
+            <h3 className="text-base font-semibold text-[#EFF3FA] flex items-center space-x-2">
               <span>PSX Investor Community</span>
               <span className="text-[10px] bg-[#B9ADDA]/20 text-[#B9ADDA] px-2 py-0.5 rounded-full font-semibold">
                 Live Discussions
               </span>
             </h3>
-            <p className="text-xs text-[#A4B3A7]">
+            <p className="text-xs text-[#A4AEC1]">
               Share stock theses, earnings analysis, and trading setups with fellow Pakistani investors
             </p>
           </div>
@@ -82,11 +82,11 @@ export default function CommunityPreview({ posts = DEFAULT_POSTS }: CommunityPre
           <Link
             key={post.id}
             href="/community"
-            className="group flex flex-col justify-between p-4 bg-[#0C1411] border border-[#2A3C31] hover:border-[#B9ADDA] rounded-xl transition-all duration-200 hover:-translate-y-0.5"
+            className="group flex flex-col justify-between p-4 bg-[#0B1120] border border-[#28354A] hover:border-[#B9ADDA] rounded-xl transition-all duration-200 hover:-translate-y-0.5"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-[#D5F478] bg-[#D5F478]/10 px-2 py-0.5 rounded-md">
+                <span className="text-xs font-semibold text-[#B69249] bg-[#B69249]/10 px-2 py-0.5 rounded-md">
                   ${post.symbolTag || 'PSX'}
                 </span>
                 <span
@@ -95,24 +95,24 @@ export default function CommunityPreview({ posts = DEFAULT_POSTS }: CommunityPre
                       ? 'bg-[#6DDBA5]/15 text-[#6DDBA5]'
                       : post.sentiment === 'Bearish'
                       ? 'bg-[#F28B82]/15 text-[#F28B82]'
-                      : 'bg-[#A4B3A7]/15 text-[#A4B3A7]'
+                      : 'bg-[#A4AEC1]/15 text-[#A4AEC1]'
                   }`}
                 >
                   {post.sentiment}
                 </span>
               </div>
 
-              <h4 className="text-xs font-semibold text-[#F1F5EE] group-hover:text-[#B9ADDA] transition-colors line-clamp-2 mb-1.5 leading-snug">
+              <h4 className="text-xs font-semibold text-[#EFF3FA] group-hover:text-[#B9ADDA] transition-colors line-clamp-2 mb-1.5 leading-snug">
                 {post.title}
               </h4>
 
-              <p className="text-[11px] text-[#A4B3A7] line-clamp-2 leading-relaxed">
+              <p className="text-[11px] text-[#A4AEC1] line-clamp-2 leading-relaxed">
                 {post.content}
               </p>
             </div>
 
-            <div className="flex items-center justify-between text-[10px] text-[#84988B] pt-3 mt-3 border-t border-[#2A3C31]/60">
-              <span className="font-semibold text-[#A4B3A7]">@{post.author}</span>
+            <div className="flex items-center justify-between text-[10px] text-[#7F8DA4] pt-3 mt-3 border-t border-[#28354A]/60">
+              <span className="font-semibold text-[#A4AEC1]">@{post.author}</span>
               <div className="flex items-center space-x-3">
                 <span className="flex items-center space-x-1 text-[#6DDBA5]">
                   <ThumbsUp className="w-3 h-3" />

@@ -114,16 +114,16 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#2A3C31] pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#28354A] pb-6">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-semibold text-[#D5F478] uppercase tracking-wider mb-2">
-            <Star className="w-4 h-4 fill-[#D5F478]" />
+          <div className="flex items-center space-x-2 text-xs font-semibold text-[#B69249] uppercase tracking-wider mb-2">
+            <Star className="w-4 h-4 fill-[#B69249]" />
             <span>Personalized Market Monitor</span>
           </div>
-          <h1 className="text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+          <h1 className="text-3xl font-semibold text-[#EFF3FA] tracking-tight">
             My Stock Watchlist
           </h1>
-          <p className="text-sm text-[#A4B3A7] mt-1.5 max-w-2xl">
+          <p className="text-sm text-[#A4AEC1] mt-1.5 max-w-2xl">
             Track live prices, day gains, turnover volume, and valuation multiples for your chosen PSX companies.
           </p>
         </div>
@@ -131,7 +131,7 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
         {/* Add Stock Search Form */}
         <div className="relative w-full md:w-80">
           <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4B3A7]" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A4AEC1]" />
             <input
               type="text"
               value={searchQuery}
@@ -141,30 +141,30 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
               }}
               onFocus={() => setIsSearching(true)}
               placeholder="Add stock to watchlist..."
-              className="w-full bg-[#121E18] border border-[#2A3C31] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#F1F5EE] placeholder-[#A4B3A7] focus:outline-none focus:border-[#D5F478] transition-colors"
+              className="w-full bg-[#111A2B] border border-[#28354A] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#EFF3FA] placeholder-[#A4AEC1] focus:outline-none focus:border-[#B69249] transition-colors"
             />
           </div>
 
           {/* Autocomplete Dropdown */}
           {isSearching && searchResults.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-[#121E18] border border-[#2A3C31] rounded-xl shadow-2xl overflow-hidden z-30">
-              <div className="px-3 py-1.5 text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider border-b border-[#2A3C31]">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-[#111A2B] border border-[#28354A] rounded-xl shadow-2xl overflow-hidden z-30">
+              <div className="px-3 py-1.5 text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider border-b border-[#28354A]">
                 Select to Add
               </div>
               {searchResults.map((stock) => (
                 <button
                   key={stock.symbol}
                   onClick={() => addStock(stock.symbol)}
-                  className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#1E3026] transition-colors text-left"
+                  className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-[#1C2940] transition-colors text-left"
                 >
                   <div>
-                    <span className="font-semibold text-[#F1F5EE] text-xs">{stock.symbol}</span>
-                    <span className="text-[11px] text-[#A4B3A7] block truncate max-w-[180px]">
+                    <span className="font-semibold text-[#EFF3FA] text-xs">{stock.symbol}</span>
+                    <span className="text-[11px] text-[#A4AEC1] block truncate max-w-[180px]">
                       {stock.name}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-xs font-semibold text-[#F1F5EE]">
+                    <span className="text-xs font-semibold text-[#EFF3FA]">
                       Rs {stock.current.toFixed(2)}
                     </span>
                     <Plus className="w-3.5 h-3.5 text-[#6DDBA5]" />
@@ -178,16 +178,16 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
 
       {/* Summary Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-[#121E18] border border-[#2A3C31] p-4 rounded-xl">
-          <span className="text-[11px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl">
+          <span className="text-[11px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
             Stocks Tracked
           </span>
-          <div className="text-2xl font-semibold text-[#F1F5EE] mt-1">{trackedStocks.length}</div>
-          <span className="text-[10px] text-[#A4B3A7]">Custom curated watchlist</span>
+          <div className="text-2xl font-semibold text-[#EFF3FA] mt-1">{trackedStocks.length}</div>
+          <span className="text-[10px] text-[#A4AEC1]">Custom curated watchlist</span>
         </div>
 
-        <div className="bg-[#121E18] border border-[#2A3C31] p-4 rounded-xl">
-          <span className="text-[11px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl">
+          <span className="text-[11px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
             Average Day Return
           </span>
           <div
@@ -198,14 +198,14 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
             {avgPerformance >= 0 ? '+' : ''}
             {avgPerformance.toFixed(2)}%
           </div>
-          <span className="text-[10px] text-[#A4B3A7]">Equal weighted basket performance</span>
+          <span className="text-[10px] text-[#A4AEC1]">Equal weighted basket performance</span>
         </div>
 
-        <div className="bg-[#121E18] border border-[#2A3C31] p-4 rounded-xl">
-          <span className="text-[11px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl">
+          <span className="text-[11px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
             Top Mover in Watchlist
           </span>
-          <div className="text-xl font-semibold text-[#D5F478] mt-1 flex items-center space-x-2">
+          <div className="text-xl font-semibold text-[#B69249] mt-1 flex items-center space-x-2">
             <span>{topGainer ? topGainer.symbol : '—'}</span>
             {topGainer && (
               <span
@@ -220,17 +220,17 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
               </span>
             )}
           </div>
-          <span className="text-[10px] text-[#A4B3A7] truncate block">
+          <span className="text-[10px] text-[#A4AEC1] truncate block">
             {topGainer ? topGainer.name : 'No stocks in watchlist'}
           </span>
         </div>
       </div>
 
       {/* Main Watchlist Table */}
-      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl overflow-hidden shadow-xl">
+      <div className="bg-[#111A2B] border border-[#28354A] rounded-xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#0C1411] border-b border-[#2A3C31] text-[10px] text-[#A4B3A7] uppercase tracking-wider">
+            <thead className="bg-[#0B1120] border-b border-[#28354A] text-[10px] text-[#A4AEC1] uppercase tracking-wider">
               <tr>
                 <th className="py-3 px-4">Symbol &amp; Company</th>
                 <th className="py-3 px-4 text-right">Price (PKR)</th>
@@ -243,18 +243,18 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
                 <th className="py-3 px-4 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#2A3C31]/60">
+            <tbody className="divide-y divide-[#28354A]/60">
               {trackedStocks.map((stock) => {
                 const isPositive = stock.change >= 0;
                 return (
-                  <tr key={stock.symbol} className="hover:bg-[#1E3026]/60 transition-colors group">
+                  <tr key={stock.symbol} className="hover:bg-[#1C2940]/60 transition-colors group">
                     <td className="py-3 px-4">
                       <Link
                         href={`/stocks/${stock.symbol}`}
-                        className="flex flex-col group-hover:text-[#D5F478] transition-colors"
+                        className="flex flex-col group-hover:text-[#B69249] transition-colors"
                       >
                         <div className="flex items-center space-x-1.5">
-                          <span className="font-semibold text-[#F1F5EE] text-sm group-hover:text-[#D5F478]">
+                          <span className="font-semibold text-[#EFF3FA] text-sm group-hover:text-[#B69249]">
                             {stock.symbol}
                           </span>
                           {stock.isShariah && (
@@ -263,13 +263,13 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
                             </span>
                           )}
                         </div>
-                        <span className="text-[11px] text-[#A4B3A7] truncate max-w-[200px]">
+                        <span className="text-[11px] text-[#A4AEC1] truncate max-w-[200px]">
                           {stock.name}
                         </span>
                       </Link>
                     </td>
 
-                    <td className="py-3 px-4 text-right font-semibold text-[#F1F5EE] text-sm">
+                    <td className="py-3 px-4 text-right font-semibold text-[#EFF3FA] text-sm">
                       Rs {stock.current.toFixed(2)}
                     </td>
 
@@ -295,22 +295,22 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
                       </span>
                     </td>
 
-                    <td className="py-3 px-4 text-right hidden sm:table-cell text-[#A4B3A7] text-[11px]">
+                    <td className="py-3 px-4 text-right hidden sm:table-cell text-[#A4AEC1] text-[11px]">
                       {stock.high > 0 ? stock.high.toFixed(2) : '—'} /{' '}
                       {stock.low > 0 ? stock.low.toFixed(2) : '—'}
                     </td>
 
-                    <td className="py-3 px-4 text-right hidden md:table-cell font-mono text-[#F1F5EE]">
+                    <td className="py-3 px-4 text-right hidden md:table-cell font-mono text-[#EFF3FA]">
                       {stock.volume ? stock.volume.toLocaleString() : '—'}
                     </td>
 
-                    <td className="py-3 px-4 text-right hidden lg:table-cell text-[#B9E76A] font-semibold">
+                    <td className="py-3 px-4 text-right hidden lg:table-cell text-[#B69249] font-semibold">
                       {stock.dividendYield && stock.dividendYield > 0
                         ? `${stock.dividendYield.toFixed(1)}%`
                         : '—'}
                     </td>
 
-                    <td className="py-3 px-4 text-right hidden lg:table-cell text-[#A4B3A7]">
+                    <td className="py-3 px-4 text-right hidden lg:table-cell text-[#A4AEC1]">
                       {stock.peRatio && stock.peRatio > 0 ? stock.peRatio.toFixed(1) : '—'}
                     </td>
 
@@ -318,14 +318,14 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
                       <div className="flex items-center justify-center space-x-2">
                         <Link
                           href={`/stocks/${stock.symbol}`}
-                          className="p-1.5 text-[#A4B3A7] hover:text-[#D5F478] hover:bg-[#0C1411] rounded-lg transition-colors"
+                          className="p-1.5 text-[#A4AEC1] hover:text-[#B69249] hover:bg-[#0B1120] rounded-lg transition-colors"
                           title="View Stock Terminal"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </Link>
                         <button
                           onClick={() => removeStock(stock.symbol)}
-                          className="p-1.5 text-[#A4B3A7] hover:text-[#F28B82] hover:bg-[#0C1411] rounded-lg transition-colors"
+                          className="p-1.5 text-[#A4AEC1] hover:text-[#F28B82] hover:bg-[#0B1120] rounded-lg transition-colors"
                           title="Remove from Watchlist"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -340,15 +340,15 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
         </div>
 
         {trackedStocks.length === 0 && (
-          <div className="text-center py-16 bg-[#0C1411] space-y-3">
-            <Star className="w-10 h-10 text-[#84988B] mx-auto" />
-            <h3 className="text-base font-semibold text-[#F1F5EE]">Your watchlist is empty</h3>
-            <p className="text-xs text-[#A4B3A7]">
+          <div className="text-center py-16 bg-[#0B1120] space-y-3">
+            <Star className="w-10 h-10 text-[#7F8DA4] mx-auto" />
+            <h3 className="text-base font-semibold text-[#EFF3FA]">Your watchlist is empty</h3>
+            <p className="text-xs text-[#A4AEC1]">
               Use the search bar above to track companies on the Pakistan Stock Exchange.
             </p>
             <button
               onClick={() => saveWatchlist(DEFAULT_SYMBOLS)}
-              className="mt-3 px-4 py-2 bg-[#D5F478] text-black font-semibold rounded-xl text-xs"
+              className="mt-3 px-4 py-2 bg-[#B69249] text-black font-semibold rounded-xl text-xs"
             >
               Reset Default PSX Bluechips
             </button>

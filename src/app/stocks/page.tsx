@@ -24,15 +24,15 @@ export default async function StocksPage() {
   const sectors = Array.from(sectorsSet).sort();
 
   return (
-    <div className="min-h-screen bg-[#0C1411] text-[#F1F5EE]">
+    <div className="min-h-screen bg-[#0B1120] text-[#EFF3FA]">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#F1F5EE]">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[#EFF3FA]">
             PSX Listed Stocks Directory
           </h1>
-          <p className="text-xs sm:text-sm text-[#A4B3A7] mt-1">
+          <p className="text-xs sm:text-sm text-[#A4AEC1] mt-1">
             Real-time market rates and company intelligence across all {quotes.length} listed
             equities on the Pakistan Stock Exchange.
           </p>
@@ -40,7 +40,7 @@ export default async function StocksPage() {
 
         <Suspense
           fallback={
-            <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-12 text-center text-sm text-[#A4B3A7]">
+            <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-12 text-center text-sm text-[#A4AEC1]">
               Loading PSX directory...
             </div>
           }

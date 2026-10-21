@@ -215,32 +215,32 @@ export default function StockHistoryChart({
         fontSize: 11,
       },
       grid: {
-        vertLines: { color: 'rgba(132, 152, 139, 0.35)' },
-        horzLines: { color: 'rgba(132, 152, 139, 0.35)' },
+        vertLines: { color: 'rgba(127, 141, 164, 0.35)' },
+        horzLines: { color: 'rgba(127, 141, 164, 0.35)' },
       },
       crosshair: {
         vertLine: {
-          color: chartMode === 'comparison' ? '#1988FF' : '#D5F478',
+          color: chartMode === 'comparison' ? '#1988FF' : '#B69249',
           width: 1,
           style: 3,
-          labelBackgroundColor: chartMode === 'comparison' ? '#1988FF' : '#D5F478',
+          labelBackgroundColor: chartMode === 'comparison' ? '#1988FF' : '#B69249',
         },
         horzLine: {
-          color: chartMode === 'comparison' ? '#1988FF' : '#D5F478',
+          color: chartMode === 'comparison' ? '#1988FF' : '#B69249',
           width: 1,
           style: 3,
-          labelBackgroundColor: chartMode === 'comparison' ? '#1988FF' : '#D5F478',
+          labelBackgroundColor: chartMode === 'comparison' ? '#1988FF' : '#B69249',
         },
       },
       rightPriceScale: {
-        borderColor: '#2A3C31',
+        borderColor: '#28354A',
         scaleMargins: {
           top: 0.12,
           bottom: 0.12,
         },
       },
       timeScale: {
-        borderColor: '#2A3C31',
+        borderColor: '#28354A',
         timeVisible: true,
       },
       handleScroll: true,
@@ -340,10 +340,10 @@ export default function StockHistoryChart({
     // 2. MARKET CAP MODE
     else if (chartMode === 'mktcap') {
       const areaSeries = chart.addSeries(AreaSeries, {
-        lineColor: '#D5F478',
+        lineColor: '#B69249',
         lineWidth: 2,
-        topColor: 'rgba(213, 244, 120, 0.28)',
-        bottomColor: 'rgba(213, 244, 120, 0.0)',
+        topColor: 'rgba(182, 146, 73, 0.28)',
+        bottomColor: 'rgba(182, 146, 73, 0.0)',
         priceFormat: {
           type: 'custom',
           formatter: (val: number) => `Rs ${val.toFixed(2)}B`,
@@ -363,7 +363,7 @@ export default function StockHistoryChart({
     else if (chartMode === 'sip') {
       // Curve 1: Total Invested (Gold line)
       const investedSeries = chart.addSeries(LineSeries, {
-        color: '#A4B3A7',
+        color: '#A4AEC1',
         lineWidth: 2,
         lineStyle: 2,
         title: 'Invested',
@@ -375,10 +375,10 @@ export default function StockHistoryChart({
 
       // Curve 2: Portfolio Value (Teal line)
       const valueSeries = chart.addSeries(AreaSeries, {
-        lineColor: '#B9E76A',
+        lineColor: '#B69249',
         lineWidth: 2,
-        topColor: 'rgba(185, 231, 106, 0.25)',
-        bottomColor: 'rgba(185, 231, 106, 0.0)',
+        topColor: 'rgba(182, 146, 73, 0.25)',
+        bottomColor: 'rgba(182, 146, 73, 0.0)',
         title: 'Value',
         priceFormat: {
           type: 'custom',
@@ -504,11 +504,11 @@ export default function StockHistoryChart({
   return (
     <div className="space-y-4">
       {/* Main Chart Container */}
-      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl">
+      <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl">
         {/* Row 1: Title & Mode Toolbar (Price | Market Cap | Index vs Company | Sip | Trading View) */}
-        <div className="flex flex-wrap items-center justify-between mb-3 border-b border-[#2A3C31] pb-3 gap-3">
+        <div className="flex flex-wrap items-center justify-between mb-3 border-b border-[#28354A] pb-3 gap-3">
           <div className="flex items-center space-x-3">
-            <h2 className="text-sm font-semibold text-[#F1F5EE] uppercase tracking-wider">
+            <h2 className="text-sm font-semibold text-[#EFF3FA] uppercase tracking-wider">
               {chartMode === 'comparison'
                 ? 'Index Vs Company'
                 : chartMode === 'mktcap'
@@ -521,26 +521,26 @@ export default function StockHistoryChart({
             </h2>
 
             {chartMode === 'price' && hoveredPoint && (
-              <span className="text-xs font-mono font-semibold text-[#D5F478] bg-[#0C1411] px-2 py-0.5 rounded border border-[#2A3C31]">
+              <span className="text-xs font-mono font-semibold text-[#B69249] bg-[#0B1120] px-2 py-0.5 rounded border border-[#28354A]">
                 Rs {hoveredPoint.value.toFixed(2)}
               </span>
             )}
 
             {chartMode === 'mktcap' && hoveredPoint && (
-              <span className="text-xs font-mono font-semibold text-[#D5F478] bg-[#0C1411] px-2 py-0.5 rounded border border-[#2A3C31]">
+              <span className="text-xs font-mono font-semibold text-[#B69249] bg-[#0B1120] px-2 py-0.5 rounded border border-[#28354A]">
                 Rs {hoveredPoint.value.toFixed(2)}B
               </span>
             )}
           </div>
 
           {/* 5 Sarmaaya Modes: Price | Market Cap | Index vs Company | Sip | Trading View */}
-          <div className="flex items-center space-x-1 bg-[#0C1411] p-1 rounded-xl border border-[#2A3C31] overflow-x-auto scrollbar-none">
+          <div className="flex items-center space-x-1 bg-[#0B1120] p-1 rounded-xl border border-[#28354A] overflow-x-auto scrollbar-none">
             <button
               onClick={() => setChartMode('price')}
               className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 chartMode === 'price'
-                  ? 'bg-[#1E3026] text-[#F1F5EE] shadow-sm'
-                  : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
+                  ? 'bg-[#1C2940] text-[#EFF3FA] shadow-sm'
+                  : 'text-[#A4AEC1] hover:text-[#EFF3FA]'
               }`}
             >
               Price
@@ -550,8 +550,8 @@ export default function StockHistoryChart({
               onClick={() => setChartMode('mktcap')}
               className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 chartMode === 'mktcap'
-                  ? 'bg-[#1E3026] text-[#F1F5EE] shadow-sm'
-                  : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
+                  ? 'bg-[#1C2940] text-[#EFF3FA] shadow-sm'
+                  : 'text-[#A4AEC1] hover:text-[#EFF3FA]'
               }`}
             >
               Market Cap
@@ -561,8 +561,8 @@ export default function StockHistoryChart({
               onClick={() => setChartMode('comparison')}
               className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 chartMode === 'comparison'
-                  ? 'bg-[#1E3026] text-[#1988FF] border border-[#1988FF]/30 shadow-sm font-semibold'
-                  : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
+                  ? 'bg-[#1C2940] text-[#1988FF] border border-[#1988FF]/30 shadow-sm font-semibold'
+                  : 'text-[#A4AEC1] hover:text-[#EFF3FA]'
               }`}
             >
               Index vs Company
@@ -572,8 +572,8 @@ export default function StockHistoryChart({
               onClick={() => setChartMode('sip')}
               className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 chartMode === 'sip'
-                  ? 'bg-[#1E3026] text-[#B9E76A] border border-[#B9E76A]/30 shadow-sm'
-                  : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
+                  ? 'bg-[#1C2940] text-[#B69249] border border-[#B69249]/30 shadow-sm'
+                  : 'text-[#A4AEC1] hover:text-[#EFF3FA]'
               }`}
             >
               Sip
@@ -583,8 +583,8 @@ export default function StockHistoryChart({
               onClick={() => setChartMode('tradingview')}
               className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 chartMode === 'tradingview'
-                  ? 'bg-[#1E3026] text-[#D5F478] shadow-sm'
-                  : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
+                  ? 'bg-[#1C2940] text-[#B69249] shadow-sm'
+                  : 'text-[#A4AEC1] hover:text-[#EFF3FA]'
               }`}
             >
               Trading View
@@ -594,15 +594,15 @@ export default function StockHistoryChart({
 
         {/* Row 2: Timeframe selector (1D | 1W | 1M | 6M | 1Y | 3Y | 5Y | All) */}
         <div className="flex flex-wrap items-center justify-between mb-3 gap-2">
-          <div className="flex items-center space-x-1 bg-[#0C1411] p-1 rounded-xl border border-[#2A3C31]">
+          <div className="flex items-center space-x-1 bg-[#0B1120] p-1 rounded-xl border border-[#28354A]">
             {(['1D', '1W', '1M', '6M', '1Y', '3Y', '5Y', 'ALL'] as const).map((tf) => (
               <button
                 key={tf}
                 onClick={() => setTimeframe(tf)}
                 className={`px-2.5 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   timeframe === tf
-                    ? 'bg-[#B9E76A] text-black shadow-sm'
-                    : 'text-[#A4B3A7] hover:text-[#F1F5EE]'
+                    ? 'bg-[#B69249] text-black shadow-sm'
+                    : 'text-[#A4AEC1] hover:text-[#EFF3FA]'
                 }`}
               >
                 {tf}
@@ -634,7 +634,7 @@ export default function StockHistoryChart({
           {/* SIP Amount Quick Selector in SIP Mode */}
           {chartMode === 'sip' && (
             <div className="flex items-center space-x-2 text-xs">
-              <span className="text-[#A4B3A7]">Monthly SIP:</span>
+              <span className="text-[#A4AEC1]">Monthly SIP:</span>
               <div className="flex items-center space-x-1">
                 {[5000, 10000, 25000, 50000].map((amt) => (
                   <button
@@ -642,8 +642,8 @@ export default function StockHistoryChart({
                     onClick={() => setSipMonthlyAmount(amt)}
                     className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
                       sipMonthlyAmount === amt
-                        ? 'bg-[#B9E76A] text-black'
-                        : 'bg-[#0C1411] text-[#A4B3A7] border border-[#2A3C31]'
+                        ? 'bg-[#B69249] text-black'
+                        : 'bg-[#0B1120] text-[#A4AEC1] border border-[#28354A]'
                     }`}
                   >
                     Rs {(amt / 1000).toFixed(0)}k
@@ -656,21 +656,21 @@ export default function StockHistoryChart({
 
         {/* SIP Stats Banner */}
         {chartMode === 'sip' && (
-          <div className="mb-3 grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#0C1411] border border-[#2A3C31] p-3 rounded-xl text-xs">
+          <div className="mb-3 grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#0B1120] border border-[#28354A] p-3 rounded-xl text-xs">
             <div>
-              <span className="text-[10px] text-[#A4B3A7] block">Duration</span>
-              <span className="font-semibold text-[#F1F5EE]">{sipStats.months} Months ({timeframe})</span>
+              <span className="text-[10px] text-[#A4AEC1] block">Duration</span>
+              <span className="font-semibold text-[#EFF3FA]">{sipStats.months} Months ({timeframe})</span>
             </div>
             <div>
-              <span className="text-[10px] text-[#A4B3A7] block">Total Deposited</span>
-              <span className="font-mono font-semibold text-[#A4B3A7]">Rs {sipStats.totalInvested.toLocaleString()}</span>
+              <span className="text-[10px] text-[#A4AEC1] block">Total Deposited</span>
+              <span className="font-mono font-semibold text-[#A4AEC1]">Rs {sipStats.totalInvested.toLocaleString()}</span>
             </div>
             <div>
-              <span className="text-[10px] text-[#A4B3A7] block">Portfolio Value</span>
-              <span className="font-mono font-semibold text-[#B9E76A]">Rs {sipStats.portfolioValue.toLocaleString()}</span>
+              <span className="text-[10px] text-[#A4AEC1] block">Portfolio Value</span>
+              <span className="font-mono font-semibold text-[#B69249]">Rs {sipStats.portfolioValue.toLocaleString()}</span>
             </div>
             <div>
-              <span className="text-[10px] text-[#A4B3A7] block">Absolute Profit</span>
+              <span className="text-[10px] text-[#A4AEC1] block">Absolute Profit</span>
               <span className={`font-mono font-semibold ${sipStats.profit >= 0 ? 'text-[#6DDBA5]' : 'text-[#F28B82]'}`}>
                 {sipStats.profit >= 0 ? '+' : ''}Rs {sipStats.profit.toLocaleString()} ({sipStats.returnPct.toFixed(1)}%)
               </span>
@@ -683,7 +683,7 @@ export default function StockHistoryChart({
 
         {/* Bottom Legend (Exact Sarmaaya Style: — SNBL  — Index) */}
         {chartMode === 'comparison' && (
-          <div className="mt-3 pt-3 border-t border-[#2A3C31]/60 flex items-center justify-center space-x-6 text-xs font-semibold">
+          <div className="mt-3 pt-3 border-t border-[#28354A]/60 flex items-center justify-center space-x-6 text-xs font-semibold">
             <div className="flex items-center space-x-2 text-[#1988FF]">
               <span className="w-4 h-0.5 bg-[#1988FF] rounded-full inline-block" />
               <span>{symbol}</span>
@@ -697,15 +697,15 @@ export default function StockHistoryChart({
       </div>
 
       {/* Sarmaaya-Style Multi-Period Performance Comparison Table */}
-      <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl">
-        <div className="flex items-center justify-between mb-4 border-b border-[#2A3C31] pb-3">
+      <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl">
+        <div className="flex items-center justify-between mb-4 border-b border-[#28354A] pb-3">
           <div className="flex items-center space-x-2">
-            <Award className="w-4 h-4 text-[#D5F478]" />
-            <h3 className="text-xs font-semibold text-[#F1F5EE] uppercase tracking-wider">
+            <Award className="w-4 h-4 text-[#B69249]" />
+            <h3 className="text-xs font-semibold text-[#EFF3FA] uppercase tracking-wider">
               {symbol} vs KSE-100 Benchmark Performance
             </h3>
           </div>
-          <span className="text-[11px] text-[#A4B3A7]">
+          <span className="text-[11px] text-[#A4AEC1]">
             Alpha = {symbol} Return − KSE-100 Return
           </span>
         </div>
@@ -713,7 +713,7 @@ export default function StockHistoryChart({
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-[#2A3C31] text-[#A4B3A7] uppercase tracking-wider text-left">
+              <tr className="border-b border-[#28354A] text-[#A4AEC1] uppercase tracking-wider text-left">
                 <th className="py-2.5 px-3 font-semibold">Timeframe</th>
                 <th className="py-2.5 px-3 font-semibold">{symbol} Return</th>
                 <th className="py-2.5 px-3 font-semibold">KSE-100 Return</th>
@@ -721,7 +721,7 @@ export default function StockHistoryChart({
                 <th className="py-2.5 px-3 font-semibold text-right">Verdict</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#2A3C31]/50">
+            <tbody className="divide-y divide-[#28354A]/50">
               {comparisonData.map((item) => {
                 const isOutperforming = item.alpha >= 0;
                 const isStockPos = item.stockReturn >= 0;
@@ -730,9 +730,9 @@ export default function StockHistoryChart({
                 return (
                   <tr
                     key={item.period}
-                    className="hover:bg-[#1E3026]/40 transition-colors"
+                    className="hover:bg-[#1C2940]/40 transition-colors"
                   >
-                    <td className="py-3 px-3 font-semibold text-[#F1F5EE]">
+                    <td className="py-3 px-3 font-semibold text-[#EFF3FA]">
                       {item.label} ({item.period})
                     </td>
                     <td
@@ -753,7 +753,7 @@ export default function StockHistoryChart({
                     </td>
                     <td
                       className={`py-3 px-3 font-mono font-semibold ${
-                        isOutperforming ? 'text-[#B9E76A]' : 'text-[#F28B82]'
+                        isOutperforming ? 'text-[#B69249]' : 'text-[#F28B82]'
                       }`}
                     >
                       {isOutperforming ? '+' : ''}

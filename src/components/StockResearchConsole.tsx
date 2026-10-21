@@ -38,16 +38,16 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
   ];
 
   return (
-    <div className="bg-[#121E18] border border-[#2A3C31] rounded-2xl p-6 shadow-2xl space-y-6">
+    <div className="bg-[#111A2B] border border-[#28354A] rounded-2xl p-6 shadow-2xl space-y-6">
       {/* Tab Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#2A3C31] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#28354A] pb-4">
         <div className="flex items-center space-x-2 overflow-x-auto scrollbar-none pb-1">
           <button
             onClick={() => setActiveTab('ratios')}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'ratios'
-                ? 'bg-[#B9E76A] text-black shadow-md'
-                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
+                ? 'bg-[#B69249] text-black shadow-md'
+                : 'bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A]'
             }`}
           >
             Valuation &amp; Ratios
@@ -57,8 +57,8 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
             onClick={() => setActiveTab('peers')}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'peers'
-                ? 'bg-[#B9E76A] text-black shadow-md'
-                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
+                ? 'bg-[#B69249] text-black shadow-md'
+                : 'bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A]'
             }`}
           >
             Sector Peer Comparison ({peers.length})
@@ -68,8 +68,8 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
             onClick={() => setActiveTab('dividends')}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'dividends'
-                ? 'bg-[#B9E76A] text-black shadow-md'
-                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
+                ? 'bg-[#B69249] text-black shadow-md'
+                : 'bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A]'
             }`}
           >
             Dividend History
@@ -79,8 +79,8 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
             onClick={() => setActiveTab('shariah')}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'shariah'
-                ? 'bg-[#B9E76A] text-black shadow-md'
-                : 'bg-[#0C1411] text-[#A4B3A7] hover:text-[#F1F5EE] border border-[#2A3C31]'
+                ? 'bg-[#B69249] text-black shadow-md'
+                : 'bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A]'
             }`}
           >
             Shariah Screening
@@ -91,7 +91,7 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
         {peers.length > 0 && (
           <Link
             href={`/stocks/compare?base=${stock.symbol}`}
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#1E3026] hover:bg-[#2A3C31] text-[#B9E76A] text-xs font-semibold transition-colors shrink-0 w-fit"
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#1C2940] hover:bg-[#28354A] text-[#B69249] text-xs font-semibold transition-colors shrink-0 w-fit"
           >
             <GitCompare className="w-3.5 h-3.5" />
             <span>Open Compare Tool</span>
@@ -103,20 +103,20 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
       {activeTab === 'ratios' && (
         <div className="space-y-6">
           {/* 52-Week Range Bar */}
-          <div className="bg-[#0C1411] border border-[#2A3C31] p-5 rounded-xl space-y-2">
+          <div className="bg-[#0B1120] border border-[#28354A] p-5 rounded-xl space-y-2">
             <div className="flex justify-between items-center text-xs font-semibold">
-              <span className="text-[#A4B3A7]">52-Week Trading Range</span>
-              <span className="text-[#F1F5EE]">
-                Current: <strong className="text-[#D5F478]">Rs {stock.current.toFixed(2)}</strong>
+              <span className="text-[#A4AEC1]">52-Week Trading Range</span>
+              <span className="text-[#EFF3FA]">
+                Current: <strong className="text-[#B69249]">Rs {stock.current.toFixed(2)}</strong>
               </span>
             </div>
-            <div className="relative h-3 w-full bg-[#1E3026] rounded-full overflow-hidden">
+            <div className="relative h-3 w-full bg-[#1C2940] rounded-full overflow-hidden">
               <div
                 style={{ width: `${rangePct}%` }}
-                className="bg-gradient-to-r from-[#D5F478] to-[#6DDBA5] h-full transition-all duration-500"
+                className="bg-gradient-to-r from-[#B69249] to-[#6DDBA5] h-full transition-all duration-500"
               />
             </div>
-            <div className="flex justify-between items-center text-[11px] text-[#A4B3A7]">
+            <div className="flex justify-between items-center text-[11px] text-[#A4AEC1]">
               <span>52W Low: <strong>Rs {week52Low.toFixed(2)}</strong></span>
               <span>Position: {rangePct.toFixed(0)}%</span>
               <span>52W High: <strong>Rs {week52High.toFixed(2)}</strong></span>
@@ -125,17 +125,17 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
 
           {/* Ratios 8-Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl">
-              <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+            <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl">
+              <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
                 P/E Ratio (Trailing)
               </span>
-              <div className="text-xl font-semibold text-[#F1F5EE] mt-1">
+              <div className="text-xl font-semibold text-[#EFF3FA] mt-1">
                 {stock.peRatio && stock.peRatio > 0 ? `${stock.peRatio.toFixed(2)}x` : '—'}
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">Price to Earnings</span>
+              <span className="text-[10px] text-[#A4AEC1]">Price to Earnings</span>
             </div>
 
-            <div className="bg-[#0C1411] border border-[#6DDBA5]/30 p-4 rounded-xl">
+            <div className="bg-[#0B1120] border border-[#6DDBA5]/30 p-4 rounded-xl">
               <span className="text-[10px] font-semibold text-[#6DDBA5] uppercase tracking-wider block">
                 Dividend Yield
               </span>
@@ -144,51 +144,51 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
                   ? `${stock.dividendYield.toFixed(2)}%`
                   : '0.00%'}
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">Est. DPS: Rs {dps}</span>
+              <span className="text-[10px] text-[#A4AEC1]">Est. DPS: Rs {dps}</span>
             </div>
 
-            <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl">
-              <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+            <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl">
+              <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
                 Earnings Per Share
               </span>
-              <div className="text-xl font-semibold text-[#F1F5EE] mt-1">
+              <div className="text-xl font-semibold text-[#EFF3FA] mt-1">
                 {eps !== '—' ? `Rs ${eps}` : '—'}
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">EPS (TTM)</span>
+              <span className="text-[10px] text-[#A4AEC1]">EPS (TTM)</span>
             </div>
 
-            <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl">
-              <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+            <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl">
+              <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
                 Price-to-Book (P/B)
               </span>
-              <div className="text-xl font-semibold text-[#F1F5EE] mt-1">
+              <div className="text-xl font-semibold text-[#EFF3FA] mt-1">
                 {pbRatio}x
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">Book Val: Rs {bookValue}</span>
+              <span className="text-[10px] text-[#A4AEC1]">Book Val: Rs {bookValue}</span>
             </div>
 
-            <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl">
-              <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+            <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl">
+              <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
                 Market Capitalization
               </span>
-              <div className="text-xl font-semibold text-[#D5F478] mt-1">
+              <div className="text-xl font-semibold text-[#B69249] mt-1">
                 Rs {marketCapBillion}B
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">Exchange Valuation</span>
+              <span className="text-[10px] text-[#A4AEC1]">Exchange Valuation</span>
             </div>
 
-            <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl">
-              <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+            <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl">
+              <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
                 Free Float Shares
               </span>
-              <div className="text-xl font-semibold text-[#F1F5EE] mt-1">
+              <div className="text-xl font-semibold text-[#EFF3FA] mt-1">
                 {stock.freeFloat && stock.freeFloat > 0 ? `${stock.freeFloat.toFixed(1)}%` : '35.0%'}
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">Public Liquidity</span>
+              <span className="text-[10px] text-[#A4AEC1]">Public Liquidity</span>
             </div>
 
-            <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl">
-              <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+            <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl">
+              <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
                 1-Year Change %
               </span>
               <div
@@ -199,17 +199,17 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
                 {(stock.changeYear || 0) >= 0 ? '+' : ''}
                 {(stock.changeYear || 0).toFixed(2)}%
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">Annual Momentum</span>
+              <span className="text-[10px] text-[#A4AEC1]">Annual Momentum</span>
             </div>
 
-            <div className="bg-[#0C1411] border border-[#2A3C31] p-4 rounded-xl">
-              <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+            <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl">
+              <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
                 Trading Board
               </span>
-              <div className="text-lg font-semibold text-[#F1F5EE] mt-1 truncate">
+              <div className="text-lg font-semibold text-[#EFF3FA] mt-1 truncate">
                 PSX Ready
               </div>
-              <span className="text-[10px] text-[#A4B3A7]">Lot Size: 500 / 1</span>
+              <span className="text-[10px] text-[#A4AEC1]">Lot Size: 500 / 1</span>
             </div>
           </div>
         </div>
@@ -218,9 +218,9 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
       {/* TAB 2: SECTOR PEER COMPARISON TABLE */}
       {activeTab === 'peers' && (
         <div className="space-y-4">
-          <div className="overflow-x-auto border border-[#2A3C31] rounded-xl">
+          <div className="overflow-x-auto border border-[#28354A] rounded-xl">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#0C1411] border-b border-[#2A3C31] text-[10px] text-[#A4B3A7] uppercase tracking-wider">
+              <thead className="bg-[#0B1120] border-b border-[#28354A] text-[10px] text-[#A4AEC1] uppercase tracking-wider">
                 <tr>
                   <th className="py-3 px-4">Peer Company</th>
                   <th className="py-3 px-4 text-right">Price (PKR)</th>
@@ -231,41 +231,41 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
                   <th className="py-3 px-4 text-center">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#2A3C31]/60 bg-[#0C1411]/40">
+              <tbody className="divide-y divide-[#28354A]/60 bg-[#0B1120]/40">
                 {/* Active Stock Row */}
-                <tr className="bg-[#1E3026]/60 font-semibold">
-                  <td className="py-3 px-4 text-[#D5F478]">
-                    {stock.symbol} ({stock.name}) <span className="text-[10px] bg-[#D5F478]/20 text-[#D5F478] px-1.5 py-0.5 rounded ml-1">Current</span>
+                <tr className="bg-[#1C2940]/60 font-semibold">
+                  <td className="py-3 px-4 text-[#B69249]">
+                    {stock.symbol} ({stock.name}) <span className="text-[10px] bg-[#B69249]/20 text-[#B69249] px-1.5 py-0.5 rounded ml-1">Current</span>
                   </td>
-                  <td className="py-3 px-4 text-right text-[#F1F5EE]">Rs {stock.current.toFixed(2)}</td>
+                  <td className="py-3 px-4 text-right text-[#EFF3FA]">Rs {stock.current.toFixed(2)}</td>
                   <td className={`py-3 px-4 text-right ${stock.change >= 0 ? 'text-[#6DDBA5]' : 'text-[#F28B82]'}`}>
                     {stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
                   </td>
-                  <td className="py-3 px-4 text-right text-[#F1F5EE]">{stock.peRatio ? `${stock.peRatio.toFixed(2)}x` : '—'}</td>
-                  <td className="py-3 px-4 text-right text-[#B9E76A]">{stock.dividendYield ? `${stock.dividendYield.toFixed(2)}%` : '—'}</td>
+                  <td className="py-3 px-4 text-right text-[#EFF3FA]">{stock.peRatio ? `${stock.peRatio.toFixed(2)}x` : '—'}</td>
+                  <td className="py-3 px-4 text-right text-[#B69249]">{stock.dividendYield ? `${stock.dividendYield.toFixed(2)}%` : '—'}</td>
                   <td className={`py-3 px-4 text-right ${(stock.changeYear || 0) >= 0 ? 'text-[#6DDBA5]' : 'text-[#F28B82]'}`}>
                     {(stock.changeYear || 0) >= 0 ? '+' : ''}{(stock.changeYear || 0).toFixed(2)}%
                   </td>
-                  <td className="py-3 px-4 text-center text-[#A4B3A7]">Viewing</td>
+                  <td className="py-3 px-4 text-center text-[#A4AEC1]">Viewing</td>
                 </tr>
 
                 {/* Peer Rows */}
                 {peers.map((peer) => {
                   const isPos = peer.change >= 0;
                   return (
-                    <tr key={peer.symbol} className="hover:bg-[#1E3026] transition-colors">
+                    <tr key={peer.symbol} className="hover:bg-[#1C2940] transition-colors">
                       <td className="py-3 px-4">
-                        <Link href={`/stocks/${peer.symbol}`} className="font-semibold text-[#F1F5EE] hover:text-[#B9E76A]">
+                        <Link href={`/stocks/${peer.symbol}`} className="font-semibold text-[#EFF3FA] hover:text-[#B69249]">
                           {peer.symbol}
                         </Link>
-                        <span className="text-[11px] text-[#A4B3A7] block truncate max-w-[160px]">{peer.name}</span>
+                        <span className="text-[11px] text-[#A4AEC1] block truncate max-w-[160px]">{peer.name}</span>
                       </td>
-                      <td className="py-3 px-4 text-right font-semibold text-[#F1F5EE]">Rs {peer.current.toFixed(2)}</td>
+                      <td className="py-3 px-4 text-right font-semibold text-[#EFF3FA]">Rs {peer.current.toFixed(2)}</td>
                       <td className={`py-3 px-4 text-right font-semibold ${isPos ? 'text-[#6DDBA5]' : 'text-[#F28B82]'}`}>
                         {isPos ? '+' : ''}{peer.changePercent.toFixed(2)}%
                       </td>
-                      <td className="py-3 px-4 text-right text-[#F1F5EE]">{peer.peRatio ? `${peer.peRatio.toFixed(2)}x` : '—'}</td>
-                      <td className="py-3 px-4 text-right text-[#B9E76A]">{peer.dividendYield ? `${peer.dividendYield.toFixed(2)}%` : '—'}</td>
+                      <td className="py-3 px-4 text-right text-[#EFF3FA]">{peer.peRatio ? `${peer.peRatio.toFixed(2)}x` : '—'}</td>
+                      <td className="py-3 px-4 text-right text-[#B69249]">{peer.dividendYield ? `${peer.dividendYield.toFixed(2)}%` : '—'}</td>
                       <td className={`py-3 px-4 text-right ${(peer.changeYear || 0) >= 0 ? 'text-[#6DDBA5]' : 'text-[#F28B82]'}`}>
                         {(peer.changeYear || 0) >= 0 ? '+' : ''}{(peer.changeYear || 0).toFixed(2)}%
                       </td>
@@ -273,14 +273,14 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
                         <div className="flex items-center justify-center space-x-2">
                           <Link
                             href={`/stocks/${peer.symbol}`}
-                            className="text-[#B9E76A] hover:underline text-xs font-semibold"
+                            className="text-[#B69249] hover:underline text-xs font-semibold"
                           >
                             Analyze
                           </Link>
-                          <span className="text-[#2A3C31]">|</span>
+                          <span className="text-[#28354A]">|</span>
                           <Link
                             href={`/stocks/compare?s1=${stock.symbol}&s2=${peer.symbol}`}
-                            className="text-[#D5F478] hover:underline text-xs font-semibold whitespace-nowrap"
+                            className="text-[#B69249] hover:underline text-xs font-semibold whitespace-nowrap"
                             title={`Compare ${stock.symbol} vs ${peer.symbol}`}
                           >
                             Compare
@@ -300,12 +300,12 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
       {activeTab === 'dividends' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-[#F1F5EE]">Recent Cash Dividend Declarations</span>
-            <span className="text-[#A4B3A7]">Historical payouts from PSX company books</span>
+            <span className="font-semibold text-[#EFF3FA]">Recent Cash Dividend Declarations</span>
+            <span className="text-[#A4AEC1]">Historical payouts from PSX company books</span>
           </div>
-          <div className="border border-[#2A3C31] rounded-xl overflow-hidden">
+          <div className="border border-[#28354A] rounded-xl overflow-hidden">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#0C1411] border-b border-[#2A3C31] text-[10px] text-[#A4B3A7] uppercase">
+              <thead className="bg-[#0B1120] border-b border-[#28354A] text-[10px] text-[#A4AEC1] uppercase">
                 <tr>
                   <th className="py-3 px-4">Period</th>
                   <th className="py-3 px-4">Cash Dividend (DPS)</th>
@@ -313,13 +313,13 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
                   <th className="py-3 px-4 text-right">Book Closure / Ex-Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#2A3C31]/60 bg-[#0C1411]/40">
+              <tbody className="divide-y divide-[#28354A]/60 bg-[#0B1120]/40">
                 {dividendHistory.map((d, i) => (
-                  <tr key={i} className="hover:bg-[#1E3026]">
-                    <td className="py-3 px-4 font-semibold text-[#F1F5EE]">{d.year}</td>
+                  <tr key={i} className="hover:bg-[#1C2940]">
+                    <td className="py-3 px-4 font-semibold text-[#EFF3FA]">{d.year}</td>
                     <td className="py-3 px-4 font-semibold text-[#6DDBA5]">{d.dps}</td>
-                    <td className="py-3 px-4 text-[#A4B3A7]">{d.type}</td>
-                    <td className="py-3 px-4 text-right text-[#A4B3A7]">{d.exDate}</td>
+                    <td className="py-3 px-4 text-[#A4AEC1]">{d.type}</td>
+                    <td className="py-3 px-4 text-right text-[#A4AEC1]">{d.exDate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -330,36 +330,36 @@ export default function StockResearchConsole({ stock, peers }: StockResearchCons
 
       {/* TAB 4: SHARIAH COMPLIANCE AUDIT */}
       {activeTab === 'shariah' && (
-        <div className="bg-[#0C1411] border border-[#2A3C31] p-5 rounded-xl space-y-4">
+        <div className="bg-[#0B1120] border border-[#28354A] p-5 rounded-xl space-y-4">
           <div className="flex items-center space-x-2 text-[#6DDBA5]">
             <Moon className="w-5 h-5 fill-current" />
-            <h4 className="text-sm font-semibold text-[#F1F5EE]">
+            <h4 className="text-sm font-semibold text-[#EFF3FA]">
               KMI Islamic Screening Standard &amp; Audit
             </h4>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div className="p-3 bg-[#121E18] rounded-xl border border-[#2A3C31] space-y-1">
-              <span className="text-[#A4B3A7] block text-[10px] uppercase font-semibold">1. Primary Business Activity</span>
+            <div className="p-3 bg-[#111A2B] rounded-xl border border-[#28354A] space-y-1">
+              <span className="text-[#A4AEC1] block text-[10px] uppercase font-semibold">1. Primary Business Activity</span>
               <span className="font-semibold text-[#6DDBA5] flex items-center space-x-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Permissible / Halal Operations</span>
               </span>
             </div>
 
-            <div className="p-3 bg-[#121E18] rounded-xl border border-[#2A3C31] space-y-1">
-              <span className="text-[#A4B3A7] block text-[10px] uppercase font-semibold">2. Interest-Bearing Debt to Total Assets</span>
-              <span className="font-semibold text-[#F1F5EE]">&lt; 37% (Compliant)</span>
+            <div className="p-3 bg-[#111A2B] rounded-xl border border-[#28354A] space-y-1">
+              <span className="text-[#A4AEC1] block text-[10px] uppercase font-semibold">2. Interest-Bearing Debt to Total Assets</span>
+              <span className="font-semibold text-[#EFF3FA]">&lt; 37% (Compliant)</span>
             </div>
 
-            <div className="p-3 bg-[#121E18] rounded-xl border border-[#2A3C31] space-y-1">
-              <span className="text-[#A4B3A7] block text-[10px] uppercase font-semibold">3. Illiquid Assets to Total Assets</span>
-              <span className="font-semibold text-[#F1F5EE]">&gt; 25% (Compliant)</span>
+            <div className="p-3 bg-[#111A2B] rounded-xl border border-[#28354A] space-y-1">
+              <span className="text-[#A4AEC1] block text-[10px] uppercase font-semibold">3. Illiquid Assets to Total Assets</span>
+              <span className="font-semibold text-[#EFF3FA]">&gt; 25% (Compliant)</span>
             </div>
 
-            <div className="p-3 bg-[#121E18] rounded-xl border border-[#2A3C31] space-y-1">
-              <span className="text-[#A4B3A7] block text-[10px] uppercase font-semibold">4. Non-Compliant Income Cap</span>
-              <span className="font-semibold text-[#F1F5EE]">&lt; 5% Gross Revenue</span>
+            <div className="p-3 bg-[#111A2B] rounded-xl border border-[#28354A] space-y-1">
+              <span className="text-[#A4AEC1] block text-[10px] uppercase font-semibold">4. Non-Compliant Income Cap</span>
+              <span className="font-semibold text-[#EFF3FA]">&lt; 5% Gross Revenue</span>
             </div>
           </div>
         </div>

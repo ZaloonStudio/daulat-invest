@@ -21,8 +21,8 @@ export default function HomeCommoditiesWidget() {
       changePercent: 0.28,
       source: 'Karachi Sarafa Assoc.',
       icon: Coins,
-      color: 'text-[#D5F478]',
-      bg: 'bg-[#D5F478]/10 border-[#D5F478]/25',
+      color: 'text-[#B69249]',
+      bg: 'bg-[#B69249]/10 border-[#B69249]/25',
     },
     {
       id: 'gold-10g',
@@ -33,8 +33,8 @@ export default function HomeCommoditiesWidget() {
       changePercent: 0.28,
       source: 'Sarafa Benchmark',
       icon: Coins,
-      color: 'text-[#D5F478]',
-      bg: 'bg-[#D5F478]/10 border-[#D5F478]/25',
+      color: 'text-[#B69249]',
+      bg: 'bg-[#B69249]/10 border-[#B69249]/25',
     },
     {
       id: 'silver-tola',
@@ -87,23 +87,23 @@ export default function HomeCommoditiesWidget() {
   ];
 
   return (
-    <div className="bg-[#121E18] border border-[#2A3C31] rounded-xl p-5 shadow-xl space-y-4">
+    <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl space-y-4">
       {/* Widget Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#2A3C31] pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#28354A] pb-3">
         <div className="flex items-center space-x-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#D5F478] to-[#BDD766] flex items-center justify-center text-black font-semibold shadow-sm">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#B69249] to-[#A58440] flex items-center justify-center text-black font-semibold shadow-sm">
             <Coins className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h3 className="text-sm sm:text-base font-semibold text-[#F1F5EE] tracking-tight">
+              <h3 className="text-sm sm:text-base font-semibold text-[#EFF3FA] tracking-tight">
                 Gold, Forex &amp; Commodities in Pakistan
               </h3>
-              <span className="text-[10px] bg-[#D5F478]/20 text-[#D5F478] px-2 py-0.5 rounded-full font-semibold">
+              <span className="text-[10px] bg-[#B69249]/20 text-[#B69249] px-2 py-0.5 rounded-full font-semibold">
                 Sarafa &amp; SBP Rates
               </span>
             </div>
-            <p className="text-[11px] text-[#A4B3A7] mt-0.5">
+            <p className="text-[11px] text-[#A4AEC1] mt-0.5">
               Live Karachi Sarafa market bullion rates, interbank currency, and fuel prices
             </p>
           </div>
@@ -111,7 +111,7 @@ export default function HomeCommoditiesWidget() {
 
         <Link
           href="/commodities"
-          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#D5F478] hover:text-[#D5F478]/80 transition-colors w-fit"
+          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#B69249] hover:text-[#B69249]/80 transition-colors w-fit"
         >
           <span>Gold Calculator &amp; All Rates</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -127,7 +127,7 @@ export default function HomeCommoditiesWidget() {
             <Link
               key={item.id}
               href="/commodities"
-              className="bg-[#0C1411] border border-[#2A3C31] hover:border-[#496052] p-3 rounded-xl transition-all group flex flex-col justify-between"
+              className="bg-[#0B1120] border border-[#28354A] hover:border-[#465770] p-3 rounded-xl transition-all group flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -136,19 +136,19 @@ export default function HomeCommoditiesWidget() {
                   >
                     <Icon className={`w-3.5 h-3.5 ${item.color}`} />
                   </div>
-                  <span className="text-[10px] text-[#84988B] font-arabic" dir="rtl">
+                  <span className="text-[10px] text-[#7F8DA4] font-arabic" dir="rtl">
                     {item.urduName}
                   </span>
                 </div>
 
-                <div className="font-semibold text-xs text-[#F1F5EE] group-hover:text-[#D5F478] transition-colors line-clamp-1">
+                <div className="font-semibold text-xs text-[#EFF3FA] group-hover:text-[#B69249] transition-colors line-clamp-1">
                   {item.name}
                 </div>
-                <div className="text-[10px] text-[#A4B3A7] truncate">{item.source}</div>
+                <div className="text-[10px] text-[#A4AEC1] truncate">{item.source}</div>
               </div>
 
-              <div className="mt-3 pt-2 border-t border-[#2A3C31]/60 flex items-baseline justify-between">
-                <span className="text-xs sm:text-sm font-semibold font-mono text-[#F1F5EE]">
+              <div className="mt-3 pt-2 border-t border-[#28354A]/60 flex items-baseline justify-between">
+                <span className="text-xs sm:text-sm font-semibold font-mono text-[#EFF3FA]">
                   {item.rate}
                 </span>
                 <span

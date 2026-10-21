@@ -15,9 +15,9 @@ const tools = [
 ];
 export default function QuickLinksBar() {
  return <section aria-labelledby="research-tools-heading" className="research-tools">
-   <div className="flex flex-wrap gap-2 items-center justify-between mb-4"><h2 id="research-tools-heading" className="text-base font-semibold tracking-tight">Your research toolkit</h2><span className="text-xs text-[#84988B]">A little clarity. A better decision.</span></div>
-   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-[#2A3C31] border border-[#2A3C31] rounded-xl overflow-hidden">
-     {tools.map(tool => <Link key={tool.href} href={tool.href} className="research-tool group"><tool.icon className="w-4 h-4 shrink-0 text-[#A4B3A7] group-hover:text-[#D5F478]"/><span>{tool.label}</span><ArrowUpRight className="w-3 h-3 ml-auto text-[#84988B] group-hover:text-[#D5F478]"/></Link>)}
+   <div className="flex flex-wrap gap-2 items-center justify-between mb-4"><h2 id="research-tools-heading" className="text-base font-semibold tracking-tight">Your research toolkit</h2><span className="text-xs text-[#7F8DA4]">A little clarity. A better decision.</span></div>
+   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-[#28354A] border border-[#28354A] rounded-xl overflow-hidden">
+     {tools.map(tool => <Link key={tool.href} href={tool.href} className="research-tool group"><tool.icon className="w-4 h-4 shrink-0 text-[#A4AEC1] group-hover:text-[#B69249]"/><span>{tool.label}</span><ArrowUpRight className="w-3 h-3 ml-auto text-[#7F8DA4] group-hover:text-[#B69249]"/></Link>)}
    </div>
  </section>;
 }

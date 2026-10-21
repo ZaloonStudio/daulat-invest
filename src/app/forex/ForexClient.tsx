@@ -43,35 +43,35 @@ export default function ForexClient() {
       <div>
         <Link
           href="/"
-          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#A4B3A7] hover:text-[#F1F5EE] transition-colors mb-3"
+          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#A4AEC1] hover:text-[#EFF3FA] transition-colors mb-3"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Market Overview</span>
         </Link>
       </div>
 
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#2A3C31] pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#28354A] pb-6">
         <div>
           <div className="flex items-center space-x-2 text-xs font-semibold text-[#9BBCE3] uppercase tracking-wider mb-2">
             <DollarSign className="w-4 h-4" />
             <span>State Bank &amp; Forex Association of Pakistan</span>
           </div>
-          <h1 className="text-3xl font-semibold text-[#F1F5EE] tracking-tight">
+          <h1 className="text-3xl font-semibold text-[#EFF3FA] tracking-tight">
             Currency rates
           </h1>
-          <p className="text-sm text-[#A4B3A7] mt-1.5 max-w-2xl">
+          <p className="text-sm text-[#A4AEC1] mt-1.5 max-w-2xl">
             Live Interbank and Open Market foreign exchange rates for major currencies against the Pakistani Rupee (PKR).
           </p>
         </div>
 
-        <div className="flex items-center space-x-2 text-xs text-[#A4B3A7]">
-          <Clock className="w-3.5 h-3.5 text-[#84988B]" />
+        <div className="flex items-center space-x-2 text-xs text-[#A4AEC1]">
+          <Clock className="w-3.5 h-3.5 text-[#7F8DA4]" />
           <span>SBP Interbank Closing &amp; Forex Association Rates</span>
         </div>
       </div>
 
       {/* Currency Converter */}
-      <div className="bg-[#121E18] border border-[#2A3C31] rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl">
+      <div className="bg-[#111A2B] border border-[#28354A] rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl">
         <div className="flex items-center space-x-2 text-sm font-semibold text-[#9BBCE3]">
           <Calculator className="w-4 h-4" />
           <span>Interactive Currency to PKR Converter</span>
@@ -79,7 +79,7 @@ export default function ForexClient() {
 
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
           <div className="sm:col-span-4">
-            <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
+            <label className="text-[11px] font-semibold text-[#A4AEC1] uppercase block mb-1">
               Foreign Currency Amount
             </label>
             <input
@@ -87,18 +87,18 @@ export default function ForexClient() {
               min="1"
               value={amount}
               onChange={(e) => setAmount(Math.max(1, Number(e.target.value)))}
-              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-xl px-4 py-2.5 text-sm font-semibold text-[#F1F5EE] focus:outline-none focus:border-[#9BBCE3]"
+              className="w-full bg-[#0B1120] border border-[#28354A] rounded-xl px-4 py-2.5 text-sm font-semibold text-[#EFF3FA] focus:outline-none focus:border-[#9BBCE3]"
             />
           </div>
 
           <div className="sm:col-span-4">
-            <label className="text-[11px] font-semibold text-[#A4B3A7] uppercase block mb-1">
+            <label className="text-[11px] font-semibold text-[#A4AEC1] uppercase block mb-1">
               Select Currency
             </label>
             <select
               value={selectedCurrency}
               onChange={(e) => setSelectedCurrency(e.target.value)}
-              className="w-full bg-[#0C1411] border border-[#2A3C31] rounded-xl px-4 py-2.5 text-sm font-semibold text-[#F1F5EE] focus:outline-none focus:border-[#9BBCE3]"
+              className="w-full bg-[#0B1120] border border-[#28354A] rounded-xl px-4 py-2.5 text-sm font-semibold text-[#EFF3FA] focus:outline-none focus:border-[#9BBCE3]"
             >
               {FOREX_DATA.map((c) => (
                 <option key={c.code} value={c.code}>
@@ -108,14 +108,14 @@ export default function ForexClient() {
             </select>
           </div>
 
-          <div className="sm:col-span-4 bg-[#0C1411] border border-[#9BBCE3]/30 p-4 rounded-xl text-right">
-            <span className="text-[10px] font-semibold text-[#A4B3A7] uppercase tracking-wider block">
+          <div className="sm:col-span-4 bg-[#0B1120] border border-[#9BBCE3]/30 p-4 rounded-xl text-right">
+            <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
               Pakistani Rupees (PKR)
             </span>
             <div className="text-2xl font-semibold text-[#9BBCE3] mt-0.5">
               Rs {Math.round(convertedPkr).toLocaleString()}
             </div>
-            <span className="text-[10px] text-[#A4B3A7]">
+            <span className="text-[10px] text-[#A4AEC1]">
               1 {curr.code} = Rs {curr.openMarketSelling.toFixed(2)} (Open Market)
             </span>
           </div>
@@ -123,9 +123,9 @@ export default function ForexClient() {
       </div>
 
       {/* Forex Table: Interbank vs Open Market */}
-      <div className="bg-[#121E18] border border-[#2A3C31] rounded-2xl overflow-hidden shadow-2xl">
+      <div className="bg-[#111A2B] border border-[#28354A] rounded-2xl overflow-hidden shadow-2xl">
         <table className="w-full text-left text-xs">
-          <thead className="bg-[#0C1411] border-b border-[#2A3C31] text-[10px] text-[#A4B3A7] uppercase tracking-wider">
+          <thead className="bg-[#0B1120] border-b border-[#28354A] text-[10px] text-[#A4AEC1] uppercase tracking-wider">
             <tr>
               <th className="py-4 px-6">Currency</th>
               <th className="py-4 px-4 text-right">Interbank Buy</th>
@@ -135,32 +135,32 @@ export default function ForexClient() {
               <th className="py-4 px-6 text-right">Day Shift</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#2A3C31]/60 bg-[#121E18]">
+          <tbody className="divide-y divide-[#28354A]/60 bg-[#111A2B]">
             {FOREX_DATA.map((c) => {
               const isPos = c.change >= 0;
               return (
-                <tr key={c.code} className="hover:bg-[#1E3026]/60 transition-colors">
+                <tr key={c.code} className="hover:bg-[#1C2940]/60 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center space-x-2">
-                      <span className="w-7 h-7 rounded-lg bg-[#0C1411] border border-[#2A3C31] flex items-center justify-center font-semibold text-xs text-[#D5F478]">
+                      <span className="w-7 h-7 rounded-lg bg-[#0B1120] border border-[#28354A] flex items-center justify-center font-semibold text-xs text-[#B69249]">
                         {c.symbol}
                       </span>
                       <div>
-                        <span className="font-semibold text-sm text-[#F1F5EE]">{c.code}</span>
-                        <span className="text-[11px] text-[#A4B3A7] block">{c.name}</span>
+                        <span className="font-semibold text-sm text-[#EFF3FA]">{c.code}</span>
+                        <span className="text-[11px] text-[#A4AEC1] block">{c.name}</span>
                       </div>
                     </div>
                   </td>
 
-                  <td className="py-4 px-4 text-right font-mono text-[#A4B3A7]">
+                  <td className="py-4 px-4 text-right font-mono text-[#A4AEC1]">
                     Rs {c.interbankBuying.toFixed(2)}
                   </td>
 
-                  <td className="py-4 px-4 text-right font-mono font-semibold text-[#F1F5EE]">
+                  <td className="py-4 px-4 text-right font-mono font-semibold text-[#EFF3FA]">
                     Rs {c.interbankSelling.toFixed(2)}
                   </td>
 
-                  <td className="py-4 px-4 text-right font-mono text-[#A4B3A7]">
+                  <td className="py-4 px-4 text-right font-mono text-[#A4AEC1]">
                     Rs {c.openMarketBuying.toFixed(2)}
                   </td>
 
