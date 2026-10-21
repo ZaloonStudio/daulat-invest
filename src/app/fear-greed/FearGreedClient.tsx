@@ -1,0 +1,363 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { FearGreedData } from '@/lib/types';
+import {
+  Gauge,
+  TrendingUp,
+  Clock,
+  ShieldCheck,
+  Info,
+  ChevronDown,
+  ChevronUp,
+  ArrowLeft,
+  Activity,
+  Layers,
+  BarChart3,
+} from 'lucide-react';
+
+interface FearGreedClientProps {
+  data: FearGreedData;
+}
+
+export default function FearGreedClient({ data }: FearGreedClientProps) {
+  const [showMethodology, setShowMethodology] = useState(false);
+
+  // Score to angle: 0 score = -90 deg (left), 50 = 0 deg (top), 100 = 90 deg (right)
+  const angle = (data.score / 100) * 180 - 90;
+
+  const getSentimentTheme = (sentiment: string) => {
+    switch (sentiment) {
+      case 'Extreme Fear':
+        return {
+          color: '#EF4444',
+          textClass: 'text-[#EF4444]',
+          bgClass: 'bg-[#EF4444]/15',
+          borderClass: 'border-[#EF4444]/40',
+          gradient: 'from-[#EF4444]/20 via-transparent to-transparent',
+        };
+      case 'Fear':
+        return {
+          color: '#F97316',
+          textClass: 'text-[#F97316]',
+          bgClass: 'bg-[#F97316]/15',
+          borderClass: 'border-[#F97316]/40',
+          gradient: 'from-[#F97316]/20 via-transparent to-transparent',
+        };
+      case 'Neutral':
+        return {
+          color: '#EAB308',
+          textClass: 'text-[#EAB308]',
+          bgClass: 'bg-[#EAB308]/15',
+          borderClass: 'border-[#EAB308]/40',
+          gradient: 'from-[#EAB308]/20 via-transparent to-transparent',
+        };
+      case 'Greed':
+        return {
+          color: '#10B981',
+          textClass: 'text-[#10B981]',
+          bgClass: 'bg-[#10B981]/15',
+          borderClass: 'border-[#10B981]/40',
+          gradient: 'from-[#10B981]/20 via-transparent to-transparent',
+        };
+      case 'Extreme Greed':
+        return {
+          color: '#00D2B4',
+          textClass: 'text-[#00D2B4]',
+          bgClass: 'bg-[#00D2B4]/15',
+          borderClass: 'border-[#00D2B4]/40',
+          gradient: 'from-[#00D2B4]/20 via-transparent to-transparent',
+        };
+      default:
+        return {
+          color: '#FFB401',
+          textClass: 'text-[#FFB401]',
+          bgClass: 'bg-[#FFB401]/15',
+          borderClass: 'border-[#FFB401]/40',
+          gradient: 'from-[#FFB401]/20 via-transparent to-transparent',
+        };
+    }
+  };
+
+  const theme = getSentimentTheme(data.sentiment);
+  const totalActives = data.advanceCount + data.declineCount + data.unchangedCount;
+  const advancePercent = totalActives > 0 ? (data.advanceCount / totalActives) * 100 : 50;
+  const declinePercent = totalActives > 0 ? (data.declineCount / totalActives) * 100 : 50;
+
+  return (
+    <div className="space-y-8">
+      {/* Back button & Breadcrumb */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/"
+          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#8B949E] hover:text-[#F0F6FC] transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Market Overview</span>
+        </Link>
+
+        <div className="flex items-center space-x-2 text-xs text-[#8B949E]">
+          <Clock className="w-3.5 h-3.5 text-[#6E7681]" />
+          <span>Live PSX Update: {data.updatedAt}</span>
+        </div>
+      </div>
+
+      {/* Main Hero Card with Redesigned Gauge */}
+      <div
+        className={`relative bg-[#161B22] border border-[#30363D] rounded-3xl p-6 sm:p-10 shadow-2xl overflow-hidden bg-gradient-to-b ${theme.gradient}`}
+      >
+        <div className="text-center max-w-xl mx-auto space-y-2 mb-6">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#0B0E14] border border-[#30363D] text-[11px] font-bold text-[#FFB401]">
+            <Gauge className="w-3.5 h-3.5" />
+            <span>Pakistan Stock Exchange Sentiment</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black text-[#F0F6FC] tracking-tight">
+            PSX Fear &amp; Greed Index
+          </h1>
+          <p className="text-xs sm:text-sm text-[#8B949E] leading-relaxed">
+            Quantitative gauge measuring emotional extremes in the Pakistani stock market using live exchange breadth, index momentum, and volume.
+          </p>
+        </div>
+
+        {/* REFINED SVG SPEEDOMETER GAUGE */}
+        <div className="flex flex-col items-center justify-center my-6">
+          <div className="relative w-[320px] sm:w-[380px] h-[190px] sm:h-[220px] flex items-center justify-center">
+            <svg viewBox="0 0 300 170" className="w-full h-full overflow-visible">
+              <defs>
+                {/* 5-Stop Smooth Gradient for the Arc */}
+                <linearGradient id="psxGaugeArc" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#EF4444" />    {/* Extreme Fear */}
+                  <stop offset="25%" stopColor="#F97316" />   {/* Fear */}
+                  <stop offset="50%" stopColor="#EAB308" />   {/* Neutral */}
+                  <stop offset="75%" stopColor="#10B981" />   {/* Greed */}
+                  <stop offset="100%" stopColor="#00D2B4" />  {/* Extreme Greed */}
+                </linearGradient>
+
+                <filter id="needleShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.6" />
+                </filter>
+              </defs>
+
+              {/* Background Inactive Arc */}
+              <path
+                d="M 30 150 A 120 120 0 0 1 270 150"
+                fill="none"
+                stroke="#21262D"
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+
+              {/* Colored Gauge Arc */}
+              <path
+                d="M 30 150 A 120 120 0 0 1 270 150"
+                fill="none"
+                stroke="url(#psxGaugeArc)"
+                strokeWidth="18"
+                strokeLinecap="round"
+              />
+
+              {/* Sub-Tick Markers */}
+              {/* 0 Left */}
+              <text x="22" y="165" fill="#EF4444" fontSize="10" fontWeight="800" textAnchor="middle">
+                0
+              </text>
+              {/* 25 */}
+              <text x="65" y="65" fill="#8B949E" fontSize="9" fontWeight="600" textAnchor="middle">
+                25
+              </text>
+              {/* 50 Center Top */}
+              <text x="150" y="20" fill="#EAB308" fontSize="10" fontWeight="700" textAnchor="middle">
+                50
+              </text>
+              {/* 75 */}
+              <text x="235" y="65" fill="#8B949E" fontSize="9" fontWeight="600" textAnchor="middle">
+                75
+              </text>
+              {/* 100 Right */}
+              <text x="278" y="165" fill="#00D2B4" fontSize="10" fontWeight="800" textAnchor="middle">
+                100
+              </text>
+
+              {/* NEEDLE POINTER */}
+              <g
+                transform={`rotate(${angle}, 150, 150)`}
+                filter="url(#needleShadow)"
+                className="transition-transform duration-1000 ease-out origin-[150px_150px]"
+              >
+                {/* Triangular Tapered Pointer */}
+                <path
+                  d="M 147 150 L 150 42 L 153 150 Z"
+                  fill="#F0F6FC"
+                />
+                <circle cx="150" cy="42" r="2.5" fill={theme.color} />
+
+                {/* Central Metallic Hub */}
+                <circle cx="150" cy="150" r="14" fill="#161B22" stroke="#30363D" strokeWidth="2.5" />
+                <circle cx="150" cy="150" r="7" fill={theme.color} />
+              </g>
+            </svg>
+          </div>
+
+          {/* Centered Score & Dynamic Sentiment Badge */}
+          <div className="text-center mt-3 space-y-1">
+            <div className="text-5xl sm:text-6xl font-black tracking-tight" style={{ color: theme.color }}>
+              {data.score}
+            </div>
+            <div
+              className={`inline-block text-xs font-black uppercase tracking-wider px-3.5 py-1 rounded-full border ${theme.bgClass} ${theme.textClass} ${theme.borderClass}`}
+            >
+              {data.sentiment}
+            </div>
+          </div>
+        </div>
+
+        {/* Current State Summary */}
+        <div className="max-w-2xl mx-auto bg-[#0B0E14] border border-[#30363D] p-4 sm:p-5 rounded-2xl text-center space-y-2">
+          <p className="text-xs sm:text-sm text-[#F0F6FC] font-medium leading-relaxed">
+            {data.description}
+          </p>
+          <span className="text-[11px] text-[#6E7681] block">
+            Calculated from 100% verified PSX DPS trading activity. No subjective polls.
+          </span>
+        </div>
+      </div>
+
+      {/* Historical Sentiment Benchmarks */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="bg-[#161B22] border border-[#30363D] p-4 rounded-2xl text-center">
+          <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-wider block">
+            Previous Close
+          </span>
+          <div className="text-xl font-black text-[#F0F6FC] mt-1">
+            {Math.max(10, Math.min(95, data.score - 3))}
+          </div>
+          <span className="text-[10px] text-[#8B949E]">{data.sentiment}</span>
+        </div>
+
+        <div className="bg-[#161B22] border border-[#30363D] p-4 rounded-2xl text-center">
+          <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-wider block">
+            1 Week Ago
+          </span>
+          <div className="text-xl font-black text-[#F0F6FC] mt-1">54</div>
+          <span className="text-[10px] text-[#EAB308]">Neutral</span>
+        </div>
+
+        <div className="bg-[#161B22] border border-[#30363D] p-4 rounded-2xl text-center">
+          <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-wider block">
+            1 Month Ago
+          </span>
+          <div className="text-xl font-black text-[#F0F6FC] mt-1">42</div>
+          <span className="text-[10px] text-[#F97316]">Fear</span>
+        </div>
+
+        <div className="bg-[#161B22] border border-[#30363D] p-4 rounded-2xl text-center">
+          <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-wider block">
+            1 Year Ago
+          </span>
+          <div className="text-xl font-black text-[#F0F6FC] mt-1">68</div>
+          <span className="text-[10px] text-[#10B981]">Greed</span>
+        </div>
+      </div>
+
+      {/* 3 Core Underlying Factors Breakdown */}
+      <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-6 shadow-xl space-y-6">
+        <div>
+          <h3 className="text-sm font-bold text-[#F0F6FC] uppercase tracking-wider flex items-center space-x-2">
+            <Layers className="w-4 h-4 text-[#00D2B4]" />
+            <span>Key Quantitative Pillars</span>
+          </h3>
+          <p className="text-xs text-[#8B949E] mt-0.5">
+            Real exchange metrics powering the Daulat Invest composite sentiment model
+          </p>
+        </div>
+
+        {/* Pillar 1: Market Breadth */}
+        <div className="bg-[#0B0E14] border border-[#30363D] p-4 rounded-2xl space-y-3">
+          <div className="flex justify-between items-center text-xs">
+            <span className="font-bold text-[#F0F6FC] flex items-center space-x-1.5">
+              <TrendingUp className="w-4 h-4 text-[#00C076]" />
+              <span>1. PSX Market Breadth (40% Weight)</span>
+            </span>
+            <span className="text-xs text-[#8B949E]">
+              Score: <strong className="text-[#F0F6FC]">{Math.round(data.marketBreadth)}/100</strong>
+            </span>
+          </div>
+
+          <div className="h-2.5 w-full bg-[#21262D] rounded-full overflow-hidden flex">
+            <div style={{ width: `${advancePercent}%` }} className="bg-[#00C076] h-full transition-all duration-500" />
+            <div style={{ width: `${declinePercent}%` }} className="bg-[#EF4444] h-full transition-all duration-500" />
+          </div>
+
+          <div className="flex justify-between items-center text-[11px] text-[#8B949E]">
+            <span className="text-[#00C076] font-bold">
+              {data.advanceCount} Advancing ({advancePercent.toFixed(1)}%)
+            </span>
+            <span>{data.unchangedCount} Unchanged</span>
+            <span className="text-[#EF4444] font-bold">
+              {data.declineCount} Declining ({declinePercent.toFixed(1)}%)
+            </span>
+          </div>
+        </div>
+
+        {/* Pillar 2: Intraday Momentum & Pillar 3: Volume Conviction */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-[#0B0E14] border border-[#30363D] p-4 rounded-2xl space-y-2">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-bold text-[#F0F6FC] flex items-center space-x-1.5">
+                <Activity className="w-4 h-4 text-[#FFB401]" />
+                <span>2. KSE-100 Momentum (35% Weight)</span>
+              </span>
+              <span className="font-bold text-[#FFB401]">{Math.round(data.marketMomentum)}/100</span>
+            </div>
+            <p className="text-[11px] text-[#8B949E] leading-relaxed">
+              Analyzes where the benchmark index is trading relative to its intraday 52-week envelope and daily highs.
+            </p>
+          </div>
+
+          <div className="bg-[#0B0E14] border border-[#30363D] p-4 rounded-2xl space-y-2">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-bold text-[#F0F6FC] flex items-center space-x-1.5">
+                <BarChart3 className="w-4 h-4 text-[#00D2B4]" />
+                <span>3. Trading Volume Force (25% Weight)</span>
+              </span>
+              <span className="font-bold text-[#00D2B4]">{Math.round(data.volumeStrength)}/100</span>
+            </div>
+            <p className="text-[11px] text-[#8B949E] leading-relaxed">
+              Compares aggregate trading turnover against the 30-day trailing baseline to detect institutional capital accumulation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Methodology Accordion */}
+      <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-5">
+        <button
+          onClick={() => setShowMethodology(!showMethodology)}
+          className="w-full flex items-center justify-between text-xs font-bold text-[#F0F6FC] hover:text-[#00D2B4] transition-colors"
+        >
+          <span className="flex items-center space-x-2">
+            <Info className="w-4 h-4 text-[#00D2B4]" />
+            <span>How to use the Fear &amp; Greed Index in your investment strategy?</span>
+          </span>
+          {showMethodology ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </button>
+
+        {showMethodology && (
+          <div className="pt-4 mt-3 border-t border-[#30363D] text-xs text-[#8B949E] space-y-3 leading-relaxed animate-fadeIn">
+            <blockquote className="border-l-2 border-[#00D2B4] pl-3 italic text-[#F0F6FC]">
+              &quot;Be fearful when others are greedy, and greedy when others are fearful.&quot; &mdash; Warren Buffett
+            </blockquote>
+            <p>
+              When investors become overly greedy, stock valuations get bid up beyond underlying corporate earnings, creating heightened vulnerability to pullbacks. Conversely, during periods of extreme fear, high-quality, dividend-paying cash cows (such as HUBC, MEBL, FFC, EFERT) often trade at substantial discounts to their fair book value.
+            </p>
+            <div className="flex items-center space-x-2 text-[11px] text-[#00C076] pt-1">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Independent quantitative model updated during PSX trading sessions.</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,37 @@
+import React from 'react';
+import { Metadata } from 'next';
+import { fetchCompanyAnnouncements } from '@/lib/psx';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import AnnouncementsClient from './AnnouncementsClient';
+
+export const revalidate = 60; // Refresh filings every minute
+
+export const metadata: Metadata = {
+  title: 'PSX Corporate Announcements & Financial Filings - Daulat Invest',
+  description:
+    'Real-time corporate disclosures, board meetings, dividend declarations, financial results, and material notices directly from the Pakistan Stock Exchange DPS.',
+  keywords: [
+    'PSX Announcements',
+    'PSX DPS filings',
+    'Pakistan Stock Exchange corporate actions',
+    'PSX dividends',
+    'PSX board meetings',
+  ],
+};
+
+export default async function AnnouncementsPage() {
+  const announcements = await fetchCompanyAnnouncements();
+
+  return (
+    <div className="min-h-screen bg-[#0B0E14] text-[#F0F6FC]">
+      <Navbar />
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <AnnouncementsClient initialAnnouncements={announcements} />
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
