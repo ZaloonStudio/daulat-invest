@@ -6,6 +6,7 @@ import { fetchMarketWatch, fetchStockHistory, fetchTimeseries } from '@/lib/psx'
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StockHistoryChart from '@/components/StockHistoryChart';
+import CompanyHealthScore from '@/components/CompanyHealthScore';
 import StockResearchConsole from '@/components/StockResearchConsole';
 import AppPromoBanner from '@/components/AppPromoBanner';
 import {
@@ -155,8 +156,36 @@ export default async function StockDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Main Grid: Interactive Chart & Key Statistics */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Sarmaaya-Style Sub-Navigation Tabs */}
+        <div className="border-b border-[#30363D] flex items-center space-x-6 overflow-x-auto scrollbar-none text-xs font-bold text-[#8B949E] pb-3 px-1">
+          <a href="#overview-section" className="text-[#FFB401] border-b-2 border-[#FFB401] pb-3 -mb-3 whitespace-nowrap">
+            Fundamentals
+          </a>
+          <a href="#peers-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+            Peers
+          </a>
+          <a href="#financials-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+            Financials
+          </a>
+          <a href="#ratios-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+            Ratios
+          </a>
+          <a href="#dividends-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+            Dividends
+          </a>
+          <a href="#shariah-section" className="hover:text-[#00C076] transition-colors whitespace-nowrap">
+            Shariah Audit
+          </a>
+          <a href="#announcements-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+            Announcements
+          </a>
+          <a href="#company-info-section" className="hover:text-[#F0F6FC] transition-colors whitespace-nowrap">
+            Company Info
+          </a>
+        </div>
+
+        {/* Main Grid: Interactive Chart & Daulat Score / Statistics */}
+        <div id="overview-section" className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8">
             <StockHistoryChart
               symbol={quote.symbol}
@@ -167,8 +196,10 @@ export default async function StockDetailPage({ params }: Props) {
             />
           </div>
 
-          {/* Key Trading Stats Column */}
+          {/* Right Column: Daulat Health Score (Sarmaaya Score) & Stats */}
           <div className="lg:col-span-4 space-y-4">
+            <CompanyHealthScore stock={quote} />
+
             <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-5 shadow-xl">
               <h2 className="text-sm font-bold text-[#F0F6FC] uppercase tracking-wider mb-4 border-b border-[#30363D] pb-3 flex items-center space-x-2">
                 <Activity className="w-4 h-4 text-[#FFB401]" />
