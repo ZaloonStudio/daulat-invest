@@ -3,15 +3,15 @@
 import React from 'react';
 import Link from 'next/link';
 import {
+  GitCompare,
+  Coins,
+  DollarSign,
   Gauge,
   Calculator,
   TrendingUp,
   Moon,
   FileText,
-  Newspaper,
-  Users,
   Star,
-  Briefcase,
 } from 'lucide-react';
 
 interface QuickLinkItem {
@@ -24,51 +24,58 @@ interface QuickLinkItem {
 
 const QUICK_LINKS: QuickLinkItem[] = [
   {
-    label: 'Fear & Greed',
-    href: '/fear-greed',
-    icon: Gauge,
+    label: 'Compare',
+    href: '/stocks/compare',
+    icon: GitCompare,
     iconColor: 'text-[#00D2B4]',
     bgColor: 'bg-[#00D2B4]/10 group-hover:bg-[#00D2B4]/20 border-[#00D2B4]/20 group-hover:border-[#00D2B4]',
   },
   {
-    label: 'Dividends',
-    href: '/dividend-calculator',
-    icon: Calculator,
+    label: 'Gold',
+    href: '/commodities',
+    icon: Coins,
     iconColor: 'text-[#FFB401]',
     bgColor: 'bg-[#FFB401]/10 group-hover:bg-[#FFB401]/20 border-[#FFB401]/20 group-hover:border-[#FFB401]',
   },
   {
-    label: 'SIP Calc',
-    href: '/sip-calculator',
-    icon: TrendingUp,
-    iconColor: 'text-[#00C076]',
-    bgColor: 'bg-[#00C076]/10 group-hover:bg-[#00C076]/20 border-[#00C076]/20 group-hover:border-[#00C076]',
+    label: 'Dollar',
+    href: '/forex',
+    icon: DollarSign,
+    iconColor: 'text-[#58A6FF]',
+    bgColor: 'bg-[#58A6FF]/10 group-hover:bg-[#58A6FF]/20 border-[#58A6FF]/20 group-hover:border-[#58A6FF]',
+  },
+  {
+    label: 'Fear & Greed',
+    href: '/fear-greed',
+    icon: Gauge,
+    iconColor: 'text-[#7EE787]',
+    bgColor: 'bg-[#7EE787]/10 group-hover:bg-[#7EE787]/20 border-[#7EE787]/20 group-hover:border-[#7EE787]',
   },
   {
     label: 'Shariah',
     href: '/shariah',
     icon: Moon,
-    iconColor: 'text-[#7EE787]',
-    bgColor: 'bg-[#7EE787]/10 group-hover:bg-[#7EE787]/20 border-[#7EE787]/20 group-hover:border-[#7EE787]',
+    iconColor: 'text-[#00C076]',
+    bgColor: 'bg-[#00C076]/10 group-hover:bg-[#00C076]/20 border-[#00C076]/20 group-hover:border-[#00C076]',
+  },
+  {
+    label: 'Dividends',
+    href: '/dividend-calculator',
+    icon: Calculator,
+    iconColor: 'text-[#FFA657]',
+    bgColor: 'bg-[#FFA657]/10 group-hover:bg-[#FFA657]/20 border-[#FFA657]/20 group-hover:border-[#FFA657]',
+  },
+  {
+    label: 'SIP Calc',
+    href: '/sip-calculator',
+    icon: TrendingUp,
+    iconColor: 'text-[#388BFD]',
+    bgColor: 'bg-[#388BFD]/10 group-hover:bg-[#388BFD]/20 border-[#388BFD]/20 group-hover:border-[#388BFD]',
   },
   {
     label: 'Filings',
     href: '/announcements',
     icon: FileText,
-    iconColor: 'text-[#388BFD]',
-    bgColor: 'bg-[#388BFD]/10 group-hover:bg-[#388BFD]/20 border-[#388BFD]/20 group-hover:border-[#388BFD]',
-  },
-  {
-    label: 'News',
-    href: '/news',
-    icon: Newspaper,
-    iconColor: 'text-[#FFA657]',
-    bgColor: 'bg-[#FFA657]/10 group-hover:bg-[#FFA657]/20 border-[#FFA657]/20 group-hover:border-[#FFA657]',
-  },
-  {
-    label: 'Community',
-    href: '/community',
-    icon: Users,
     iconColor: 'text-[#A371F7]',
     bgColor: 'bg-[#A371F7]/10 group-hover:bg-[#A371F7]/20 border-[#A371F7]/20 group-hover:border-[#A371F7]',
   },
@@ -78,13 +85,6 @@ const QUICK_LINKS: QuickLinkItem[] = [
     icon: Star,
     iconColor: 'text-[#FFD33D]',
     bgColor: 'bg-[#FFD33D]/10 group-hover:bg-[#FFD33D]/20 border-[#FFD33D]/20 group-hover:border-[#FFD33D]',
-  },
-  {
-    label: 'Portfolio',
-    href: '/portfolio',
-    icon: Briefcase,
-    iconColor: 'text-[#58A6FF]',
-    bgColor: 'bg-[#58A6FF]/10 group-hover:bg-[#58A6FF]/20 border-[#58A6FF]/20 group-hover:border-[#58A6FF]',
   },
 ];
 

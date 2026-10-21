@@ -6,17 +6,13 @@ import { fetchMarketWatch, fetchStockHistory } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StockHistoryChart from '@/components/StockHistoryChart';
+import StockResearchConsole from '@/components/StockResearchConsole';
 import AppPromoBanner from '@/components/AppPromoBanner';
 import {
   TrendingUp,
   TrendingDown,
   ArrowLeft,
-  Share2,
-  Building2,
-  DollarSign,
   Activity,
-  Layers,
-  ChevronRight,
   Smartphone,
 } from 'lucide-react';
 
@@ -235,46 +231,8 @@ export default async function StockDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Related Sector Peers */}
-        {relatedStocks.length > 0 && (
-          <div className="bg-[#161B22] border border-[#30363D] rounded-2xl p-6 shadow-xl">
-            <h2 className="text-base font-bold text-[#F0F6FC] mb-4 flex items-center space-x-2">
-              <Layers className="w-4 h-4 text-[#FFB401]" />
-              <span>More Stocks in {quote.sector}</span>
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-              {relatedStocks.map((rel) => {
-                const relPos = rel.change >= 0;
-                return (
-                  <Link
-                    key={rel.symbol}
-                    href={`/stocks/${rel.symbol}`}
-                    className="bg-[#0B0E14] border border-[#30363D] hover:border-[#FFB401] p-3.5 rounded-xl transition-all group"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-sm text-[#F0F6FC] group-hover:text-[#FFB401]">
-                        {rel.symbol}
-                      </span>
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          relPos ? 'text-[#00C076]' : 'text-[#F85149]'
-                        }`}
-                      >
-                        {relPos ? '+' : ''}
-                        {rel.changePercent.toFixed(2)}%
-                      </span>
-                    </div>
-                    <div className="text-xs font-mono text-[#F0F6FC] mt-1 font-bold">
-                      Rs {rel.current.toFixed(2)}
-                    </div>
-                    <div className="text-[10px] text-[#8B949E] truncate mt-0.5">{rel.name}</div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* Sarmaaya-Grade Comprehensive Financial Console: Valuation Ratios, Sector Peers, Dividends & Shariah */}
+        <StockResearchConsole stock={quote} peers={relatedStocks} />
 
         <AppPromoBanner />
       </main>
