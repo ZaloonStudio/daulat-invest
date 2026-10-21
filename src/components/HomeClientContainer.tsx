@@ -6,6 +6,7 @@ import QuickLinksBar from '@/components/QuickLinksBar';
 import CommunityPreview from '@/components/CommunityPreview';
 import IndicesBar from '@/components/IndicesBar';
 import KseHeroSection from '@/components/KseHeroSection';
+import HomeCommoditiesWidget from '@/components/HomeCommoditiesWidget';
 import MarketMovers from '@/components/MarketMovers';
 import IndexPerformanceTable from '@/components/IndexPerformanceTable';
 import MarketNewsSection from '@/components/MarketNewsSection';
@@ -73,6 +74,11 @@ export default function HomeClientContainer({
           isPsxOpen={isOpen}
           marketTime={marketTime}
         />
+      </section>
+
+      {/* 2. Live Gold, Forex & Commodities Snapshot (Daulat Mobile App Integration) */}
+      <section>
+        <HomeCommoditiesWidget />
       </section>
 
       {/* 3. Market Movers: Volume Leaders, Gainers, Losers with Shariah Filter */}

@@ -11,7 +11,8 @@ import {
   TrendingUp,
   Moon,
   FileText,
-  Star,
+  Filter,
+  PieChart,
 } from 'lucide-react';
 
 interface QuickLinkItem {
@@ -29,6 +30,20 @@ const QUICK_LINKS: QuickLinkItem[] = [
     icon: GitCompare,
     iconColor: 'text-[#00D2B4]',
     bgColor: 'bg-[#00D2B4]/10 group-hover:bg-[#00D2B4]/20 border-[#00D2B4]/20 group-hover:border-[#00D2B4]',
+  },
+  {
+    label: 'Screener',
+    href: '/stocks/screener',
+    icon: Filter,
+    iconColor: 'text-[#388BFD]',
+    bgColor: 'bg-[#388BFD]/10 group-hover:bg-[#388BFD]/20 border-[#388BFD]/20 group-hover:border-[#388BFD]',
+  },
+  {
+    label: 'Mutual Funds',
+    href: '/mutual-funds',
+    icon: PieChart,
+    iconColor: 'text-[#A371F7]',
+    bgColor: 'bg-[#A371F7]/10 group-hover:bg-[#A371F7]/20 border-[#A371F7]/20 group-hover:border-[#A371F7]',
   },
   {
     label: 'Gold',
@@ -69,22 +84,15 @@ const QUICK_LINKS: QuickLinkItem[] = [
     label: 'SIP Calc',
     href: '/sip-calculator',
     icon: TrendingUp,
-    iconColor: 'text-[#388BFD]',
-    bgColor: 'bg-[#388BFD]/10 group-hover:bg-[#388BFD]/20 border-[#388BFD]/20 group-hover:border-[#388BFD]',
+    iconColor: 'text-[#00D2B4]',
+    bgColor: 'bg-[#00D2B4]/10 group-hover:bg-[#00D2B4]/20 border-[#00D2B4]/20 group-hover:border-[#00D2B4]',
   },
   {
     label: 'Filings',
     href: '/announcements',
     icon: FileText,
-    iconColor: 'text-[#A371F7]',
-    bgColor: 'bg-[#A371F7]/10 group-hover:bg-[#A371F7]/20 border-[#A371F7]/20 group-hover:border-[#A371F7]',
-  },
-  {
-    label: 'Watchlist',
-    href: '/watchlist',
-    icon: Star,
-    iconColor: 'text-[#FFD33D]',
-    bgColor: 'bg-[#FFD33D]/10 group-hover:bg-[#FFD33D]/20 border-[#FFD33D]/20 group-hover:border-[#FFD33D]',
+    iconColor: 'text-[#BC8CFF]',
+    bgColor: 'bg-[#BC8CFF]/10 group-hover:bg-[#BC8CFF]/20 border-[#BC8CFF]/20 group-hover:border-[#BC8CFF]',
   },
 ];
 
@@ -101,7 +109,7 @@ export default function QuickLinksBar() {
       </div>
 
       {/* App-like clean circular/rounded icon row */}
-      <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3 sm:gap-2">
+      <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-10 gap-3 sm:gap-2">
         {QUICK_LINKS.map((item) => {
           const Icon = item.icon;
           return (

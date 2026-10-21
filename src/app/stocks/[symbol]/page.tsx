@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { fetchMarketWatch, fetchStockHistory } from '@/lib/psx';
+import { fetchMarketWatch, fetchStockHistory, fetchTimeseries } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StockHistoryChart from '@/components/StockHistoryChart';
@@ -61,9 +61,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function StockDetailPage({ params }: Props) {
   const symbol = params.symbol.toUpperCase();
-  const [quotes, history] = await Promise.all([
+  const [quotes, history, kseHistory] = await Promise.all([
     fetchMarketWatch(),
     fetchStockHistory(symbol),
+    fetchTimeseries('KSE100', false),
   ]);
 
   const quote = quotes.find((q) => q.symbol.toUpperCase() === symbol);
@@ -160,6 +161,7 @@ export default async function StockDetailPage({ params }: Props) {
             <StockHistoryChart
               symbol={quote.symbol}
               history={history}
+              kseHistory={kseHistory}
               currentPrice={quote.current}
               change={quote.change}
             />

@@ -47,6 +47,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/stocks/screener" className="hover:text-[#00D2B4] transition-colors flex items-center space-x-1">
+                  <span>PSX Stock Screener</span>
+                  <span className="text-[9px] bg-[#00D2B4]/15 text-[#00D2B4] px-1 rounded font-bold">HOT</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/mutual-funds" className="hover:text-[#00C076] transition-colors flex items-center space-x-1">
+                  <span>Pakistan Mutual Funds</span>
+                  <span className="text-[9px] bg-[#00C076]/15 text-[#00C076] px-1 rounded font-bold">NEW</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/stocks" className="hover:text-[#FFB401] transition-colors">
                   All PSX Stocks Directory
                 </Link>

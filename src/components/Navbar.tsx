@@ -17,6 +17,8 @@ import {
   Star,
   Briefcase,
   Smartphone,
+  SlidersHorizontal,
+  Layers,
 } from 'lucide-react';
 import { StockQuote } from '@/lib/types';
 
@@ -120,6 +122,8 @@ export default function Navbar() {
   const navLinks = [
     { label: 'Home', href: '/', icon: Home },
     { label: 'Market', href: pathname === '/' ? '#indices-section' : '/#indices-section', icon: Activity },
+    { label: 'Screener', href: '/stocks/screener', icon: SlidersHorizontal },
+    { label: 'Mutual Funds', href: '/mutual-funds', icon: Layers },
     { label: 'News', href: '/news', icon: Newspaper },
     { label: 'Community', href: '/community', icon: Users },
     { label: 'Watchlist', href: '/watchlist', icon: Star },
