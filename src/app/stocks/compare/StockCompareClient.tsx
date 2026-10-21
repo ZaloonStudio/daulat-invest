@@ -18,14 +18,6 @@ interface StockCompareClientProps {
   allStocks: StockQuote[];
 }
 
-const COMPARISON_PRESETS = [
-  { label: 'Banking: Islamic vs Conventional', symbols: ['MEBL', 'MCB'] },
-  { label: 'Fertilizer Dividend Champions', symbols: ['EFERT', 'FFC'] },
-  { label: 'Energy & Power Cash Cows', symbols: ['HUBC', 'KAPCO'] },
-  { label: 'IT & Software Exports', symbols: ['SYS', 'NETSOL'] },
-  { label: 'Oil & Gas Exploration', symbols: ['OGDC', 'PPL'] },
-];
-
 export default function StockCompareClient({ allStocks }: StockCompareClientProps) {
   const searchParams = useSearchParams();
   const urlS1 = searchParams?.get('s1') || searchParams?.get('base') || '';
@@ -157,33 +149,6 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
               ))}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Quick Comparison Presets */}
-      <div>
-        <span className="text-xs font-bold text-[#8B949E] uppercase tracking-wider block mb-2">
-          Popular Head-to-Head Presets
-        </span>
-        <div className="flex items-center space-x-2 overflow-x-auto scrollbar-none pb-1">
-          {COMPARISON_PRESETS.map((p) => {
-            const isMatch =
-              p.symbols.length === selectedSymbols.length &&
-              p.symbols.every((s) => selectedSymbols.includes(s));
-            return (
-              <button
-                key={p.label}
-                onClick={() => setSelectedSymbols(p.symbols)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer border ${
-                  isMatch
-                    ? 'bg-[#00D2B4] text-black border-[#00D2B4] shadow-sm font-extrabold'
-                    : 'bg-[#161B22] text-[#8B949E] hover:text-[#F0F6FC] border-[#30363D]'
-                }`}
-              >
-                {p.label}
-              </button>
-            );
-          })}
         </div>
       </div>
 
