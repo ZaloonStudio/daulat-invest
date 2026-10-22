@@ -1,3 +1,4 @@
+import {parseCompanyResearch} from './company-research';
 import { StockQuote, IndexQuote, ChartPoint, MarketSummary, NewsArticle, CompanyAnnouncement, FearGreedData } from './types';
 import { parseMarketWatch, parseTradingPanel, parseAnnouncements, parseNewsFeed } from './market-source';
 const BASE_URL = 'https://dps.psx.com.pk';
@@ -79,10 +80,10 @@ export async function getSessionToken(forceRefresh = false): Promise<string> {
 }
 
 
-async function psxText(path: string, options: RequestInit = {}): Promise<string> {
+async function psxText(path: string, options: RequestInit = {}, revalidate = 30): Promise<string> {
   try {
     const token = await getSessionToken();
-    const response = await fetch(BASE_URL + path, { ...options, headers: { 'User-Agent': 'Mozilla/5.0', Referer: BASE_URL + '/', 'X-Requested-With': 'XMLHttpRequest', 'X-Req-Id': token, ...options.headers }, ...(options.cache === 'no-store' ? {} : {next:{revalidate:30}}), signal: AbortSignal.timeout(10000) });
+    const response = await fetch(BASE_URL + path, { ...options, headers: { 'User-Agent': 'Mozilla/5.0', Referer: BASE_URL + '/', 'X-Requested-With': 'XMLHttpRequest', 'X-Req-Id': token, ...options.headers }, ...(options.cache === 'no-store' ? {} : {next:{revalidate}}), signal: AbortSignal.timeout(10000) });
     return response.ok ? await response.text() : '';
   } catch { return ''; }
 }
@@ -263,4 +264,10 @@ export async function fetchCompanyAnnouncements(symbol?: string): Promise<Compan
   const body = new URLSearchParams({type:'C', count:'50', offset:'0', page:'annc'});
   if (symbol && /^[A-Z0-9-]{1,20}$/.test(symbol)) body.set('symbol',symbol);
   return parseAnnouncements(await psxText('/announcements', {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()}));
+}
+
+export async function fetchCompanyResearch(symbol:string) {
+  if(!/^[A-Z0-9-]{1,20}$/.test(symbol))return parseCompanyResearch('','',symbol);
+  const [html,payouts]=await Promise.all([psxText('/company/'+encodeURIComponent(symbol),{},3600),psxText('/company/payouts',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({symbol}).toString()},3600)]);
+  return parseCompanyResearch(html,payouts,symbol);
 }

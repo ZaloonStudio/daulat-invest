@@ -1,0 +1,51 @@
+import type {CompanyResearch,FinancialTable} from '@/lib/company-research';
+import type {ChartPoint,StockQuote} from '@/lib/types';
+import {stockTechnicals} from '@/lib/stock-technicals';
+const card='rounded-xl border border-[#28354A] bg-[#111A2B] p-5 sm:p-6';
+const number=(n:number|null|undefined,d=2)=>typeof n==='number'&&Number.isFinite(n)?n.toLocaleString('en-US',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+export function FinancialHistory({table,title}: {table:FinancialTable;title:string}) {
+ if(!table.rows.length)return null;
+ return <section className={card}><h3 className="text-base font-semibold mb-4">{title}</h3><div className="overflow-x-auto"><table className="w-full text-sm text-right whitespace-nowrap"><thead className="text-xs text-[#A4AEC1]"><tr><th className="text-left py-3 pr-5">Metric</th>{table.periods.map(p=><th key={p} className="px-4 py-3">{p}</th>)}</tr></thead><tbody>{table.rows.map(row=><tr className="border-t border-[#28354A]" key={row.label}><th className="text-left font-medium text-[#A4AEC1] pr-5 py-3">{row.label}</th>{row.values.map((n,i)=><td key={i} className={'font-mono px-4 py-3 '+(n!==null&&n<0?'text-[#F28B82]':'')}>{number(n,row.label==='EPS'||row.label.includes('%')||row.label==='PEG'?2:0)}</td>)}</tr>)}</tbody></table></div></section>;
+}
+function MetricCards({items}:{items:{label:string;value:string;detail?:string}[]}) {
+ return <dl className="grid grid-cols-2 md:grid-cols-3 gap-3">{items.map(item=><div key={item.label} className={card}><dt className="text-xs text-[#A4AEC1] mb-3">{item.label}</dt><dd className="text-xl font-semibold font-mono">{item.value}</dd>{item.detail&&<p className="text-[11px] text-[#A4AEC1] mt-2">{item.detail}</p>}</div>)}</dl>;
+}
+export function CompanyFundamentals({stock,data}:{stock:StockQuote;data:CompanyResearch}) {
+ const latest=(table:FinancialTable,label:string)=>table.rows.find(r=>r.label===label)?.values[0]??null;
+ const eps=latest(data.annual,'EPS'),quarterEps=latest(data.quarterly,'EPS');
+ const sales=data.annual.rows.find(r=>r.label==='Sales'||r.label==='Total Income');
+ const growth=sales?.values[0]!=null&&sales.values[1]!=null&&sales.values[1]>0?(sales.values[0]/sales.values[1]-1)*100:null;
+ const annualPeriod=data.annual.periods[0]?'FY '+data.annual.periods[0]:undefined;
+ return <div className="space-y-5">
+  <div className="flex flex-wrap justify-between gap-2 items-end"><h2 className="text-xl font-semibold">Earnings & valuation</h2><a href={data.source+'#financials'} target="_blank" rel="noopener noreferrer" className="text-xs text-[#B69249]">PSX · unconsolidated results ↗</a></div>
+  <MetricCards items={[{label:'Annual EPS',value:number(eps),detail:annualPeriod},{label:'Latest quarter EPS',value:number(quarterEps),detail:data.quarterly.periods[0]},{label:'P/E · TTM',value:stock.peRatio!==undefined?number(stock.peRatio)+'x':'—',detail:'PSX screener'},{label:'P/E · annual EPS',value:eps!==null&&eps>0?number(stock.current/eps)+'x':'—',detail:annualPeriod},{label:'Revenue growth · YoY',value:growth!==null?number(growth)+'%':'—',detail:annualPeriod},{label:'Reported dividend yield',value:stock.dividendYield!==undefined?number(stock.dividendYield)+'%':'—',detail:'PSX screener'}]}/>
+  {!data.annual.rows.length&&!data.quarterly.rows.length&&<p className="text-sm text-[#A4AEC1]">Financial report feed temporarily unavailable.</p>}
+  <p className="text-xs text-[#A4AEC1]">Statement amounts in PKR thousands; EPS in PKR per share.</p>
+  <FinancialHistory table={data.annual} title="Annual results"/>
+  <FinancialHistory table={data.quarterly} title="Quarterly results"/>
+  <FinancialHistory table={data.ratios} title="Historical margins & growth · PSX reported"/>
+  <section className={card}><div className="flex justify-between gap-3 mb-4"><h3 className="font-semibold">Dividend & payout history</h3><a href={data.source+'#payouts'} target="_blank" rel="noopener noreferrer" className="text-xs text-[#B69249]">PSX payouts ↗</a></div>
+   {data.payouts.length?<><div className="overflow-x-auto"><table className="w-full text-sm text-left whitespace-nowrap"><thead className="text-xs text-[#A4AEC1]"><tr>{['Announced','Result period','Payout as reported','Book closure'].map(h=><th key={h} className="py-3 pr-5">{h}</th>)}</tr></thead><tbody>{data.payouts.map((p,i)=><tr key={i} className="border-t border-[#28354A]">{[p.date,p.period,p.details,p.bookClosure].map((v,j)=><td key={j} className="py-3 pr-5">{v}</td>)}</tr>)}</tbody></table></div><p className="text-xs text-[#A4AEC1] mt-3">D = cash dividend; B = bonus; R = rights. Percentages are reported on face value, not market-price yields.</p></>:<p className="text-sm text-[#A4AEC1]">{data.payoutsAvailable?'No payout rows returned by PSX for this company.':'Payout feed temporarily unavailable.'}</p>}
+  </section>
+  {data.reports.length>0&&<section className={card}><h3 className="font-semibold mb-4">Source reports & disclosures</h3><ul className="divide-y divide-[#28354A]">{data.reports.map(r=><li key={r.url} className="py-3 flex flex-col sm:flex-row sm:justify-between gap-2 text-sm"><a href={r.url} target="_blank" rel="noopener noreferrer" className="text-[#B69249] hover:underline">{r.title} ↗</a><span className="text-xs text-[#A4AEC1] shrink-0">{r.date}</span></li>)}</ul></section>}
+ </div>;
+}
+export function CompanyProfile({stock,data}:{stock:StockQuote;data:CompanyResearch}) {
+ const floatPercent=data.shares&&data.freeFloat!==null?data.freeFloat/data.shares*100:null;
+ return <div className="space-y-5"><section className={card}><div className="flex flex-wrap justify-between gap-3"><h2 className="text-xl font-semibold">About {stock.name}</h2><span className="text-xs text-[#B69249]">{stock.sector}</span></div>{data.description?<p className="text-sm text-[#A4AEC1] leading-relaxed mt-4">{data.description}</p>:<p className="text-sm text-[#A4AEC1] mt-4">Company profile feed temporarily unavailable.</p>}</section>
+  <div className="grid lg:grid-cols-3 gap-5"><section className={card}><h3 className="font-semibold mb-5">Leadership</h3><dl className="space-y-5">{data.people.map(p=><div key={p.role}><dt className="text-xs text-[#A4AEC1] mb-1">{p.role}</dt><dd className="text-sm font-medium">{p.name}</dd></div>)}</dl></section>
+  <section className={card}><h3 className="font-semibold mb-5">Ownership & market structure</h3><dl className="space-y-4 text-sm">{[['Market cap (PKR)',stock.marketCap?'Rs '+number(stock.marketCap/1e9)+'B':'—'],['Total shares',number(data.shares,0)],['Free-float shares',number(data.freeFloat,0)],['Free float',floatPercent!==null?number(floatPercent)+'%':'—']].map(([k,v])=><div key={k} className="flex justify-between gap-3"><dt className="text-[#A4AEC1]">{k}</dt><dd className="font-mono">{v}</dd></div>)}</dl>{floatPercent!==null&&<div className="h-2 rounded-full bg-[#28354A] mt-5 overflow-hidden"><div className="h-full bg-[#B69249]" style={{width:Math.min(100,Math.max(0,floatPercent))+'%'}}/></div>}<div className="mt-5 text-xs text-[#A4AEC1] space-y-2"><p>Listed indices: {stock.listedIndices||'—'}</p><p>{stock.isShariah?'KMI index membership reported by PSX.':'No KMI membership reported in the quote feed.'}</p></div></section>
+  <section className={card}><h3 className="font-semibold mb-5">Company contacts</h3><dl className="space-y-5">{data.contacts.map(c=><div key={c.label}><dt className="text-xs text-[#A4AEC1] mb-1">{c.label}</dt><dd className="text-sm leading-relaxed break-words">{c.url?<a href={c.url} target="_blank" rel="noopener noreferrer" className="text-[#B69249]">{c.value} ↗</a>:c.value}</dd></div>)}</dl></section></div>
+  <a href={data.source+'#profile'} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-[#B69249]">Source: official PSX company profile ↗</a>
+ </div>;
+}
+export function CompanyTechnicals({history}:{history:ChartPoint[]}) {
+ const t=stockTechnicals(history),histogram=t.macd!==null&&t.signal!==null?t.macd-t.signal:null;
+ const averages=[['SMA 20',t.sma20],['SMA 50',t.sma50],['SMA 200',t.sma200],['EMA 20',t.ema20],['EMA 50',t.ema50]] as const;
+ return <div className="space-y-5"><div className="flex flex-wrap justify-between gap-3"><h2 className="text-xl font-semibold">Daily technicals</h2><p className="text-xs text-[#A4AEC1]">{t.asOf?'Based on PSX close · '+new Date(t.asOf*1000).toLocaleDateString('en-GB',{timeZone:'Asia/Karachi'}):'History unavailable'}</p></div>
+  <MetricCards items={[{label:'RSI (14) · Wilder',value:number(t.rsi14),detail:t.rsi14===null?'Insufficient history':t.rsi14>=70?'Overbought zone':t.rsi14<=30?'Oversold zone':'Neutral zone'},{label:'MACD (12, 26)',value:number(t.macd),detail:'Daily closing prices'},{label:'MACD signal (9)',value:number(t.signal),detail:'EMA of MACD'},{label:'MACD histogram',value:number(histogram)},{label:'20-session average volume',value:number(t.averageVolume20,0)},{label:'Relative volume (20)',value:t.relativeVolume20===null?'—':number(t.relativeVolume20)+'x'}]}/>
+  <section className={card}><h3 className="font-semibold mb-4">Moving averages</h3><table className="w-full text-sm"><thead className="text-xs text-[#A4AEC1] text-left"><tr><th className="py-3">Average</th><th>Value (PKR)</th><th>Last close</th></tr></thead><tbody>{averages.map(([label,n])=><tr key={label} className="border-t border-[#28354A]"><th className="text-left py-3 font-medium">{label}</th><td className="font-mono">{number(n)}</td><td className={n!==null&&t.close!==null&&t.close>n?'text-[#6DDBA5]':'text-[#A4AEC1]'}>{n===null||t.close===null?'Insufficient history':t.close>n?'Above':t.close<n?'Below':'At average'}</td></tr>)}</tbody></table></section>
+  {t.yearLow!==null&&<MetricCards items={[{label:'52-week closing low',value:'Rs '+number(t.yearLow)},{label:'52-week closing high',value:'Rs '+number(t.yearHigh)},{label:'Last daily close',value:'Rs '+number(t.close)}]}/>}
+  <p className="text-xs text-[#A4AEC1]">Calculated from available daily PSX history. Price indicators, not trading recommendations.</p>
+ </div>;
+}

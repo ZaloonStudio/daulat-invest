@@ -16,7 +16,7 @@ import IndexPerformanceTable from '@/components/IndexPerformanceTable';
 import MarketNewsSection from '@/components/MarketNewsSection';
 import CompanyAnnouncementsSection from '@/components/CompanyAnnouncementsSection';
 import SectorsGrid from '@/components/SectorsGrid';
-import AppPromoBanner from '@/components/AppPromoBanner';
+
 
 interface HomeClientContainerProps {
   commodityPrices: PriceSnapshot;
@@ -132,10 +132,7 @@ export default function HomeClientContainer({
         <SectorsGrid quotes={quotes} />
       </section>
 
-      {/* 9. Conversion App Promo Banner */}
-      <section>
-        <AppPromoBanner />
-      </section>
+
     </div>
   );
 }

@@ -46,8 +46,11 @@ test('invalid cloud numbers do not poison portfolio totals', () => {
   assert.equal(readHolding('bad',{shares:'invalid',buyPrice:Infinity}).shares,0);
   assert.equal(readHolding('bad',{buyPrice:Infinity}).buyPrice,0);
 });
-test('all eight stock deep links resolve and unknown links fall back safely', () => {
-  assert.equal(STOCK_TABS.length,8);
+test('research tabs and legacy deep links resolve after consolidation', () => {
+  assert.equal(STOCK_TABS.length,6);
+  assert.equal(stockTabFromHash('#ratios-section'),'financials-section');
+  assert.equal(stockTabFromHash('#dividends-section'),'financials-section');
+  assert.equal(stockTabFromHash('#shariah-section'),'company-info-section');
   for(const [id] of STOCK_TABS) assert.equal(stockTabFromHash('#'+id),id);
   assert.equal(stockTabFromHash('#unknown'),'overview-section');
 });

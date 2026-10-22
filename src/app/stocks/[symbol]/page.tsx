@@ -3,19 +3,18 @@ import React from 'react';
 import { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
-import { fetchMarketWatch, fetchStockHistory, fetchTimeseries, fetchCompanyAnnouncements } from '@/lib/psx';
+import { fetchMarketWatch, fetchStockHistory, fetchTimeseries, fetchCompanyAnnouncements, fetchCompanyResearch } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StockHistoryChart from '@/components/StockHistoryChart';
 import CompanyHealthScore from '@/components/CompanyHealthScore';
 import StockDetailTabs from '@/components/StockDetailTabs';
-import AppPromoBanner from '@/components/AppPromoBanner';
+import {CompanyFundamentals,CompanyProfile,CompanyTechnicals} from '@/components/CompanyResearchPanels';
 import {
   TrendingUp,
   TrendingDown,
   ArrowLeft,
   Activity,
-  Smartphone,
 } from 'lucide-react';
 
 interface Props {
@@ -42,11 +41,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function StockDetailPage({ params }: Props) {
   const symbol = params.symbol.toUpperCase();
   if (params.symbol !== symbol) permanentRedirect('/stocks/' + encodeURIComponent(symbol));
-  const [quotes, history, kseHistory, announcements] = await Promise.all([
+  const [quotes, history, kseHistory, announcements, research] = await Promise.all([
     fetchMarketWatch(),
     fetchStockHistory(symbol),
     fetchTimeseries('KSE100', false),
     fetchCompanyAnnouncements(symbol),
+    fetchCompanyResearch(symbol),
   ]);
 
   const quote = quotes.find((q) => q.symbol.toUpperCase() === symbol);
@@ -59,7 +59,7 @@ export default async function StockDetailPage({ params }: Props) {
   const isPositive = quote.change >= 0;
   const relatedStocks = quotes
     .filter((q) => q.sector === quote.sector && q.symbol !== quote.symbol)
-    .slice(0, 5);
+    .sort((a,b)=>(b.marketCap??0)-(a.marketCap??0)).slice(0, 10);
 
   const jsonLd = {
     '@context': 'https://schema.org', '@graph': [
@@ -137,7 +137,7 @@ export default async function StockDetailPage({ params }: Props) {
         </div>
 
         <p className="text-xs text-[#A4AEC1]">PSX DPS snapshot · {quote.updatedAt ? new Date(quote.updatedAt).toLocaleString('en-GB', {timeZone:'Asia/Karachi'}) + ' PKT' : 'Source timestamp unavailable'}</p>
-        <StockDetailTabs stock={quote} peers={relatedStocks} announcements={announcements.filter(a => a.symbol.toUpperCase() === symbol)} overview={
+        <StockDetailTabs stock={quote} peers={relatedStocks} announcements={announcements.filter(a => a.symbol.toUpperCase() === symbol)} fundamentals={<CompanyFundamentals stock={quote} data={research}/>} technicals={<CompanyTechnicals history={history}/>} profile={<CompanyProfile stock={quote} data={research}/>} overview={
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8">
             <StockHistoryChart
@@ -152,7 +152,7 @@ export default async function StockDetailPage({ params }: Props) {
 
           {/* Right Column: Daulat Health Score (Sarmaaya Score) & Stats */}
           <div className="lg:col-span-4 space-y-4">
-            <CompanyHealthScore stock={quote} />
+            <CompanyHealthScore stock={quote} research={research} />
 
             <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl">
               <h2 className="text-sm font-semibold text-[#EFF3FA] uppercase tracking-wider mb-4 border-b border-[#28354A] pb-3 flex items-center space-x-2">
@@ -198,29 +198,13 @@ export default async function StockDetailPage({ params }: Props) {
               </div>
             </div>
 
-            {/* In-App Portfolio Sync Callout */}
-            <div className="bg-gradient-to-br from-[#111A2B] to-[#1C2940] border border-[#28354A] rounded-xl p-5 shadow-xl text-center">
-              <Smartphone className="w-8 h-8 text-[#B69249] mx-auto mb-2" />
-              <h3 className="text-sm font-semibold text-[#EFF3FA]">Track {quote.symbol} in Daulat App</h3>
-              <p className="text-xs text-[#A4AEC1] mt-1 leading-relaxed">
-                Add {quote.symbol} to your portfolio to track live profit/loss, price breakout
-                alerts, and average buy cost.
-              </p>
-              <a
-                href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 block w-full bg-[#B69249] hover:bg-[#C6A45B] text-black font-semibold py-2 rounded-xl text-xs transition-colors"
-              >
-                Open in App
-              </a>
-            </div>
+
           </div>
         </div>
 
         } />
 
-        <AppPromoBanner />
+
       </main>
 
       <Footer />

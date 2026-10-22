@@ -711,25 +711,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
               </div>
             </div>
 
-            {/* In-App Sync CTA */}
-            <div className="bg-gradient-to-r from-[#1C2940] to-[#111A2B] border border-[#28354A] p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="space-y-0.5 text-center sm:text-left">
-                <div className="text-sm font-semibold text-[#EFF3FA]">
-                  Track investments with Daulat
-                </div>
-                <div className="text-xs text-[#A4AEC1]">
-                  Keep your investment research and portfolio in one place.
-                </div>
-              </div>
-              <a
-                href="https://play.google.com/store/apps/details?id=pk.psxtracker.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#B69249] hover:bg-[#C6A45B] text-black font-semibold text-xs px-5 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0"
-              >
-                Open in Daulat App
-              </a>
-            </div>
+
           </div>
         </div>
       )}
