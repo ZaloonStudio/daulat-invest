@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import {
@@ -15,31 +16,7 @@ import { getPriceSnapshot } from '@/lib/commodity-feed';
 
 export const revalidate = 15; // Revalidate every 15 seconds for live updates
 
-export const metadata: Metadata = {
-  title: 'Daulat Invest - Live Pakistan Stock Exchange (PSX) Terminal & Charts',
-  description:
-    'Live KSE 100 index, real-time PSX stock quotes, interactive TradingView charts, top gainers, losers, corporate announcements, and smart portfolio tracking.',
-  keywords: [
-    'PSX',
-    'Pakistan Stock Exchange',
-    'KSE 100',
-    'PSX live rates',
-    'Daulat app',
-    'Daulat Invest',
-    'Investify',
-    'Sarmaaya',
-    'stocks Pakistan',
-    'OGDC share price',
-    'Meezan bank share',
-  ],
-  openGraph: {
-    title: 'Daulat Invest - Live PSX Stock Market Terminal',
-    description: 'Real-time PSX 100 charts, stock screener, corporate filings, and portfolio intelligence.',
-    url: 'https://daulatinvest.com',
-    siteName: 'Daulat Invest',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = pageMetadata("/", "PSX Live Market & KSE 100 Index", "Track the Pakistan Stock Exchange with KSE 100 charts, share prices, market movers, stock screening and portfolio tools.");
 
 export default async function HomePage() {
   const [summary, quotes, news, announcements, commodityPrices] = await Promise.all([

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "node --test tests/*.test.cjs",
-    "verify:firebase": "node scripts/verify-firebase.mjs"
+    "verify:firebase": "node scripts/verify-firebase.mjs",
+    "verify:seo": "node scripts/verify-seo.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

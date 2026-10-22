@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import { fetchCompanyAnnouncements } from '@/lib/psx';
@@ -7,18 +8,7 @@ import AnnouncementsClient from './AnnouncementsClient';
 
 export const revalidate = 60; // Refresh filings every minute
 
-export const metadata: Metadata = {
-  title: 'PSX Corporate Announcements & Financial Filings - Daulat Invest',
-  description:
-    'Real-time corporate disclosures, board meetings, dividend declarations, financial results, and material notices directly from the Pakistan Stock Exchange DPS.',
-  keywords: [
-    'PSX Announcements',
-    'PSX DPS filings',
-    'Pakistan Stock Exchange corporate actions',
-    'PSX dividends',
-    'PSX board meetings',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/announcements", "PSX Company Announcements & Disclosures", "Browse Pakistan Stock Exchange company announcements, financial results, board meetings and corporate disclosures.");
 
 export default async function AnnouncementsPage() {
   const announcements = await fetchCompanyAnnouncements();

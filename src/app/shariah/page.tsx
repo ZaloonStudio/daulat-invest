@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
@@ -7,18 +8,7 @@ import ShariahClient from './ShariahClient';
 
 export const revalidate = 15;
 
-export const metadata: Metadata = {
-  title: 'PSX Shariah Compliant Stocks - KMI-30 Islamic Screener - Daulat Invest',
-  description:
-    'Screener for all certified Shariah-compliant and Islamic stocks listed on the Pakistan Stock Exchange. Screen by sector, dividend yield, PE ratio, and live rates.',
-  keywords: [
-    'Shariah stocks PSX',
-    'KMI 30 stocks',
-    'Islamic investing Pakistan',
-    'Halal stocks PSX',
-    'Meezan Islamic index',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/shariah", "Shariah Stock Screener for PSX", "Explore Shariah screening information for Pakistan Stock Exchange companies and compare available compliance and financial ratios.");
 
 export default async function ShariahPage() {
   const allStocks = await fetchMarketWatch();

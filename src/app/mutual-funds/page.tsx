@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
@@ -7,30 +8,7 @@ import { Layers } from 'lucide-react';
 
 export const revalidate = 300; // 5 minute cache
 
-export const metadata: Metadata = {
-  title: 'Pakistan Mutual Funds Directory & Live NAVs - Daulat Invest',
-  description:
-    'Track live NAVs, 1-month, YTD, and 1-year returns for Pakistan mutual funds across Al Meezan, Alfalah, NBP, MCB, HBL, and UBL. Filter by Shariah compliance, risk profile, and asset category.',
-  keywords: [
-    'Pakistan mutual funds',
-    'MUFAP live NAV',
-    'Islamic mutual funds Pakistan',
-    'Meezan Islamic Fund NAV',
-    'Al Meezan Investments',
-    'Alfalah GHP funds',
-    'NBP funds NAV',
-    'Money market funds Pakistan',
-    'Daulat Invest mutual funds',
-  ],
-  openGraph: {
-    title: 'Pakistan Mutual Funds Directory & Live NAVs | Daulat Invest',
-    description:
-      'Compare 50+ Pakistani mutual funds by NAV, historical return, AMC, Shariah compliance, and risk category.',
-    url: 'https://daulatinvest.com/mutual-funds',
-    siteName: 'Daulat Invest',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = pageMetadata("/mutual-funds", "Pakistan Mutual Funds & NAV Comparison", "Explore Pakistani mutual funds by asset manager, category, NAV, historical returns, risk and Shariah compliance.");
 
 export default function MutualFundsPage() {
   const jsonLd = {
@@ -39,7 +17,7 @@ export default function MutualFundsPage() {
     name: 'Pakistan Mutual Funds Directory - Daulat Invest',
     description:
       'Comprehensive catalog of Pakistani mutual funds, including Islamic Money Market, Income, Equity, and Sovereign funds.',
-    url: 'https://daulatinvest.com/mutual-funds',
+    url: 'https://www.daulatinvest.com/mutual-funds',
   };
 
   return (

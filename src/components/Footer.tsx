@@ -22,6 +22,8 @@ export default function Footer() {
               <Link href="/stocks" className="footer-link">Stocks</Link>
               <Link href="/stocks/screener" className="footer-link">Screener</Link>
               <Link href="/mutual-funds" className="footer-link">Mutual funds</Link>
+              <Link href="/commodities" className="footer-link">Gold & commodities</Link>
+              <Link href="/forex" className="footer-link">Currency rates</Link>
               <a href="https://play.google.com/store/apps/details?id=pk.psxtracker.app" target="_blank" rel="noopener noreferrer" className="footer-link inline-flex items-center gap-1.5">Get the app <ArrowUpRight className="w-3.5 h-3.5" /></a>
             </nav>
           </div>

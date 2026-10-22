@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import { getMarketSummary, calculateFearGreed } from '@/lib/psx';
@@ -7,18 +8,7 @@ import FearGreedClient from './FearGreedClient';
 
 export const revalidate = 15; // Revalidate every 15 seconds for live PSX sentiment
 
-export const metadata: Metadata = {
-  title: 'PSX Fear & Greed Index - Pakistan Stock Market Sentiment - Daulat Invest',
-  description:
-    'Track overall Pakistan Stock Exchange market sentiment in real-time. Multifactor sentiment index based on PSX advance-decline breadth, KSE-100 momentum, and trading volume velocity.',
-  keywords: [
-    'PSX Fear and Greed Index',
-    'Pakistan Stock Exchange Sentiment',
-    'Investify Fear Greed',
-    'KSE 100 market sentiment',
-    'PSX advance decline ratio',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/fear-greed", "PSX Fear & Greed Index", "Explore Pakistan stock market sentiment using KSE 100 momentum, market breadth and trading activity in the Daulat Fear & Greed Index.");
 
 export default async function FearGreedPage() {
   const summary = await getMarketSummary();

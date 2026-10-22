@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
@@ -7,19 +8,7 @@ import { getPriceSnapshot } from '@/lib/commodity-feed';
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: 'Gold Rates in Pakistan & Commodities Tracker - Daulat Invest',
-  description:
-    'Explore indicative gold and silver values in PKR, notified petrol rates, energy benchmarks and commodity calculators with source timestamps.',
-  alternates: { canonical: 'https://www.daulatinvest.com/commodities' },
-  keywords: [
-    'Gold rate in Pakistan today',
-    'Gold price per tola',
-    'Sarmaaya commodities',
-    'Silver rate Pakistan',
-    'Crude oil price PKR',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/commodities", "Gold & Commodity Prices in Pakistan", "Explore gold and silver prices in PKR, Pakistan petrol prices and global energy benchmarks with historical charts and calculators.");
 
 export default async function CommoditiesPage() {
   const prices = await getPriceSnapshot();

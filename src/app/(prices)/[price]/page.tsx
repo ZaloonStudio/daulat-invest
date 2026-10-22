@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,7 +18,7 @@ export function generateStaticParams() { return PRICE_PAGES.map(p=>({price:p.slu
 export function generateMetadata({params}:{params:{price:string}}): Metadata {
   const p = getPricePage(params.price);
   if (!p) return {};
-  return {title:`${p.title} | Daulat Invest`,description:p.description,alternates:{canonical:`${BASE}/${p.slug}`},openGraph:{title:p.title,description:p.description,url:`${BASE}/${p.slug}`,type:'website',siteName:'Daulat Invest'},twitter:{card:'summary',title:p.title,description:p.description}};
+  return pageMetadata(`/${p.slug}`, p.title, p.description);
 }
 export default async function PriceDetailPage({params}:{params:{price:string}}) {
   const p = getPricePage(params.price);

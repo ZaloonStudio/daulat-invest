@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import { fetchMarketNews } from '@/lib/psx';
@@ -7,19 +8,7 @@ import NewsClientHub from './NewsClientHub';
 
 export const revalidate = 60; // Refresh news every minute
 
-export const metadata: Metadata = {
-  title: 'Pakistan Stock Market News & Financial Intelligence - Daulat Invest',
-  description:
-    'Live business news, corporate earnings, interest rate updates, IMF reforms, and market commentary from Business Recorder, Dawn, Tribune, and Profit.',
-  keywords: [
-    'PSX News',
-    'Pakistan Stock Exchange News',
-    'Business Recorder PSX',
-    'Dawn Business',
-    'Pakistan Economy News',
-    'KSE 100 Live News',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/news", "Pakistan Stock Market & Business News", "Follow Pakistan stock market and business headlines, company developments and financial market news on Daulat Invest.");
 
 export default async function NewsPage() {
   const articles = await fetchMarketNews();

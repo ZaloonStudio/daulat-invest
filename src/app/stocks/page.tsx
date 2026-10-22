@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { pageMetadata } from '@/lib/seo';
 import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
@@ -7,11 +9,7 @@ import StocksDirectoryClient from '@/components/StocksDirectoryClient';
 
 export const revalidate = 60; // 1 minute cache
 
-export const metadata: Metadata = {
-  title: 'All Pakistan Stock Exchange (PSX) Listed Stocks Directory - Daulat Invest',
-  description:
-    'Browse all 500+ companies listed on PSX. Filter by sector, check live market price, 24h trading volume, top gainers, and company fundamentals on Daulat Invest.',
-};
+export const metadata: Metadata = pageMetadata("/stocks", "PSX Share Prices & Listed Companies", "Browse Pakistan Stock Exchange companies by sector. Compare share prices, trading volume and price changes, and open detailed stock charts.");
 
 export default async function StocksPage() {
   const quotes = await fetchMarketWatch();
@@ -41,7 +39,10 @@ export default async function StocksPage() {
         <Suspense
           fallback={
             <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-12 text-center text-sm text-[#A4AEC1]">
-              Loading PSX directory...
+              <p className="mb-4">PSX companies</p>
+              <nav aria-label="PSX company directory" className="flex flex-wrap gap-3">
+                {quotes.map(quote => <Link key={quote.symbol} href={`/stocks/${quote.symbol}`}>{quote.symbol} — {quote.name}</Link>)}
+              </nav>
             </div>
           }
         >

@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
@@ -8,27 +9,7 @@ import { SlidersHorizontal } from 'lucide-react';
 
 export const revalidate = 60; // 1 minute cache
 
-export const metadata: Metadata = {
-  title: 'PSX Stock Screener & Filter - Daulat Invest',
-  description:
-    'Custom stock screener for Pakistan Stock Exchange (PSX). Filter 500+ Pakistani stocks by Shariah compliance (KMI-30), P/E ratio, dividend yield, market capitalization, and daily volume.',
-  keywords: [
-    'PSX stock screener',
-    'Pakistan Stock Exchange screener',
-    'Shariah compliant stocks Pakistan',
-    'High dividend yield PSX',
-    'PSX valuation filter',
-    'KMI 30 screener',
-    'Daulat Invest screener',
-  ],
-  openGraph: {
-    title: 'PSX Stock Screener & Filter | Daulat Invest',
-    description: 'Filter Pakistan Stock Exchange stocks by sector, Shariah status, P/E, and dividends.',
-    url: 'https://daulatinvest.com/stocks/screener',
-    siteName: 'Daulat Invest',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = pageMetadata("/stocks/screener", "PSX Stock Screener", "Filter Pakistan Stock Exchange shares by sector, valuation, dividend yield and Shariah status. Compare stocks and explore company details.");
 
 export default async function ScreenerPage() {
   const quotes = await fetchMarketWatch();
@@ -45,7 +26,7 @@ export default async function ScreenerPage() {
     '@type': 'WebApplication',
     name: 'Daulat PSX Stock Screener',
     description: 'Interactive stock screening tool for equities listed on the Pakistan Stock Exchange.',
-    url: 'https://daulatinvest.com/stocks/screener',
+    url: 'https://www.daulatinvest.com/stocks/screener',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'All',
   };

@@ -1,6 +1,7 @@
+import { pageMetadata, SITE_URL, jsonLd as serializeJsonLd } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { fetchMarketWatch, fetchStockHistory, fetchTimeseries, fetchCompanyAnnouncements } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
@@ -34,34 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const sign = quote.change >= 0 ? '+' : '';
-  const priceStr = `Rs ${quote.current.toFixed(2)}`;
-  const changeStr = `${sign}${quote.change.toFixed(2)} (${sign}${quote.changePercent.toFixed(2)}%)`;
-
-  return {
-    title: `${symbol} Share Price: ${priceStr} (${changeStr}) - ${quote.name} PSX | Daulat Invest`,
-    description: `Live ${symbol} stock price today: ${priceStr}. Track live ${quote.name} Pakistan Stock Exchange (PSX) trading volume, intraday & historical charts, key ratios, and corporate announcements on Daulat Invest.`,
-    keywords: [
-      `${symbol} share price`,
-      `${symbol} stock`,
-      `${quote.name}`,
-      `${symbol} dividend`,
-      `${symbol} PSX`,
-      `${symbol} target price`,
-      'Pakistan Stock Exchange',
-    ],
-    openGraph: {
-      title: `${symbol} (${quote.name}) - ${priceStr} | Daulat Invest`,
-      description: `Live PSX price, charts, and analysis for ${quote.name} (${symbol}).`,
-      url: `https://daulatinvest.com/stocks/${symbol}`,
-      siteName: 'Daulat Invest',
-      type: 'article',
-    },
-  };
+  return pageMetadata('/stocks/' + symbol, symbol + ' Share Price & Chart — ' + quote.name,
+    'Explore ' + quote.name + ' (' + symbol + ') on the Pakistan Stock Exchange: share price, historical charts, company fundamentals, dividends and announcements.');
 }
 
 export default async function StockDetailPage({ params }: Props) {
   const symbol = params.symbol.toUpperCase();
+  if (params.symbol !== symbol) permanentRedirect('/stocks/' + encodeURIComponent(symbol));
   const [quotes, history, kseHistory, announcements] = await Promise.all([
     fetchMarketWatch(),
     fetchStockHistory(symbol),
@@ -80,26 +60,24 @@ export default async function StockDetailPage({ params }: Props) {
     .filter((q) => q.sector === quote.sector && q.symbol !== quote.symbol)
     .slice(0, 5);
 
-  // Schema.org Structured Data for Google Rich Snippets
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FinancialProduct',
-    name: `${quote.name} (${quote.symbol})`,
-    description: `Common stock of ${quote.name} listed on Pakistan Stock Exchange.`,
-    offers: {
-      '@type': 'Offer',
-      price: quote.current,
-      priceCurrency: 'PKR',
-      priceChange: quote.change,
-      priceChangePercent: quote.changePercent,
-    },
+    '@context': 'https://schema.org', '@graph': [
+      { '@type': 'WebPage', '@id': SITE_URL + '/stocks/' + symbol, url: SITE_URL + '/stocks/' + symbol,
+        name: quote.name + ' (' + symbol + ') Share Price & Chart', isPartOf: { '@id': SITE_URL + '/#website' },
+        about: { '@type': 'Corporation', name: quote.name, tickerSymbol: 'PSX:' + symbol } },
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Markets', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'PSX stocks', item: SITE_URL + '/stocks' },
+        { '@type': 'ListItem', position: 3, name: symbol, item: SITE_URL + '/stocks/' + symbol }
+      ] }
+    ]
   };
 
   return (
     <div className="min-h-screen bg-[#0B1120] text-[#EFF3FA]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
       <Navbar />

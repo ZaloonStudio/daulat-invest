@@ -1,21 +1,11 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import DividendCalculatorView from './DividendCalculatorView';
 
-export const metadata: Metadata = {
-  title: 'PSX Dividend Yield & Tax Calculator - Daulat Invest',
-  description:
-    'Calculate net dividend payouts, Filer (15%) vs Non-Filer (30%) withholding tax, annual passive income, and payback periods for high-yield Pakistan Stock Exchange stocks.',
-  keywords: [
-    'PSX Dividend Calculator',
-    'Pakistan stocks dividend tax',
-    'Filer Non Filer dividend WHT',
-    'HUBC dividend yield',
-    'EFERT dividend calculator',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/dividend-calculator", "PSX Dividend Yield Calculator", "Estimate dividend income and yield for Pakistan Stock Exchange shares. Compare dividend opportunities and calculate investment income.");
 
 export default function DividendCalculatorPage() {
   return (

@@ -53,7 +53,7 @@ export default function HomeClientContainer({
       <div className="overview-heading">
         <div>
           <p className="eyebrow mb-4"><span className="w-5 h-px bg-current" />THE PAKISTAN MARKET, IN FOCUS</p>
-          <h1 className="overview-title">Perspective.<br /><span className="text-[#B69249]">Then possibility.</span></h1>
+          <h1 className="overview-title">Pakistan markets.<br /><span className="text-[#B69249]">A clearer view.</span></h1>
           <p className="text-sm text-[#A4AEC1] mt-5 max-w-md leading-relaxed">Your view of the Pakistan Stock Exchange. Follow the market, explore opportunities, and build your next move.</p>
         </div>
         <div className="flex flex-col items-start sm:items-end gap-4">

@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
@@ -7,18 +8,7 @@ import WatchlistClient from './WatchlistClient';
 
 export const revalidate = 15;
 
-export const metadata: Metadata = {
-  title: 'My Stock Watchlist - PSX Live Tracking - Daulat Invest',
-  description:
-    'Custom stock watchlist for the Pakistan Stock Exchange. Monitor live prices, volume shifts, valuation multiples, and dividend yields for your favorite PSX equities.',
-  keywords: [
-    'PSX Watchlist',
-    'Pakistan stocks tracker',
-    'Investify watchlist',
-    'KSE 100 stock alerts',
-    'Daulat Watchlist',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/watchlist", "Your PSX Stock Watchlist", "Track your saved Pakistan Stock Exchange shares and monitor prices in your personal Daulat watchlist.", false);
 
 export default async function WatchlistPage() {
   const allQuotes = await fetchMarketWatch();

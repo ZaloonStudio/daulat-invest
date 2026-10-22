@@ -1,22 +1,11 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CommunityClient from './CommunityClient';
 
-export const metadata: Metadata = {
-  title: 'Pakistan Stock Exchange Community & Investor Forum - Daulat Invest',
-  description:
-    'Join Pakistan’s premier stock market investor community. Discuss PSX stocks, company earnings, share investment theses, and trade ideas with fellow retail and institutional investors.',
-  keywords: [
-    'PSX Community',
-    'Pakistan Stock Exchange Forum',
-    'PSX stock discussion',
-    'Investify community',
-    'KSE 100 traders',
-    'Daulat Community',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/community", "PSX Investor Community", "Explore discussions about Pakistan Stock Exchange shares, market developments and investing with the Daulat community.");
 
 export default function CommunityPage() {
   return (

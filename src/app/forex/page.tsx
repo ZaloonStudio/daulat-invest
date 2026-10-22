@@ -1,21 +1,11 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ForexClient from './ForexClient';
 
-export const metadata: Metadata = {
-  title: 'Currency Rates in Pakistan - USD to PKR Live Forex - Daulat Invest',
-  description:
-    'Live currency rates in Pakistan today. Track US Dollar (USD), Euro (EUR), British Pound (GBP), Saudi Riyal (SAR), and UAE Dirham (AED) to PKR in Interbank and Open Market.',
-  keywords: [
-    'USD to PKR today',
-    'Dollar rate in Pakistan',
-    'Sarmaaya forex rates',
-    'Open market currency rate',
-    'Riyal rate in Pakistan',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/forex", "Currency Exchange Rates in Pakistan", "Compare USD, EUR, GBP, SAR and AED exchange rates against the Pakistani rupee with currency conversion tools.");
 
 export default function ForexPage() {
   return (

@@ -1,20 +1,11 @@
+import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SipCalculatorView from './SipCalculatorView';
 
-export const metadata: Metadata = {
-  title: 'PSX SIP & Wealth Compounding Calculator - Daulat Invest',
-  description:
-    'Plan disciplined Rupee-Cost Averaging across Pakistan Stock Exchange equities. Calculate future wealth, compounded interest, and long-term capital milestones.',
-  keywords: [
-    'SIP calculator Pakistan',
-    'PSX DCA calculator',
-    'Mutual funds compound returns',
-    'Pakistan stocks compounding',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/sip-calculator", "SIP & Compound Growth Calculator in PKR", "Calculate projected growth from monthly investing in Pakistani rupees. Adjust contributions, time horizon and expected returns.");
 
 export default function SipCalculatorPage() {
   return (

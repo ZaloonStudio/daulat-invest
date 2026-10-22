@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
@@ -7,19 +8,7 @@ import StockCompareClient from './StockCompareClient';
 
 export const revalidate = 15;
 
-export const metadata: Metadata = {
-  title: 'PSX Stock Comparison Tool - Side-by-Side Equities Analytics - Daulat Invest',
-  description:
-    'Compare Pakistan Stock Exchange equities side-by-side. Analyze valuation multiples (P/E, P/B), dividend yields, 1-year returns, market capitalizations, and Shariah compliance.',
-  keywords: [
-    'PSX stock compare',
-    'Sarmaaya stock comparison',
-    'Compare PSX stocks',
-    'MEBL vs MCB',
-    'HUBC vs KAPCO',
-    'EFERT vs FFC',
-  ],
-};
+export const metadata: Metadata = pageMetadata("/stocks/compare", "Compare PSX Stocks", "Compare Pakistan Stock Exchange shares side by side with prices, valuation ratios, dividends and company fundamentals.");
 
 export default async function StockComparePage() {
   const allStocks = await fetchMarketWatch();
