@@ -24,6 +24,13 @@ test('publisher RSS supplies real article links and dates with no invented summa
  const xml=fixture('dawn.xml');const [a]=source.parseDawnFeed(xml,Date.parse('2030-01-01'));assert.ok(a);assert.match(a.link,/^https:\/\/www\.dawn.com\/news\/\d+/);assert.equal(a.summary,'');assert.ok(Number.isFinite(Date.parse(a.publishedAt)));
  assert.deepEqual(source.parseDawnFeed(xml.replace('https://www.dawn.com','https://example.com'),Date.parse('2030-01-01')),[]);assert.deepEqual(source.parseDawnFeed(xml,0),[]);
  const tribune=fixture('tribune.xml');const [b]=source.parseNewsFeed(tribune,'TRIBUNE',Date.parse('2030-01-01'));assert.equal(b.source,'TRIBUNE');assert.match(b.link,/^https:\/\/tribune.com.pk\/story\//);assert.deepEqual(source.parseNewsFeed(tribune,'DAWN',Date.parse('2030-01-01')),[]);
+ assert.match(a.imageUrl,/^https:\/\/i\.dawn\.com\//);assert.match(b.imageUrl,/^https:\/\/i\.tribune\.com\.pk\//);
+ assert.equal(source.parseNewsFeed(tribune.replace('https://i.tribune.com.pk','https://example.com'),'TRIBUNE',Date.parse('2030-01-01'))[0].imageUrl,undefined);
+ assert.equal(source.parseNewsFeed(tribune.replace('https://i.tribune.com.pk','http://i.tribune.com.pk'),'TRIBUNE',Date.parse('2030-01-01'))[0].imageUrl,undefined);
+});
+test('homepage index shortlist is stable, limited to five, and keeps specialist indices for Market',()=>{
+ const {homeIndices}=load('market-layout');const indices=['BKTI','PSXDIV20','OGTI','KMI30','KSE30','ALLSHR','KSE100'].map(code=>({code}));
+ assert.deepEqual(homeIndices(indices).map(i=>i.code),['KSE100','ALLSHR','KSE30','KMI30','PSXDIV20']);assert.equal(homeIndices([]).length,0);assert.deepEqual(homeIndices([{code:'KSE100'}]).map(i=>i.code),['KSE100']);
 });
 test('comparisons match actual dates and never invent benchmark returns',()=>{
  const t=Date.parse('2026-10-01')/1000;

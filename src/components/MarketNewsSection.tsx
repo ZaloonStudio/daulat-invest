@@ -69,6 +69,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
               {featured.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
+                    loading="lazy" decoding="async" referrerPolicy="no-referrer"
                   src={featured.imageUrl}
                   alt={featured.title}
                   onError={(e) => {
@@ -143,6 +144,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                 {article.imageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
+                    loading="lazy" decoding="async" referrerPolicy="no-referrer"
                     src={article.imageUrl}
                     alt={article.title}
                     onError={(e) => {

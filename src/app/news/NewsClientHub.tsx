@@ -132,6 +132,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
           <div className="lg:col-span-5 relative h-60 sm:h-72 w-full rounded-xl overflow-hidden bg-[#0B1120] border border-[#28354A]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+                    loading="lazy" decoding="async" referrerPolicy="no-referrer"
               src={
                 failedImages[filteredArticles[0].id]
                   ? FALLBACK_NEWS_IMAGE
@@ -161,6 +162,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
               <div className="relative h-44 w-full rounded-xl overflow-hidden bg-[#0B1120] border border-[#28354A] mb-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
+                    loading="lazy" decoding="async" referrerPolicy="no-referrer"
                   src={
                     failedImages[article.id]
                       ? FALLBACK_NEWS_IMAGE

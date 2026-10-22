@@ -138,7 +138,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: 'Overview', href: '/', icon: Home },
-    { label: 'Market', href: pathname === '/' ? '#indices-section' : '/#indices-section', icon: Activity },
+    { label: 'Market', href: '/market', icon: Activity },
     { label: 'Screener', href: '/stocks/screener', icon: SlidersHorizontal },
     { label: 'Mutual Funds', href: '/mutual-funds', icon: Layers },
     { label: 'News', href: '/news', icon: Newspaper },

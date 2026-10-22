@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { normalizeChartPoints } from '@/lib/chart-data';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createChart, ColorType, AreaSeries, HistogramSeries, IChartApi, ISeriesApi } from 'lightweight-charts';
@@ -12,6 +13,8 @@ interface KseHeroSectionProps {
   selectedIndexCode?: string;
   isPsxOpen?: boolean;
   marketTime?: string;
+  compactIndices?:IndexQuote[];
+  onSelectIndex?:(code:string)=>void;
 }
 
 export default function KseHeroSection({
@@ -20,6 +23,8 @@ export default function KseHeroSection({
   selectedIndexCode = 'KSE100',
   isPsxOpen = false,
   marketTime = '',
+  compactIndices,
+  onSelectIndex,
 }: KseHeroSectionProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<IChartApi | null>(null);
@@ -344,6 +349,11 @@ export default function KseHeroSection({
       </div>
 
       {/* RIGHT COLUMN (Index Stats & Day/52W Range Sliders - 4 cols) */}
+      {compactIndices ? <aside className="hero-stats lg:col-span-4 rounded-xl border border-[#28354A] bg-[#111A2B] p-5 flex flex-col">
+        <div className="flex justify-between items-center border-b border-[#28354A] pb-4 mb-2"><h2 className="text-sm font-semibold">Key indices</h2><span className="text-[11px] text-[#A4AEC1]">PSX</span></div>
+        <div className="divide-y divide-[#28354A]/60 flex-1">{compactIndices.map(index=><button key={index.code} aria-pressed={selectedIndexCode===index.code} onClick={()=>onSelectIndex?.(index.code)} className={'w-full flex justify-between items-center gap-3 px-3 py-4 rounded-lg text-left transition-colors '+(selectedIndexCode===index.code?'bg-[#B69249]/10':'hover:bg-[#1C2940]')}><span className="text-xs font-semibold">{index.code}<span className="block text-sm font-mono font-medium mt-1.5">{index.current.toLocaleString('en-US',{maximumFractionDigits:2})}</span></span><span className={'text-xs font-mono font-semibold '+(index.changePercent>=0?'text-[#6DDBA5]':'text-[#F28B82]')}>{index.changePercent>=0?'+':''}{index.changePercent.toFixed(2)}%</span></button>)}</div>
+        <Link href="/market" className="block text-xs text-[#B69249] border-t border-[#28354A] pt-4 mt-3">Explore the full market →</Link>
+      </aside> : (
       <div className="hero-stats lg:col-span-4 bg-[#111A2B] border border-[#28354A] rounded-xl p-5 shadow-xl flex flex-col justify-between space-y-5">
         {/* Section 1: Index Stats */}
         <div>
@@ -419,6 +429,7 @@ export default function KseHeroSection({
 
 
       </div>
+      )}
     </div>
   );
 }

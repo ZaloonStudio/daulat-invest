@@ -3,25 +3,25 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
-import { MarketSummary, StockQuote, NewsArticle, CompanyAnnouncement } from '@/lib/types';
+import { MarketSummary, NewsArticle, CompanyAnnouncement } from '@/lib/types';
+import {homeIndices} from '@/lib/market-layout';
 import QuickLinksBar from '@/components/QuickLinksBar';
 import CommunityPreview from '@/components/CommunityPreview';
-import IndicesBar from '@/components/IndicesBar';
+
 import dynamic from 'next/dynamic';
 const KseHeroSection = dynamic(() => import('@/components/KseHeroSection'), { loading: () => <div className="h-[440px] rounded-2xl bg-[#111A2B] animate-pulse" aria-label="Loading market chart" /> });
 import HomeCommoditiesWidget from '@/components/HomeCommoditiesWidget';
 import type { PriceSnapshot } from '@/lib/commodity-data';
-import MarketMovers from '@/components/MarketMovers';
-import IndexPerformanceTable from '@/components/IndexPerformanceTable';
+
+
 import MarketNewsSection from '@/components/MarketNewsSection';
 import CompanyAnnouncementsSection from '@/components/CompanyAnnouncementsSection';
-import SectorsGrid from '@/components/SectorsGrid';
+
 
 
 interface HomeClientContainerProps {
   commodityPrices: PriceSnapshot;
   summary: MarketSummary;
-  quotes: StockQuote[];
   news: NewsArticle[];
   announcements: CompanyAnnouncement[];
   isOpen: boolean;
@@ -31,23 +31,13 @@ interface HomeClientContainerProps {
 export default function HomeClientContainer({
   commodityPrices,
   summary,
-  quotes,
   news,
   announcements,
   isOpen,
   marketTime,
 }: HomeClientContainerProps) {
   const [selectedIndexCode, setSelectedIndexCode] = useState<string>('KSE100');
-  const [moversFilter, setMoversFilter] = useState<'KSE100' | 'ALL' | 'ISLAMIC'>('KSE100');
 
-  const scrollToIndices = () => {
-    const element = document.getElementById('indices-section');
-    if (element) {
-      const yOffset = -80;
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
 
   return (
     <div className="home-overview space-y-10">
@@ -64,53 +54,11 @@ export default function HomeClientContainer({
         </div>
       </div>
 
-      {/* 1. Sleek Indices Horizontal Carousel */}
-      <section id="indices-section" className="space-y-4">
-        <IndicesBar
-          indices={summary.indices}
-          selectedIndex={selectedIndexCode}
-          onSelectIndex={(code) => setSelectedIndexCode(code)}
-        />
-
-        {/* 2. 2-Column Hero: Interactive Chart + Index Stats & Sliders */}
-        <KseHeroSection
-          initialIndex={summary.kse100}
-          allIndices={summary.indices}
-          selectedIndexCode={selectedIndexCode}
-          isPsxOpen={isOpen}
-          marketTime={marketTime}
-        />
+      <section aria-label="Gold, forex and commodities"><HomeCommoditiesWidget prices={commodityPrices}/></section>
+      <section id="indices-section">
+        <KseHeroSection initialIndex={summary.kse100} allIndices={summary.indices} selectedIndexCode={selectedIndexCode} isPsxOpen={isOpen} marketTime={marketTime} compactIndices={homeIndices(summary.indices)} onSelectIndex={setSelectedIndexCode}/>
       </section>
-
-      <QuickLinksBar />
-
-      {/* 2. Live Gold, Forex & Commodities Snapshot (Daulat Mobile App Integration) */}
-      <section>
-      <HomeCommoditiesWidget prices={commodityPrices} />
-      </section>
-
-      {/* 3. Market Movers: Volume Leaders, Gainers, Losers with Shariah Filter */}
-      <section id="movers-section">
-        <MarketMovers
-          allStocks={quotes}
-          topVolume={summary.topVolume}
-          topGainers={summary.topGainers}
-          topLosers={summary.topLosers}
-          filter={moversFilter}
-          onFilterChange={(f) => setMoversFilter(f)}
-        />
-      </section>
-
-      {/* 4. Index Performance Full Table */}
-      <section>
-        <IndexPerformanceTable
-          indices={summary.indices}
-          onSelectIndex={(code) => {
-            setSelectedIndexCode(code);
-            scrollToIndices();
-          }}
-        />
-      </section>
+      <QuickLinksBar/>
 
       {/* 5. PSX Investor Community Preview */}
       <section id="community-section">
@@ -125,11 +73,6 @@ export default function HomeClientContainer({
       {/* 7. Corporate Announcements & Filings */}
       <section id="announcements-section">
         <CompanyAnnouncementsSection announcements={announcements} />
-      </section>
-
-      {/* 8. Key Industry Sectors Breakdown */}
-      <section id="sectors-section">
-        <SectorsGrid quotes={quotes} />
       </section>
 
 

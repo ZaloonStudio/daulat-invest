@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { IndexQuote } from '@/lib/types';
-import { TrendingUp, TrendingDown, Moon, ArrowRight } from 'lucide-react';
+import { TrendingUp, TrendingDown, Moon } from 'lucide-react';
 
 interface IndexPerformanceTableProps {
   indices: IndexQuote[];
@@ -37,13 +36,7 @@ export default function IndexPerformanceTable({
           </h2>
         </div>
 
-        <Link
-          href="/#indices-section"
-          className="text-xs font-semibold text-[#B69249] hover:text-[#B69249]/80 inline-flex items-center space-x-1"
-        >
-          <span>VIEW ALL INDICES</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
+
       </div>
 
       {/* Responsive Table */}
@@ -62,7 +55,7 @@ export default function IndexPerformanceTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-[#28354A]/40">
-            {indices.slice(0, 8).map((idx) => {
+            {indices.map((idx) => {
               const isPositive = idx.change >= 0;
               const isIslamic = idx.code.includes('KMI') || idx.code.includes('MZN');
 

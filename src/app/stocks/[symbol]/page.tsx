@@ -67,7 +67,7 @@ export default async function StockDetailPage({ params }: Props) {
         name: quote.name + ' (' + symbol + ') Share Price & Chart', isPartOf: { '@id': SITE_URL + '/#website' },
         about: { '@type': 'Corporation', name: quote.name, tickerSymbol: 'PSX:' + symbol } },
       { '@type': 'BreadcrumbList', itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Markets', item: SITE_URL },
+        { '@type': 'ListItem', position: 1, name: 'Markets', item: SITE_URL + '/market' },
         { '@type': 'ListItem', position: 2, name: 'PSX stocks', item: SITE_URL + '/stocks' },
         { '@type': 'ListItem', position: 3, name: symbol, item: SITE_URL + '/stocks/' + symbol }
       ] }
@@ -86,7 +86,7 @@ export default async function StockDetailPage({ params }: Props) {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* Breadcrumb Navigation */}
         <div className="flex items-center space-x-2 text-xs text-[#A4AEC1]">
-          <Link href="/" className="hover:text-[#EFF3FA] transition-colors flex items-center space-x-1">
+          <Link href="/market" className="hover:text-[#EFF3FA] transition-colors flex items-center space-x-1">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Markets</span>
           </Link>

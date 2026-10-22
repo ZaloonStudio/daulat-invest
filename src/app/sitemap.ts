@@ -11,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     ...PRICE_PAGES.map(page => ({url: `${baseUrl}/${page.slug}`, changeFrequency: 'daily' as const, priority: 0.8})),
     { url: baseUrl, changeFrequency: 'always', priority: 1.0 },
+    { url: `${baseUrl}/market`, changeFrequency: 'hourly', priority: 0.9 },
     { url: `${baseUrl}/stocks`, changeFrequency: 'hourly', priority: 0.9 },
     { url: `${baseUrl}/stocks/screener`, changeFrequency: 'hourly', priority: 0.9 },
     { url: `${baseUrl}/mutual-funds`, changeFrequency: 'hourly', priority: 0.9 },

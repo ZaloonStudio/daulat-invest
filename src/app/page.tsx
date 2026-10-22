@@ -3,7 +3,6 @@ import React from 'react';
 import { Metadata } from 'next';
 import {
   getMarketSummary,
-  fetchMarketWatch,
   fetchMarketNews,
   fetchCompanyAnnouncements,
 } from '@/lib/psx';
@@ -17,9 +16,8 @@ export const revalidate = 15; // Revalidate every 15 seconds for live updates
 export const metadata: Metadata = pageMetadata("/", "PSX Live Market & KSE 100 Index", "Track the Pakistan Stock Exchange with KSE 100 charts, share prices, market movers, stock screening and portfolio tools.");
 
 export default async function HomePage() {
-  const [summary, quotes, news, announcements, commodityPrices] = await Promise.all([
+  const [summary, news, announcements, commodityPrices] = await Promise.all([
     getMarketSummary(),
-    fetchMarketWatch(),
     fetchMarketNews(),
     fetchCompanyAnnouncements(),
     getPriceSnapshot(),
@@ -36,7 +34,6 @@ export default async function HomePage() {
         <HomeClientContainer
           commodityPrices={commodityPrices}
           summary={summary}
-          quotes={quotes}
           news={news}
           announcements={announcements}
           isOpen={isOpen}

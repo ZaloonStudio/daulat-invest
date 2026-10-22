@@ -82,8 +82,16 @@ export function parseNewsFeed(xml: string, source: 'DAWN'|'TRIBUNE', now = Date.
     const route=source==='DAWN'?/^\/news\/\d+/:/^\/story\/\d+/;
     try { const u = new URL(link); if (u.protocol !== 'https:' || !hosts.includes(u.hostname) || !route.test(u.pathname)) return []; } catch { return []; }
     if (!title || !Number.isFinite(date) || date > now + 300000) return [];
+    const imageTag=item[1].match(/<media:(?:content|thumbnail)\b[^>]*\burl=["']([^"']+)["'][^>]*>/i)?.[1]
+      ?? item[1].match(/<image\b[^>]*>[\s\S]*?<img\b[^>]*\bsrc=["']([^"']+)["']/i)?.[1];
+    let imageUrl:string|undefined;
+    if(imageTag)try{
+      const image=new URL(imageTag.replace(/&amp;/g,'&'));
+      const imageHosts=source==='DAWN'?['i.dawn.com']:['i.tribune.com.pk'];
+      if(image.protocol==='https:'&&imageHosts.includes(image.hostname)&&!image.username&&!image.password)imageUrl=image.href;
+    }catch{}
     // Headline and publisher link only. Do not republish article bodies or invent summaries.
-    return [{ id: link, title, link, summary: '', source, publishedAt: new Date(date).toISOString(), category: 'Business' }];
+    return [{ id: link, title, link, summary: '', source, publishedAt: new Date(date).toISOString(), category: 'Business', imageUrl }];
   }).sort((a,b) => Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).slice(0, 30);
 }
 export function parseDawnFeed(xml: string, now = Date.now()) { return parseNewsFeed(xml,'DAWN',now); }
