@@ -42,3 +42,7 @@ account-data-owner.ts contains a single explicit compatibility link verified in 
 This compatibility link is not a database security boundary: Firestore rules remain responsible for authorization. Existing production rules were inspected, not changed: temporary open rules expire November 12, 2026 and cover a project shared with other apps. Before expiry, a separate coordinated Android verified-auth migration and scoped rules rollout is required. Do not silently lock out the released Android app or change unrelated collections. No production record was added, edited or deleted during the diagnosis.
 
 This resolves the confirmed account only; other legacy accounts need verified ownership and explicit migration/linking, not guessed IDs. Android source still includes the legacy login fallback and needs a planned app update.
+
+## Shared account service update
+
+The explicit registry is now used by authenticated /api/account-link, with Firebase ID-token verification. Web AuthProvider awaits this service before exposing a data owner; Android 1.2.7 uses the same endpoint. Missing service resolution fails closed. See docs/account-recovery-rollout.md and android-sync-update/README.md for approval/release steps and remaining limitations.

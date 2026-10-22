@@ -21,12 +21,12 @@ interface WatchlistClientProps {
 const DEFAULT_SYMBOLS = ['HUBC', 'MEBL', 'SYS', 'OGDC', 'ENGRO', 'LUCK', 'FFC', 'MCB'];
 
 export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
-  const { user, dataOwnerUid, loading: authLoading, openSignIn } = useAuth();
+  const { user, dataOwnerUid, dataOwnerError, retryAccountLink, loading: authLoading, openSignIn } = useAuth();
   const [syncError, setSyncError] = useState('');
   const [readyUid, setReadyUid] = useState<string | null>(null);
   const [storedSymbols, setWatchlistSymbols] = useState<string[]>(DEFAULT_SYMBOLS);
   const watchlistSymbols = useMemo(
-    () => user ? (readyUid === dataOwnerUid ? storedSymbols : []) : (readyUid === null ? storedSymbols : []),
+    () => user ? (dataOwnerUid && readyUid === dataOwnerUid ? storedSymbols : []) : (readyUid === null ? storedSymbols : []),
     [user, dataOwnerUid, readyUid, storedSymbols],
   );
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,7 +35,8 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
   useEffect(() => {
     if (authLoading) return;
     setSyncError(''); setReadyUid(null);
-    if (!user || !dataOwnerUid) {
+    if (user && !dataOwnerUid) return;
+    if (!user) {
       try {
         const stored = localStorage.getItem('daulat_watchlist');
         const parsed = stored ? JSON.parse(stored) : DEFAULT_SYMBOLS;
@@ -43,6 +44,7 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
       } catch { setWatchlistSymbols(DEFAULT_SYMBOLS); }
       return;
     }
+    if (!dataOwnerUid) return;
     setWatchlistSymbols([]);
     let active = true;
     const unsubscribe = onSnapshot(collection(db, 'users', dataOwnerUid, 'watchlist'), snapshot => {
@@ -60,13 +62,13 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
       try { localStorage.setItem('daulat_watchlist', JSON.stringify(symbols)); } catch {}
       return;
     }
-    if (readyUid !== dataOwnerUid) return;
+    if (!dataOwnerUid || readyUid !== dataOwnerUid) return;
     setSyncError('');
     try {
       const added = symbols.filter(s => !watchlistSymbols.includes(s));
       const removed = watchlistSymbols.filter(s => !symbols.includes(s));
       await Promise.all([
-        ...added.map(symbol => setDoc(doc(db, 'users', user.uid, 'watchlist', symbol), {symbol, updatedAt: Date.now()}, {merge: true})),
+        ...added.map(symbol => setDoc(doc(db, 'users', dataOwnerUid, 'watchlist', symbol), {symbol, updatedAt: Date.now()}, {merge: true})),
         ...removed.map(symbol => deleteDoc(doc(db, 'users', user.uid, 'watchlist', symbol))),
       ]);
     } catch { setSyncError('Unable to save your watchlist. Please try again.'); }
@@ -143,8 +145,8 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
 
   return (
     <div className="space-y-8">
-      {syncError && <p role="alert" className="text-sm text-[#F28B82]">{syncError}</p>}
-      {user ? <p role="status" className="text-xs text-[#A4AEC1]">{readyUid === user.uid ? "Synced with your Daulat app account" : "Loading your app watchlist…"}</p> : !authLoading && <p className="text-xs text-[#A4AEC1]">Saved on this browser. <button onClick={openSignIn} className="text-[#B69249] hover:underline">Sign in to use your app watchlist</button></p>}
+      {(syncError || dataOwnerError) && <p role="alert" className="text-sm text-[#F28B82]">{dataOwnerError || syncError}{dataOwnerError && <button onClick={retryAccountLink} className="ml-2 underline">Retry sync</button>}</p>}
+      {user ? <p role="status" className="text-xs text-[#A4AEC1]">{dataOwnerUid && readyUid === dataOwnerUid ? "Synced with your Daulat app account" : "Loading your app watchlist…"}</p> : !authLoading && <p className="text-xs text-[#A4AEC1]">Saved on this browser. <button onClick={openSignIn} className="text-[#B69249] hover:underline">Sign in to use your app watchlist</button></p>}
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#28354A] pb-6">
         <div>

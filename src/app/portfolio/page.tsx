@@ -50,8 +50,9 @@ interface SoldTrade {
 }
 
 export default function PortfolioPage() {
-  const { user, dataOwnerUid, loading, openSignIn, logout } = useAuth();
-  const [syncError, setSyncError] = useState('');
+  const { user, dataOwnerUid, dataOwnerError, retryAccountLink, loading, openSignIn, logout } = useAuth();
+  const [connectionError, setSyncError] = useState('');
+  const syncError = dataOwnerError || connectionError;
   const [isSyncing, setIsSyncing] = useState(false);
   const [dataUid, setDataUid] = useState<string | null>(null);
   const [storedHoldings, setHoldings] = useState<Holding[]>([]);
@@ -159,11 +160,11 @@ export default function PortfolioPage() {
   };
 
   const handleDeleteHolding = async (id: string, symbol: string) => {
-    if (!user) return;
+    if (!user || !uid || dataUid !== uid || isSyncing || syncError) return;
     if (!confirm(`Are you sure you want to remove ${symbol} from your portfolio?`)) return;
 
     try {
-      await deleteDoc(doc(db, 'users', user.uid, 'portfolio', id));
+      await deleteDoc(doc(db, 'users', uid!, 'portfolio', id));
     } catch (err: any) {
       console.error('Error deleting holding:', err);
       alert('Failed to remove: ' + err.message);
@@ -205,7 +206,7 @@ export default function PortfolioPage() {
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {syncError && user && <div className="mb-6 text-sm text-[#F28B82]" role="alert">{syncError} <button onClick={() => setSyncAttempt(attempt => attempt + 1)} className="ml-2 text-[#B69249] underline">Retry sync</button></div>}
+        {syncError && user && <div className="mb-6 text-sm text-[#F28B82]" role="alert">{syncError} <button onClick={() => { if (dataOwnerError) retryAccountLink(); else setSyncAttempt(attempt => attempt + 1); }} className="ml-2 text-[#B69249] underline">Retry sync</button></div>}
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
@@ -410,6 +411,7 @@ export default function PortfolioPage() {
                     ? 'Click "Add Holding" to log your first Pakistan Stock Exchange investment.'
                     : 'Log in with your Google account or the Daulat mobile app to sync your portfolio.'}
                 </p>
+                {user && uid===user.uid && <p className="text-xs text-[#A4AEC1]">Already have a portfolio in the app? <a className="text-[#B69249] hover:underline" href={'mailto:vickypakboy@gmail.com?subject='+encodeURIComponent('Daulat mobile portfolio recovery')+'&body='+encodeURIComponent('Please review my mobile portfolio recovery.\nAccount: '+(user.email||'')+'\nRecovery reference: '+user.uid)}>Request account recovery</a></p>}
                 {user && (
                   <button
                     onClick={() => setShowAddModal(true)}
