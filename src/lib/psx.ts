@@ -1,3 +1,4 @@
+import {fetchSupplementalFundamentals} from './supplemental-fundamentals';
 import {parseCompanyResearch} from './company-research';
 import { StockQuote, IndexQuote, ChartPoint, MarketSummary, NewsArticle, CompanyAnnouncement, FearGreedData } from './types';
 import { parseMarketWatch, parseTradingPanel, parseAnnouncements, parseNewsFeed } from './market-source';
@@ -268,6 +269,6 @@ export async function fetchCompanyAnnouncements(symbol?: string): Promise<Compan
 
 export async function fetchCompanyResearch(symbol:string) {
   if(!/^[A-Z0-9-]{1,20}$/.test(symbol))return parseCompanyResearch('','',symbol);
-  const [html,payouts]=await Promise.all([psxText('/company/'+encodeURIComponent(symbol),{},3600),psxText('/company/payouts',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({symbol}).toString()},3600)]);
-  return parseCompanyResearch(html,payouts,symbol);
+  const [html,payouts,supplemental]=await Promise.all([psxText('/company/'+encodeURIComponent(symbol),{},3600),psxText('/company/payouts',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({symbol}).toString()},3600),fetchSupplementalFundamentals(symbol)]);
+  return {...parseCompanyResearch(html,payouts,symbol),supplemental};
 }

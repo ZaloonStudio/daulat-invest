@@ -1,6 +1,7 @@
+import type {SupplementalFundamentals} from './supplemental-fundamentals';
 import {plainText} from './market-source';
 export type FinancialTable={periods:string[];rows:{label:string;values:(number|null)[]}[]};
-export type CompanyResearch={description:string;people:{name:string;role:string}[];contacts:{label:string;value:string;url?:string}[];shares:number|null;freeFloat:number|null;annual:FinancialTable;quarterly:FinancialTable;ratios:FinancialTable;reports:{date:string;title:string;url:string}[];payouts:{date:string;period:string;details:string;bookClosure:string}[];payoutsAvailable:boolean;source:string};
+export type CompanyResearch={supplemental?:SupplementalFundamentals;description:string;people:{name:string;role:string}[];contacts:{label:string;value:string;url?:string}[];shares:number|null;freeFloat:number|null;annual:FinancialTable;quarterly:FinancialTable;ratios:FinancialTable;reports:{date:string;title:string;url:string}[];payouts:{date:string;period:string;details:string;bookClosure:string}[];payoutsAvailable:boolean;source:string};
 const emptyTable=():FinancialTable=>({periods:[],rows:[]});
 export function reportedNumber(s:string):number|null {
  const text=plainText(s).replace(/,/g,'').trim();

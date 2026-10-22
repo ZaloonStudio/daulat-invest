@@ -27,3 +27,15 @@ test('moving averages and MACD use correctly aligned windows, preserving real ze
  const flat=technical.stockTechnicals(points.map(p=>({...p,value:50})));assert.equal(flat.macd,0);assert.equal(flat.signal,0);assert.equal(flat.rsi14,50);
  const sparse=technical.stockTechnicals([{time:1700000000,value:50}]);assert.equal(sparse.macd,null);assert.equal(sparse.sma20,null);assert.equal(sparse.relativeVolume20,null);
 });
+
+const {parseSupplementalFundamentals}=load('supplemental-fundamentals');
+test('supplemental ratios preserve source periods, units and unavailable values',()=>{
+ const p=parseSupplementalFundamentals(fixture('supplemental-PRL.html'),'PRL','2026-10-23T00:00:00Z');
+ const metrics=p.groups.flatMap(g=>g.metrics),m=id=>metrics.find(m=>m.id===id);
+ assert.equal(m('bv').value,90.06);assert.equal(m('bv').period,'2027 Q1');assert.equal(m('pbv').value,1.06);assert.equal(m('ev').value,53.65);assert.equal(m('ev').unit,'B PKR');
+ assert.equal(m('roe').value,36.89);assert.equal(m('roe').period,'2026 Q4');assert.equal(m('qr').value,0.8);assert.equal(m('at').value,2.6833);assert.equal(m('it').value,10.96);assert.equal(m('lde').period,null);
+ const missing=parseSupplementalFundamentals('Access denied','PRL','').groups.flatMap(g=>g.metrics);assert.ok(missing.every(m=>m.value===null&&m.period===null));
+ const wrong=parseSupplementalFundamentals(fixture('supplemental-PRL.html'),'MEBL','').groups.flatMap(g=>g.metrics);assert.ok(wrong.every(m=>m.value===null));
+ const changed=fixture('supplemental-PRL.html').replace('Rs. 90.06','Rs. N/A').replace('36.89 %','0.00 %').replace('17.53 %','(17.53) %');
+ const edge=parseSupplementalFundamentals(changed,'PRL','').groups.flatMap(g=>g.metrics);assert.equal(edge.find(m=>m.id==='bv').value,null);assert.equal(edge.find(m=>m.id==='roe').value,0);assert.equal(edge.find(m=>m.id==='lde').value,-17.53);
+});
