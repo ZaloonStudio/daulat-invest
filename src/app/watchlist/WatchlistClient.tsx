@@ -21,13 +21,13 @@ interface WatchlistClientProps {
 const DEFAULT_SYMBOLS = ['HUBC', 'MEBL', 'SYS', 'OGDC', 'ENGRO', 'LUCK', 'FFC', 'MCB'];
 
 export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
-  const { user, loading: authLoading, openSignIn } = useAuth();
+  const { user, dataOwnerUid, loading: authLoading, openSignIn } = useAuth();
   const [syncError, setSyncError] = useState('');
   const [readyUid, setReadyUid] = useState<string | null>(null);
   const [storedSymbols, setWatchlistSymbols] = useState<string[]>(DEFAULT_SYMBOLS);
   const watchlistSymbols = useMemo(
-    () => user ? (readyUid === user.uid ? storedSymbols : []) : (readyUid === null ? storedSymbols : []),
-    [user, readyUid, storedSymbols],
+    () => user ? (readyUid === dataOwnerUid ? storedSymbols : []) : (readyUid === null ? storedSymbols : []),
+    [user, dataOwnerUid, readyUid, storedSymbols],
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -35,7 +35,7 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
   useEffect(() => {
     if (authLoading) return;
     setSyncError(''); setReadyUid(null);
-    if (!user) {
+    if (!user || !dataOwnerUid) {
       try {
         const stored = localStorage.getItem('daulat_watchlist');
         const parsed = stored ? JSON.parse(stored) : DEFAULT_SYMBOLS;
@@ -45,13 +45,13 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
     }
     setWatchlistSymbols([]);
     let active = true;
-    const unsubscribe = onSnapshot(collection(db, 'users', user.uid, 'watchlist'), snapshot => {
+    const unsubscribe = onSnapshot(collection(db, 'users', dataOwnerUid, 'watchlist'), snapshot => {
       if (!active) return;
       setWatchlistSymbols(snapshot.docs.map(d => String(d.data().symbol || d.id).toUpperCase()));
-      setReadyUid(user.uid);
+      setReadyUid(dataOwnerUid);
     }, () => { if (active) setSyncError('Unable to load your app watchlist. Please check your connection or sign in again.'); });
     return () => { active = false; unsubscribe(); };
-  }, [user, authLoading]);
+  }, [user, dataOwnerUid, authLoading]);
 
   const saveWatchlist = async (symbols: string[]) => {
     if (authLoading) return;
@@ -60,7 +60,7 @@ export default function WatchlistClient({ allStocks }: WatchlistClientProps) {
       try { localStorage.setItem('daulat_watchlist', JSON.stringify(symbols)); } catch {}
       return;
     }
-    if (readyUid !== user.uid) return;
+    if (readyUid !== dataOwnerUid) return;
     setSyncError('');
     try {
       const added = symbols.filter(s => !watchlistSymbols.includes(s));

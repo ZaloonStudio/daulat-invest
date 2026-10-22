@@ -70,3 +70,18 @@ test('chart time normalization handles Unix seconds, milliseconds, strings and I
  const result=normalizeChartPoints([{time:'2024-01-22',value:1},{time:1705881600000,value:2},{time:'1705968000',value:3},{time:'invalid',value:4}]);
  assert.deepEqual(result.map(p=>p.time),[1705881600,1705968000]); assert.equal(result[0].value,2);
 });
+
+const {accountDataOwner}=load('account-data-owner');
+test('confirmed legacy account resolves only for the exact verified Google UID in the production project',()=>{
+  const user={uid:'o1LCsgPhCwSWPONPUT2AQzOl20H2',emailVerified:true,providerData:[{providerId:'google.com'}]};
+  assert.equal(accountDataOwner(user,'zaloon-aecb6'),'google_2094052383');
+  assert.equal(accountDataOwner({...user,emailVerified:false},'zaloon-aecb6'),user.uid);
+  assert.equal(accountDataOwner({...user,providerData:[{providerId:'password'}]},'zaloon-aecb6'),user.uid);
+  assert.equal(accountDataOwner(user,'different-project'),user.uid);
+});
+test('other accounts and sign-out never inherit a legacy folder or use email hashes',()=>{
+  assert.equal(accountDataOwner(null,'zaloon-aecb6'),null);
+  for(const uid of ['another-uid','google_2094052383','__proto__','constructor']) {
+    assert.equal(accountDataOwner({uid,emailVerified:true,providerData:[{providerId:'google.com'}]},'zaloon-aecb6'),uid);
+  }
+});

@@ -50,14 +50,14 @@ interface SoldTrade {
 }
 
 export default function PortfolioPage() {
-  const { user, loading, openSignIn, logout } = useAuth();
+  const { user, dataOwnerUid, loading, openSignIn, logout } = useAuth();
   const [syncError, setSyncError] = useState('');
   const [isSyncing, setIsSyncing] = useState(false);
   const [dataUid, setDataUid] = useState<string | null>(null);
   const [storedHoldings, setHoldings] = useState<Holding[]>([]);
   const [storedTrades, setTrades] = useState<SoldTrade[]>([]);
   const [syncAttempt, setSyncAttempt] = useState(0);
-  const uid = user?.uid ?? null;
+  const uid = user ? dataOwnerUid : null;
   const holdings = uid && dataUid === uid ? storedHoldings : [];
   const trades = uid && dataUid === uid ? storedTrades : [];
   const [quotes, setQuotes] = useState<Record<string, StockQuote>>({});
@@ -86,7 +86,7 @@ export default function PortfolioPage() {
       .catch((err) => console.error('Failed to fetch quotes:', err));
   }, []);
 
-  // Both collections belong to the verified Firebase UID used by Android.
+  // All reads and writes share the verified account's resolved mobile data owner.
   useEffect(() => {
     setHoldings([]); setTrades([]); setDataUid(uid); setSyncError('');
     if (!uid) { setIsSyncing(false); return; }
@@ -118,7 +118,7 @@ export default function PortfolioPage() {
 
   const handleAddHolding = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user || !uid || dataUid !== uid || isSyncing || syncError) return;
 
     const sym = newSymbol.trim().toUpperCase();
     const sharesNum = parseInt(newShares, 10);
@@ -133,7 +133,7 @@ export default function PortfolioPage() {
     setIsSubmitting(true);
     try {
       const holdingId = `${sym}_${Date.now()}`;
-      const docRef = doc(db, 'users', user.uid, 'portfolio', holdingId);
+      const docRef = doc(db, 'users', uid, 'portfolio', holdingId);
       const company = quotes[sym]?.name || sym;
 
       await setDoc(docRef, {
@@ -218,7 +218,7 @@ export default function PortfolioPage() {
               </h1>
             </div>
             <p className="text-sm text-[#A4AEC1] mt-1">
-              Real-time PSX stock portfolio tracker synced seamlessly with your Daulat mobile app.
+              Your PSX holdings and trade history, connected to your Daulat app account.
             </p>
           </div>
 

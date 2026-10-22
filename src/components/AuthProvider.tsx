@@ -1,12 +1,13 @@
 'use client';
+import { accountDataOwner } from '@/lib/account-data-owner';
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type FormEvent } from 'react';
 import Link from 'next/link';
 import { User, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { X } from 'lucide-react';
-import { auth, googleProvider } from '@/lib/firebase';
+import { app, auth, googleProvider } from '@/lib/firebase';
 import { authErrorMessage } from '@/lib/auth-errors';
 
-type AuthContextValue = { user: User | null; loading: boolean; openSignIn: () => void; logout: () => Promise<void> };
+type AuthContextValue = { user: User | null; dataOwnerUid: string | null; loading: boolean; openSignIn: () => void; logout: () => Promise<void> };
 const AuthContext = createContext<AuthContextValue | null>(null);
 export function useAuth() {
   const value = useContext(AuthContext);
@@ -65,7 +66,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     finally { setBusy(false); }
   };
   const logout = async () => { await signOut(auth); };
-  return <AuthContext.Provider value={{ user, loading, openSignIn, logout }}>
+  return <AuthContext.Provider value={{ user, dataOwnerUid: accountDataOwner(user, app.options.projectId), loading, openSignIn, logout }}>
     {children}
     {open && <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={e => { if (e.target === e.currentTarget && !busy) setOpen(false); }}>
       <div ref={dialog} role="dialog" aria-modal="true" aria-labelledby="sign-in-title" tabIndex={-1} className="relative w-full max-w-md max-h-[90dvh] overflow-y-auto bg-[#111A2B] border border-[#28354A] rounded-xl p-6 sm:p-8 text-[#EFF3FA]">

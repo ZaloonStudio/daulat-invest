@@ -31,3 +31,14 @@ The browser automation session did not have a real authenticated app account. Pr
 
 ## Existing Android fallback sessions
 The Android source contains a legacy local/synthetic-email fallback when a Google ID token is unavailable. Such sessions do not necessarily correspond to a verified Google Firebase UID. The web application deliberately does not reconstruct synthetic passwords or read guessed email-derived user IDs. Local-only app records need a secure upload under the verified account before they can appear on the website. This website update does not publish a new Android release or migrate legacy accounts.
+
+
+## Confirmed legacy sync repair (October 22, 2026)
+
+Production Firebase Console inspection found that the owner's verified Google Auth account and legacy mobile records use different document IDs. The mobile folder contains 15 holding documents and a watchlist. The account owner confirmed the same Gmail is used on mobile and web. This is cloud data under an old identifier, not missing local data.
+
+account-data-owner.ts contains a single explicit compatibility link verified in the console. It requires the exact production Auth UID, verified email, Google provider and production project. No automatic email hashing, synthetic-password login, account enumeration or data copying is performed. The shared Auth context resolves this owner for both portfolio and watchlist reads AND mutations. Ordinary accounts continue using their own Firebase UID. App and web therefore operate on the same existing document IDs, avoiding duplicate copies and a new APK requirement for this specific account.
+
+This compatibility link is not a database security boundary: Firestore rules remain responsible for authorization. Existing production rules were inspected, not changed: temporary open rules expire November 12, 2026 and cover a project shared with other apps. Before expiry, a separate coordinated Android verified-auth migration and scoped rules rollout is required. Do not silently lock out the released Android app or change unrelated collections. No production record was added, edited or deleted during the diagnosis.
+
+This resolves the confirmed account only; other legacy accounts need verified ownership and explicit migration/linking, not guessed IDs. Android source still includes the legacy login fallback and needs a planned app update.
