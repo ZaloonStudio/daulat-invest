@@ -22,3 +22,7 @@ Production PSX Firebase app already had SHA-1 3F:DE:46:00:4D:F7:9A:26:09:DB:E9:B
 No Android device/emulator was connected during compilation. Builds are not a claim of real-device sign-in or sync success. On Play internal testing verify: existing approved account restores holdings/watchlist; second verified account sees only its own data; sign-out clears visible private records; app/web add and remove the same document; cancellation/config/network failures show errors; old local records remain archived; reinstall restores cloud records only after verified login. Check Google consent and signing certificate on the actual Play-signed build.
 
 This AAB has NOT been uploaded or published to Google Play by this task.
+
+## Handoff status
+
+Internal-test draft and release notes were saved in Google Play Console. The AAB upload is pending the ChatGPT Chrome extension Allow access to file URLs permission. The existing closed-testing release remains unchanged. Production web account resolution has been observed restoring all 15 owner holdings.

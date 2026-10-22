@@ -21,3 +21,9 @@ The existing shared Firebase project has temporary open Firestore rules expiring
 ## Validation
 
 30 web tests cover invalid/expired/foreign-project tokens, Firebase rejection despite plausible claims, disabled/UID-mismatched accounts, body spoofing, approved vs standard owner resolution, no-store responses and unavailable-service failures. Next production build and Android signed APK/AAB compile. Real Android Google sign-in, cross-device mutations and production token-backed lookup still require acceptance on a signed-in/device session; no live financial records were mutated for testing.
+
+## Production acceptance update
+
+After deployment, an existing authenticated Chrome session successfully resolved the shared service and rendered all 15 confirmed owner holdings on the live website. Anonymous and malformed-token production API requests both returned 401 with private/no-store headers. Financial records were not modified. Native Android sign-in/mutations still need device testing.
+
+Google Play internal-testing draft 1.2.7 (28) — Verified account sync was created with release notes and saved. No bundle was uploaded: Chrome extension file URL access was disabled and blocked fileChooser.setFiles. No track was rolled out and the existing closed test was left unchanged.
