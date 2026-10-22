@@ -11,15 +11,23 @@ The homepage cards link to five server-rendered pages: `/gold-price-pakistan`, `
 
 Snapshots are server-cached for five minutes (petrol: one hour). Pages revalidate after five minutes; a loaded page is a snapshot rather than a streaming feed. Provider failures display unavailable values, never fixed sample prices. Delayed observations carry their original time. Existing PSX feeds and account integrations are unchanged.
 
-## Gold history and calculators
+## Price history and calculators
 
-1D uses XAUS intraday spot samples. 1W/1M/1Y use daily GC=F gold futures history through XAUS, with a direct Yahoo fallback. These are different benchmarks, explicitly labelled. All points use the latest available FX rate held constant across the series, so the chart is not a historical local PKR/Sarafa series. Local premiums and historical currency movement are excluded. Weight and 22K/24K controls apply to the chart and calculator; quantity affects only the calculator. Missing periods show an empty-state message, and source dates remain visible.
+All five pages now place the chart directly beneath a compact price header, ahead of the calculator. FAQ sections, long guides, and the methodology sidebar were removed. Sources, dates, benchmark and currency basis remain as concise labels. SEO metadata, structured breadcrumbs, crawlable links and sitemap entries remain.
+
+Charts use the same Lightweight Charts library as stocks, with crosshairs, drag-to-pan, wheel/pinch zoom, price/time axes, theme-aware labels and responsive sizing. Periods: 1D, 1W, 1M, 6M, 1Y, 3Y, 5Y, All. All is capped at 25 calendar years of available data. Full five-year daily observations are combined with older monthly closes; actual start/end dates are visible. Providers with shorter records do not receive invented observations.
+
+Gold (GC=F), silver (SI=F), USD/PKR (PKR=X) and Brent (BZ=F) history comes from Yahoo Finance with host fallback. Gold daily history can also fall back to the same GC=F history through XAUS. Metals use historical FX rather than one current rate across past years: daily/intraday samples join the latest prior currency observation within seven days, while monthly closes align by exchange-calendar month. Conversion starts where both metal and FX records exist. These remain futures-based indicative values, not local Sarafa quotes. Chart and calculator share weight/purity controls; quantity affects only the calculator.
+
+Petrol uses AutoOnes daily records with monthly closes for earlier coverage. At implementation the available daily history began 24 July 2026; no intraday feed existed, so only its 1D selector is disabled. The stepped petrol chart shows notified prices. Monthly closes are dated at month end and cannot extend daily coverage backwards using a partial month's final value.
+
+Current gold/silver/FX quotes prefer XAUS; if that feed is unavailable, observed Yahoo futures/FX quotes supply a clearly attributed fallback. Missing prices are still unavailable, never sample data.
 
 One tola = 11.6638038 grams; one troy ounce = 31.1034768 grams. Purity estimates use 22/24. Calculator estimates exclude dealer spreads, making charges and taxes. The overview retains Gold/Silver/Energy filters, gold calculator, WTI and natural gas rows.
 
 ## Verification
 
-- `npm test`: conversion/purity, malformed values, timestamp sorting/deduplication, and unique routes, plus existing regression tests.
+- `npm test`: conversion/purity, malformed values, timestamp sorting/deduplication, historical FX joins without indefinite fill, monthly FX calendar alignment, the 25-year cap, and unique routes, plus existing regression tests.
 - `npm run build`: production build, type checking and lint.
-- Generated build artifacts checked for one H1 per page, canonical tags, metadata, valid breadcrumb JSON-LD, homepage links and sitemap membership. Gold chart HTML and both history arrays confirmed populated.
+- Generated build artifacts checked for all five populated histories, period controls, chart-before-calculator ordering, absence of FAQ/guide/sidebar sections, canonical tags and metadata.
 - Visual/browser interaction checks were not performed because browser preview access was blocked in this session. No search ranking or Google indexing claim is made; discovery/indexing remains Google's decision.
