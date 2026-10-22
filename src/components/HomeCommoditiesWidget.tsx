@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Coins,
   DollarSign,
@@ -15,7 +16,6 @@ export default function HomeCommoditiesWidget() {
     {
       id: 'gold-tola',
       name: 'Gold 24K (Per Tola)',
-      urduName: 'سونا فی تولہ',
       rate: 'Rs 427,900',
       change: '+1,200',
       changePercent: 0.28,
@@ -27,7 +27,6 @@ export default function HomeCommoditiesWidget() {
     {
       id: 'gold-10g',
       name: 'Gold 24K (10 Grams)',
-      urduName: 'سونا 10 گرام',
       rate: 'Rs 366,854',
       change: '+1,028',
       changePercent: 0.28,
@@ -39,7 +38,6 @@ export default function HomeCommoditiesWidget() {
     {
       id: 'silver-tola',
       name: 'Silver 24K (Per Tola)',
-      urduName: 'چاندی فی تولہ',
       rate: 'Rs 5,780',
       change: '+20',
       changePercent: 0.35,
@@ -51,7 +49,6 @@ export default function HomeCommoditiesWidget() {
     {
       id: 'usd-interbank',
       name: 'US Dollar (USD/PKR)',
-      urduName: 'امریکی ڈالر',
       rate: 'Rs 277.50',
       change: '+0.15',
       changePercent: 0.05,
@@ -63,7 +60,6 @@ export default function HomeCommoditiesWidget() {
     {
       id: 'petrol',
       name: 'Petrol (Super)',
-      urduName: 'پٹرول سپریم',
       rate: 'Rs 386.30',
       change: '0.00',
       changePercent: 0.0,
@@ -75,7 +71,6 @@ export default function HomeCommoditiesWidget() {
     {
       id: 'brent-oil',
       name: 'Crude Oil (Brent)',
-      urduName: 'خام تیل برینٹ',
       rate: '$109.80',
       change: '+3.88',
       changePercent: 3.66,
@@ -136,9 +131,14 @@ export default function HomeCommoditiesWidget() {
                   >
                     <Icon className={`w-3.5 h-3.5 ${item.color}`} />
                   </div>
-                  <span className="text-[10px] text-[#7F8DA4] font-arabic" dir="rtl">
-                    {item.urduName}
-                  </span>
+                  <Image
+                    src={item.id === 'brent-oil' ? '/flags/us.svg' : '/flags/pk.svg'}
+                    alt={item.id === 'brent-oil' ? 'International price in USD' : 'Pakistan price in PKR'}
+                    title={item.id === 'brent-oil' ? 'International · USD' : 'Pakistan · PKR'}
+                    width={24}
+                    height={16}
+                    className="h-4 w-6 rounded-sm object-cover ring-1 ring-white/10"
+                  />
                 </div>
 
                 <div className="font-semibold text-xs text-[#EFF3FA] group-hover:text-[#B69249] transition-colors line-clamp-1">
