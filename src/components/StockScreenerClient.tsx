@@ -622,7 +622,7 @@ export default function StockScreenerClient({ initialQuotes, sectors }: Props) {
 
                       {/* Volume */}
                       <td className="py-3 px-4 text-right font-mono text-[#EFF3FA]">
-                        {q.volume.toLocaleString()}
+                        {q.sessionAvailable===false?'—':q.volume.toLocaleString()}
                       </td>
 
                       {/* P/E Ratio */}

@@ -6,8 +6,6 @@ import {
   fetchMarketWatch,
   fetchMarketNews,
   fetchCompanyAnnouncements,
-  isPsxMarketOpen,
-  getPakistanTimeStr,
 } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
 import HomeClientContainer from '@/components/HomeClientContainer';
@@ -27,8 +25,8 @@ export default async function HomePage() {
     getPriceSnapshot(),
   ]);
 
-  const isOpen = isPsxMarketOpen();
-  const marketTime = getPakistanTimeStr();
+  const isOpen = summary.isOpen;
+  const marketTime = summary.marketTime;
 
   return (
     <div className="min-h-screen bg-[#0B1120] text-[#EFF3FA]">

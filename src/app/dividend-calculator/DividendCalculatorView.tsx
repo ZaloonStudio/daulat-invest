@@ -4,19 +4,12 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Calculator, ArrowLeft, ShieldCheck } from 'lucide-react';
 
-const PRESET_DIVIDEND_STOCKS = [
-  { symbol: 'HUBC', name: 'Hub Power Company', price: 148.5, dps: 32.0, yield: 21.55, sector: 'POWER' },
-  { symbol: 'EFERT', name: 'Engro Fertilizers', price: 198.2, dps: 36.5, yield: 18.42, sector: 'FERTILIZER' },
-  { symbol: 'FFC', name: 'Fauji Fertilizer Co', price: 342.0, dps: 54.0, yield: 15.79, sector: 'FERTILIZER' },
-  { symbol: 'MCB', name: 'MCB Bank Limited', price: 265.4, dps: 38.0, yield: 14.32, sector: 'BANKING' },
-  { symbol: 'POL', name: 'Pakistan Oilfields', price: 545.0, dps: 75.0, yield: 13.76, sector: 'OIL & GAS' },
-  { symbol: 'MEBL', name: 'Meezan Bank Limited', price: 546.95, dps: 32.0, yield: 5.85, sector: 'ISLAMIC BANK' },
-];
 
-export default function DividendCalculatorView() {
-  const [selectedStock, setSelectedStock] = useState<string>('HUBC');
-  const [stockPrice, setStockPrice] = useState<number>(148.5);
-  const [annualDps, setAnnualDps] = useState<number>(32.0);
+export default function DividendCalculatorView({presets=[]}:{presets:{symbol:string;name:string;price:number;dps:number;yield:number;sector:string}[]}) {
+  const PRESET_DIVIDEND_STOCKS=presets;
+  const [selectedStock, setSelectedStock] = useState<string>('Custom');
+  const [stockPrice, setStockPrice] = useState<number>(0);
+  const [annualDps, setAnnualDps] = useState<number>(0);
   const [sharesOwned, setSharesOwned] = useState<number>(1000);
   const [isFiler, setIsFiler] = useState<boolean>(true);
 
@@ -79,7 +72,7 @@ export default function DividendCalculatorView() {
         {/* Presets */}
         <div>
           <label className="text-xs font-semibold text-[#A4AEC1] uppercase tracking-wider block mb-2">
-            Select High-Yield PSX Bluechip Preset
+            Reported PSX yield presets (DPS implied from yield)
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
             {PRESET_DIVIDEND_STOCKS.map((s) => (
@@ -156,7 +149,7 @@ export default function DividendCalculatorView() {
                 isFiler ? 'bg-[#6DDBA5] text-black font-semibold' : 'text-[#A4AEC1]'
               }`}
             >
-              Filer (15%)
+              Tax scenario: 15%
             </button>
             <button
               onClick={() => setIsFiler(false)}
@@ -164,7 +157,7 @@ export default function DividendCalculatorView() {
                 !isFiler ? 'bg-[#F28B82] text-white font-semibold' : 'text-[#A4AEC1]'
               }`}
             >
-              Non-Filer (30%)
+              Tax scenario: 30%
             </button>
           </div>
         </div>
@@ -197,7 +190,7 @@ export default function DividendCalculatorView() {
 
           <div className="bg-gradient-to-br from-[#B69249]/10 via-[#0B1120] to-[#0B1120] border border-[#B69249]/40 p-5 rounded-xl">
             <span className="text-[11px] font-semibold text-[#B69249] uppercase tracking-wider block">
-              Monthly Passive Income
+              Monthly Equivalent
             </span>
             <div className="text-2xl font-semibold text-[#B69249] mt-1">
               Rs {Math.round(calc.monthlyIncome).toLocaleString()}

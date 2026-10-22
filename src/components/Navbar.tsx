@@ -194,7 +194,7 @@ export default function Navbar() {
         {searchField(true)}
         <nav aria-label="Mobile navigation" className="grid grid-cols-2 gap-2 mt-5">{navLinks.map(item => <Link key={item.label} href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 p-3 text-sm text-[#A4AEC1] hover:bg-[#1C2940] rounded-lg"><item.icon className="w-4 h-4" />{item.label}</Link>)}</nav>
         <button onClick={toggleTheme} className="mt-4 text-xs text-[#B69249]">{isLightMode ? 'Use dark mode' : 'Use light mode'}</button>
-        <div className="mt-5 pt-4 border-t border-[#28354A] text-xs text-[#A4AEC1]">PSX {marketStatus.isOpen ? 'open' : 'closed'} · {marketStatus.time}</div>
+        <div className="mt-5 pt-4 border-t border-[#28354A] text-xs text-[#A4AEC1]">PSX {marketStatus.isOpen ? 'open' : 'closed'} · {marketStatus.time && marketStatus.time!=='Loading...' ? new Date(marketStatus.time).toLocaleString('en-GB',{timeZone:'Asia/Karachi'})+' PKT' : 'Source status unavailable'}</div>
       </div>}
     </header>
   );

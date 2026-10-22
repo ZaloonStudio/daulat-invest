@@ -10,6 +10,8 @@ export interface StockQuote {
   low: number;
   ldcp: number; // Previous Close
   volume: number;
+  sessionAvailable?: boolean;
+  averageVolume30D?: number;
   turnover?: number;
   marketCap?: number;
   peRatio?: number;
@@ -24,6 +26,7 @@ export interface StockQuote {
 }
 
 export interface IndexQuote {
+  updatedAt?: string;
   name: string;
   code: string;
   current: number;
@@ -88,6 +91,7 @@ export interface MarketSummary {
 }
 
 export interface FearGreedData {
+  available?: boolean;
   score: number;
   sentiment: 'Extreme Fear' | 'Fear' | 'Neutral' | 'Greed' | 'Extreme Greed';
   advanceCount: number;

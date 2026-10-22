@@ -24,6 +24,8 @@ interface FearGreedClientProps {
 export default function FearGreedClient({ data }: FearGreedClientProps) {
   const [showMethodology, setShowMethodology] = useState(false);
 
+  if (data.available === false) return <div role="status" className="rounded-xl border border-[#28354A] p-6 text-[#A4AEC1]">Sentiment unavailable — waiting for PSX source data.</div>;
+
   // Score to angle: 0 score = -90 deg (left), 50 = 0 deg (top), 100 = 90 deg (right)
   const angle = (data.score / 100) * 180 - 90;
 
@@ -99,7 +101,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
 
         <div className="flex items-center space-x-2 text-xs text-[#A4AEC1]">
           <Clock className="w-3.5 h-3.5 text-[#7F8DA4]" />
-          <span>Live PSX Update: {data.updatedAt}</span>
+          <span>PSX source snapshot: {data.updatedAt ? new Date(data.updatedAt).toLocaleString('en-GB',{timeZone:'Asia/Karachi'})+' PKT' : 'Unavailable'}</span>
         </div>
       </div>
 
@@ -311,7 +313,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
               <span className="font-semibold text-[#B69249]">{Math.round(data.marketMomentum)}/100</span>
             </div>
             <p className="text-[11px] text-[#A4AEC1] leading-relaxed">
-              Analyzes where the benchmark index is trading relative to its intraday 52-week envelope and daily highs.
+              Combines the session percentage change (−2.5% to +2.5% mapped to 0–100) with its position in the reported daily range.
             </p>
           </div>
 
@@ -324,7 +326,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
               <span className="font-semibold text-[#B69249]">{Math.round(data.volumeStrength)}/100</span>
             </div>
             <p className="text-[11px] text-[#A4AEC1] leading-relaxed">
-              Compares aggregate trading turnover against the 30-day trailing baseline to detect institutional capital accumulation.
+              Uses exchange volume against a fixed 250 million-share reference, with direction determined by the index change. This is a model assumption, not a rolling baseline.
             </p>
           </div>
         </div>

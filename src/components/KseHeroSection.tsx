@@ -19,7 +19,7 @@ export default function KseHeroSection({
   allIndices = [],
   selectedIndexCode = 'KSE100',
   isPsxOpen = false,
-  marketTime = '05:30 PM PKT',
+  marketTime = '',
 }: KseHeroSectionProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<IChartApi | null>(null);
@@ -30,21 +30,7 @@ export default function KseHeroSection({
   const activeIndex = useMemo(() => {
     return (
       allIndices.find((i) => i.code === selectedIndexCode) ||
-      initialIndex || {
-        name: 'KSE 100 Index',
-        code: 'KSE100',
-        current: 165930.99,
-        change: 779.34,
-        changePercent: 0.47,
-        high: 166242.43,
-        low: 164731.91,
-        volume: 130240000,
-        value: 10420000000,
-        open: 165549.65,
-        ldcp: 165151.64,
-        yearHigh: 191032.73,
-        yearLow: 144119.44,
-      }
+      (initialIndex?.code === selectedIndexCode ? initialIndex : null) || {name:selectedIndexCode,code:selectedIndexCode,current:0,change:0,changePercent:0,high:0,low:0,volume:0,value:undefined,ldcp:undefined,yearHigh:undefined,yearLow:undefined}
     );
   }, [allIndices, selectedIndexCode, initialIndex]);
 
@@ -68,7 +54,7 @@ export default function KseHeroSection({
   }, [selectedIndexCode, timeframe]);
 
   useEffect(() => {
-    if (!chartContainerRef.current) return;
+    if (!chartContainerRef.current || !activeIndex.current) return;
 
     if (chartInstance.current) {
       chartInstance.current.remove();
@@ -150,21 +136,6 @@ export default function KseHeroSection({
 
     // Populate chart points
     let chartData = points;
-    if (!chartData || chartData.length === 0) {
-      // Fallback points around active index
-      const base = activeIndex.current || 165930.99;
-      const now = Math.floor(Date.now() / 1000);
-      chartData = [];
-      for (let i = 45; i >= 0; i--) {
-        const t = now - i * 300;
-        const wave = Math.sin(i / 4.5) * 220 + (Math.random() - 0.48) * 90;
-        chartData.push({
-          time: t,
-          value: Number((base + wave).toFixed(2)),
-          volume: Math.floor(Math.random() * 2500000 + 500000),
-        });
-      }
-    }
 
     chartData = normalizeChartPoints(chartData);
     const formattedArea = chartData
@@ -239,23 +210,16 @@ export default function KseHeroSection({
     };
   }, [points, activeIndex]);
 
+  if (!activeIndex.current) return <div role="status" className="p-8 rounded-xl border border-[#28354A] text-[#A4AEC1]">PSX index data unavailable. Please try again shortly.</div>;
   const displayValue = hoveredPoint?.value ?? activeIndex.current;
   const isPositive = (activeIndex.change ?? 0) >= 0;
 
   // Day Range Calculations
-  const dayLow = activeIndex.low || 164731.91;
-  const dayHigh = activeIndex.high || 166242.43;
+  const dayLow = activeIndex.low;
+  const dayHigh = activeIndex.high;
   const dayRangePercent =
     dayHigh > dayLow
       ? Math.max(0, Math.min(100, ((displayValue - dayLow) / (dayHigh - dayLow)) * 100))
-      : 50;
-
-  // 52-Week Range Calculations
-  const yearLow = activeIndex.yearLow || 144119.44;
-  const yearHigh = activeIndex.yearHigh || 191032.73;
-  const yearRangePercent =
-    yearHigh > yearLow
-      ? Math.max(0, Math.min(100, ((displayValue - yearLow) / (yearHigh - yearLow)) * 100))
       : 50;
 
   const formatVolume = (vol: number) => {
@@ -284,7 +248,7 @@ export default function KseHeroSection({
             <div className="flex items-center space-x-2">
               <span className="text-xs text-[#A4AEC1] hidden sm:flex items-center space-x-1 font-mono">
                 <Clock className="w-3.5 h-3.5" />
-                <span>{marketTime}</span>
+                <span>{marketTime ? new Date(marketTime).toLocaleString('en-GB',{timeZone:'Asia/Karachi'}) + ' PKT' : 'Source timestamp unavailable'}</span>
               </span>
 
               <span
@@ -395,21 +359,21 @@ export default function KseHeroSection({
             <div className="flex items-center justify-between py-1">
               <span className="text-xs text-[#A4AEC1]">Volume</span>
               <span className="text-sm font-mono font-semibold text-[#EFF3FA]">
-                {formatVolume(activeIndex.volume || 130240000)}
+                {formatVolume(activeIndex.volume)}
               </span>
             </div>
 
             <div className="flex items-center justify-between py-1 border-t border-[#28354A]/40">
               <span className="text-xs text-[#A4AEC1]">Value</span>
               <span className="text-sm font-mono font-semibold text-[#EFF3FA]">
-                {formatVolume(activeIndex.value || 10420000000)} PKR
+                {activeIndex.value === undefined ? '—' : formatVolume(activeIndex.value)} PKR
               </span>
             </div>
 
             <div className="flex items-center justify-between py-1 border-t border-[#28354A]/40">
               <span className="text-xs text-[#A4AEC1]">Previous Close</span>
               <span className="text-sm font-mono font-semibold text-[#EFF3FA]">
-                {(activeIndex.ldcp || 165151.64).toLocaleString('en-US', {
+                {activeIndex.ldcp?.toLocaleString('en-US', {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -447,40 +411,6 @@ export default function KseHeroSection({
             <div
               className="h-full bg-gradient-to-r from-[#B69249]/40 to-[#B69249] rounded-full relative"
               style={{ width: `${dayRangePercent}%` }}
-            >
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#B69249] rounded-full shadow-[0_0_10px_#B69249] border-2 border-[#111A2B]" />
-            </div>
-          </div>
-        </div>
-
-        {/* Section 3: 52-Week Range Progress Slider */}
-        <div className="border-t border-[#28354A] pt-4">
-          <div className="flex items-center justify-between text-xs font-semibold text-[#EFF3FA] mb-2">
-            <span className="flex items-center space-x-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#B69249]" />
-              <span>52-Week Range</span>
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between text-xs font-mono text-[#A4AEC1] mb-2">
-            <div>
-              <span className="block text-[10px] uppercase font-semibold text-[#7F8DA4]">52W Low</span>
-              <span className="text-[#EFF3FA] font-semibold">
-                {yearLow.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-              </span>
-            </div>
-            <div className="text-right">
-              <span className="block text-[10px] uppercase font-semibold text-[#7F8DA4]">52W High</span>
-              <span className="text-[#EFF3FA] font-semibold">
-                {yearHigh.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-              </span>
-            </div>
-          </div>
-
-          <div className="relative w-full h-2.5 bg-[#0B1120] rounded-full border border-[#28354A] overflow-visible">
-            <div
-              className="h-full bg-gradient-to-r from-[#B69249]/40 to-[#B69249] rounded-full relative"
-              style={{ width: `${yearRangePercent}%` }}
             >
               <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#B69249] rounded-full shadow-[0_0_10px_#B69249] border-2 border-[#111A2B]" />
             </div>

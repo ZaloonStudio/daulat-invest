@@ -206,7 +206,7 @@ export default function StocksDirectoryClient({ initialQuotes, sectors }: Props)
                     </td>
 
                     <td className="py-3.5 text-right font-mono text-xs text-[#EFF3FA] pr-4">
-                      {stock.volume.toLocaleString()}
+                      {stock.sessionAvailable===false?'—':stock.volume.toLocaleString()}
                     </td>
                   </tr>
                 );

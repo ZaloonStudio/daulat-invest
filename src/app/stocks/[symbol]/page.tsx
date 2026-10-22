@@ -46,11 +46,12 @@ export default async function StockDetailPage({ params }: Props) {
     fetchMarketWatch(),
     fetchStockHistory(symbol),
     fetchTimeseries('KSE100', false),
-    fetchCompanyAnnouncements(),
+    fetchCompanyAnnouncements(symbol),
   ]);
 
   const quote = quotes.find((q) => q.symbol.toUpperCase() === symbol);
 
+  if (!quotes.length) throw new Error('PSX data temporarily unavailable');
   if (!quote) {
     notFound();
   }
@@ -130,11 +131,12 @@ export default async function StockDetailPage({ params }: Props) {
                 {quote.change.toFixed(2)} ({isPositive ? '+' : ''}
                 {quote.changePercent.toFixed(2)}%)
               </span>
-              <span className="text-xs text-[#A4AEC1] ml-1.5 font-normal">Today</span>
+              <span className="text-xs text-[#A4AEC1] ml-1.5 font-normal">Session change</span>
             </div>
           </div>
         </div>
 
+        <p className="text-xs text-[#A4AEC1]">PSX DPS snapshot · {quote.updatedAt ? new Date(quote.updatedAt).toLocaleString('en-GB', {timeZone:'Asia/Karachi'}) + ' PKT' : 'Source timestamp unavailable'}</p>
         <StockDetailTabs stock={quote} peers={relatedStocks} announcements={announcements.filter(a => a.symbol.toUpperCase() === symbol)} overview={
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8">
@@ -142,6 +144,7 @@ export default async function StockDetailPage({ params }: Props) {
               symbol={quote.symbol}
               history={history}
               kseHistory={kseHistory}
+              marketCap={quote.marketCap}
               currentPrice={quote.current}
               change={quote.change}
             />
@@ -161,19 +164,19 @@ export default async function StockDetailPage({ params }: Props) {
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-[#A4AEC1]">Day High</span>
                   <span className="font-mono font-semibold text-[#EFF3FA]">
-                    Rs {quote.high.toFixed(2)}
+                    Rs {quote.sessionAvailable===false || !quote.high ? '—' : quote.high.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-[#A4AEC1]">Day Low</span>
                   <span className="font-mono font-semibold text-[#EFF3FA]">
-                    Rs {quote.low.toFixed(2)}
+                    Rs {quote.sessionAvailable===false || !quote.low ? '—' : quote.low.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-[#A4AEC1]">Opening Price</span>
                   <span className="font-mono font-semibold text-[#EFF3FA]">
-                    Rs {quote.open.toFixed(2)}
+                    Rs {quote.sessionAvailable===false || !quote.open ? '—' : quote.open.toFixed(2)}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
@@ -185,7 +188,7 @@ export default async function StockDetailPage({ params }: Props) {
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-[#A4AEC1]">Trading Volume</span>
                   <span className="font-mono font-semibold text-[#B69249]">
-                    {quote.volume.toLocaleString()} shares
+                    {quote.sessionAvailable===false?'—':quote.volume.toLocaleString()} shares
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">

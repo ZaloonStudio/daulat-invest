@@ -177,10 +177,11 @@ export default function PortfolioPage() {
 
   const enrichedHoldings = holdings.map((h) => {
     const q = quotes[h.symbol.toUpperCase()];
-    const currentPrice = q?.current && q.current > 0 ? q.current : h.buyPrice;
+    const priced = !!q?.current && q.current > 0;
+    const currentPrice = priced ? q.current : 0;
     const invested = h.shares * h.buyPrice;
     const marketValue = h.shares * currentPrice;
-    const gain = marketValue - invested;
+    const gain = priced ? marketValue - invested : 0;
     const gainPercent = invested > 0 ? (gain / invested) * 100 : 0;
 
     totalInvested += invested;
@@ -188,6 +189,7 @@ export default function PortfolioPage() {
 
     return {
       ...h,
+      priced,
       currentPrice,
       invested,
       marketValue,
@@ -197,6 +199,7 @@ export default function PortfolioPage() {
     };
   });
 
+  const completePrices = enrichedHoldings.every(h=>h.priced);
   const totalGain = totalCurrentValue - totalInvested;
   const totalGainPercent = totalInvested > 0 ? (totalGain / totalInvested) * 100 : 0;
   const totalRealizedGain = trades.reduce((acc, t) => acc + (t.profit || 0), 0);
@@ -312,10 +315,10 @@ export default function PortfolioPage() {
               Portfolio Value
             </span>
             <div className="text-2xl font-semibold text-[#EFF3FA] font-mono mt-1">
-              Rs {totalCurrentValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              Rs {completePrices ? totalCurrentValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
             </div>
             <div className="text-xs text-[#A4AEC1] mt-1">
-              Live market value
+              {completePrices ? 'PSX snapshot valuation' : 'Valuation unavailable: missing stock quotes'}
             </div>
           </div>
 
@@ -341,8 +344,8 @@ export default function PortfolioPage() {
               }`}
             >
               <span>
-                {totalGain >= 0 ? '+' : ''}
-                Rs {totalGain.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {completePrices && totalGain >= 0 ? '+' : ''}
+                Rs {completePrices ? totalGain.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
               </span>
             </div>
             <div
@@ -350,8 +353,8 @@ export default function PortfolioPage() {
                 totalGain >= 0 ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
               }`}
             >
-              {totalGain >= 0 ? '+' : ''}
-              {totalGainPercent.toFixed(2)}%
+              {completePrices && totalGain >= 0 ? '+' : ''}
+              {completePrices ? totalGainPercent.toFixed(2)+'%' : '—'}
             </div>
           </div>
 
@@ -465,10 +468,10 @@ export default function PortfolioPage() {
                             Rs {h.buyPrice.toFixed(2)}
                           </td>
                           <td className="py-3.5 px-4 text-right font-mono text-[#EFF3FA] font-semibold">
-                            Rs {h.currentPrice.toFixed(2)}
+                            Rs {h.priced ? h.currentPrice.toFixed(2) : '—'}
                           </td>
                           <td className="py-3.5 px-4 text-right font-mono text-[#EFF3FA] font-semibold">
-                            Rs {h.marketValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            Rs {h.priced ? h.marketValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
                           </td>
                           <td className="py-3.5 px-4 text-right">
                             <div
@@ -478,8 +481,8 @@ export default function PortfolioPage() {
                             >
                               {isGain ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
                               <span>
-                                {isGain ? '+' : ''}
-                                Rs {h.gain.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                {h.priced && isGain ? '+' : ''}
+                                Rs {h.priced ? h.gain.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
                               </span>
                             </div>
                             <div
@@ -487,12 +490,12 @@ export default function PortfolioPage() {
                                 isGain ? 'text-[#6DDBA5]' : 'text-[#F28B82]'
                               }`}
                             >
-                              {isGain ? '+' : ''}
-                              {h.gainPercent.toFixed(2)}%
+                              {h.priced && isGain ? '+' : ''}
+                              {h.priced ? h.gainPercent.toFixed(2)+'%' : '—'}
                             </div>
                           </td>
                           <td className="py-3.5 px-4 text-right font-mono text-[#B69249] font-semibold">
-                            {weight.toFixed(1)}%
+                            {completePrices ? weight.toFixed(1)+'%' : '—'}
                           </td>
                           <td className="py-3.5 px-4 text-center">
                             <button

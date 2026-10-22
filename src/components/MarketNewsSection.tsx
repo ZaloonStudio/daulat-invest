@@ -10,7 +10,7 @@ interface MarketNewsSectionProps {
 }
 
 export default function MarketNewsSection({ articles }: MarketNewsSectionProps) {
-  if (!articles || articles.length === 0) return null;
+  if (!articles || articles.length === 0) return <section role="status" className="rounded-xl border border-[#28354A] p-6 text-sm text-[#A4AEC1]">News feed unavailable. <a href="https://www.dawn.com/business" className="text-[#B69249]" target="_blank" rel="noopener noreferrer">Dawn business ↗</a></section>;
 
   const featured = articles[0];
   const sideArticles = articles.slice(1, 5);
@@ -74,7 +74,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src =
-                      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop';
+                      '/news-placeholder.svg';
                   }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -92,7 +92,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   {featured.source}
                 </span>
                 <span className="text-[10px] font-semibold text-[#EFF3FA] bg-black/60 backdrop-blur-md px-2 py-0.5 rounded">
-                  {featured.publishedAt}
+                  {new Date(featured.publishedAt).toLocaleDateString('en-GB')}
                 </span>
               </div>
             </a>
@@ -113,7 +113,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
               </div>
 
               <div className="pt-4 mt-4 border-t border-[#28354A]/60 flex items-center justify-between">
-                <span className="text-[11px] text-[#7F8DA4]">Dawn • Recorder • Profit Feeds</span>
+                <span className="text-[11px] text-[#7F8DA4]">Dawn business RSS</span>
                 <a
                   href={featured.link}
                   target="_blank"
@@ -148,7 +148,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                     onError={(e) => {
                       e.currentTarget.onerror = null;
                       e.currentTarget.src =
-                        'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=600&auto=format&fit=crop';
+                        '/news-placeholder.svg';
                     }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
@@ -169,7 +169,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   >
                     {article.source}
                   </span>
-                  <span className="text-[11px] text-[#7F8DA4]">{article.publishedAt}</span>
+                  <span className="text-[11px] text-[#7F8DA4]">{new Date(article.publishedAt).toLocaleDateString('en-GB')}</span>
                 </div>
 
                 <h3 className="font-semibold text-xs sm:text-sm text-[#EFF3FA] group-hover:text-[#B69249] transition-colors line-clamp-2 leading-tight">

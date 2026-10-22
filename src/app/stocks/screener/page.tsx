@@ -55,6 +55,7 @@ export default async function ScreenerPage() {
           </p>
         </div>
 
+        <p className="text-xs text-[#A4AEC1]">PSX DPS snapshot · {quotes.find(q=>q.updatedAt)?.updatedAt ? new Date(quotes.find(q=>q.updatedAt)!.updatedAt!).toLocaleString('en-GB',{timeZone:'Asia/Karachi'})+' PKT' : 'Source timestamp unavailable'}</p>
         <Suspense
           fallback={
             <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-12 text-center text-sm text-[#A4AEC1]">

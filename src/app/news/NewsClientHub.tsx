@@ -9,7 +9,7 @@ interface NewsClientHubProps {
 }
 
 const FALLBACK_NEWS_IMAGE =
-  'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80';
+  '/news-placeholder.svg';
 
 export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
   const [search, setSearch] = useState('');
@@ -50,7 +50,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
             Market news
           </h1>
           <p className="text-sm text-[#A4AEC1] mt-1.5 max-w-2xl">
-            Real-time macroeconomic reporting, corporate earnings results, monetary policy developments, and KSE-100 analysis.
+            Business headlines from Dawn RSS. Publisher dates shown; checked every five minutes.
           </p>
         </div>
 
@@ -112,7 +112,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
                 </span>
                 <span className="text-xs text-[#A4AEC1] flex items-center space-x-1">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>{filteredArticles[0].publishedAt}</span>
+                  <span>{new Date(filteredArticles[0].publishedAt).toLocaleDateString('en-GB')}</span>
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-semibold text-[#EFF3FA] group-hover:text-[#B69249] transition-colors leading-snug">
@@ -177,7 +177,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
 
               <div className="text-[11px] text-[#A4AEC1] flex items-center space-x-1 mb-2">
                 <Calendar className="w-3 h-3" />
-                <span>{article.publishedAt}</span>
+                <span>{new Date(article.publishedAt).toLocaleDateString('en-GB')}</span>
               </div>
 
               <h3 className="text-sm font-semibold text-[#EFF3FA] group-hover:text-[#B69249] transition-colors leading-snug line-clamp-2 mb-2">
@@ -203,7 +203,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
       {filteredArticles.length === 0 && (
         <div className="text-center py-16 bg-[#111A2B] border border-[#28354A] rounded-xl">
           <Newspaper className="w-10 h-10 text-[#7F8DA4] mx-auto mb-3" />
-          <h3 className="text-base font-semibold text-[#EFF3FA]">No articles match your search</h3>
+          <h3 className="text-base font-semibold text-[#EFF3FA]">{initialArticles.length?'No articles match your search':'Publisher news feed unavailable'}</h3>
           <p className="text-xs text-[#A4AEC1] mt-1">
             Try adjusting your search terms or selecting &quot;All&quot; sources.
           </p>

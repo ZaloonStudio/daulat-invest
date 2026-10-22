@@ -11,6 +11,8 @@ interface FearGreedIndexProps {
 export default function FearGreedIndex({ data }: FearGreedIndexProps) {
   const [showDetails, setShowDetails] = useState(false);
 
+  if (data.available === false) return <div role="status" className="rounded-xl border border-[#28354A] p-6 text-[#A4AEC1]">Sentiment unavailable — waiting for PSX source data.</div>;
+
   // Map 0-100 score to 0-180 degrees for gauge needle
   const needleRotation = Math.min(180, Math.max(0, (data.score / 100) * 180));
 
@@ -96,7 +98,7 @@ export default function FearGreedIndex({ data }: FearGreedIndexProps) {
 
         <div className="flex items-center space-x-2 text-xs text-[#A4AEC1]">
           <Clock className="w-3.5 h-3.5 text-[#7F8DA4]" />
-          <span>Updated: {data.updatedAt}</span>
+          <span>Updated: {data.updatedAt ? new Date(data.updatedAt).toLocaleString('en-GB',{timeZone:'Asia/Karachi'})+' PKT' : 'Unavailable'}</span>
         </div>
       </div>
 
@@ -264,7 +266,7 @@ export default function FearGreedIndex({ data }: FearGreedIndexProps) {
                 <strong className="text-[#EFF3FA]">KSE-100 Momentum (35% Weight):</strong> Intraday position of the benchmark index relative to its daily high and low range, scaled by daily net change percentage.
               </li>
               <li>
-                <strong className="text-[#EFF3FA]">Volume Conviction (25% Weight):</strong> Aggregated traded volume compared against standard baseline trading velocity to detect institutional accumulation or capitulation selling.
+                <strong className="text-[#EFF3FA]">Volume Conviction (25% Weight):</strong> Exchange volume compared with a fixed 250 million-share model reference; signed by index direction.
               </li>
             </ul>
             <div className="text-[10px] text-[#7F8DA4] pt-1 flex items-center space-x-1">

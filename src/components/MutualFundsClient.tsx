@@ -28,7 +28,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
   const [islamicOnly, setIslamicOnly] = useState(false);
   const [activePreset, setActivePreset] = useState<string | null>(null);
 
-  const [sortField, setSortField] = useState<SortField>('return1Y');
+  const [sortField, setSortField] = useState<SortField>('name');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
   const [selectedFund, setSelectedFund] = useState<MutualFund | null>(null);
@@ -184,7 +184,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
 
   return (
     <div className="space-y-6">
-      <p className="text-xs text-[#A4AEC1]"><a href={FUND_SOURCE} target="_blank" rel="noopener noreferrer" className="text-[#B69249] hover:underline">MUFAP reported data ↗</a> · {funds.filter(f=>f.nav!==null).length}/{funds.length} NAVs available. Returns annualized where reported; missing values shown as —.</p>
+      <p className="text-xs text-[#A4AEC1]"><a href={FUND_SOURCE} target="_blank" rel="noopener noreferrer" className="text-[#B69249] hover:underline">MUFAP reported data ↗</a> · {funds.filter(f=>f.nav!==null).length}/{funds.length} NAVs available. Compare returns within the same category and reporting basis. Missing values shown as —.</p>
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl shadow-lg">
@@ -551,17 +551,17 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
 
                       {/* 30D Reported */}
                       <td className="py-3.5 px-4 text-right font-mono text-[#6DDBA5] font-semibold">
-                        {fundReturn(fund.return1M)}
+                        {fundReturn(fund.return1M)}{fund.returnBasis==='Annualized'?' p.a.':''}
                       </td>
 
                       {/* YTD Return */}
                       <td className="py-3.5 px-4 text-right font-mono text-[#6DDBA5] font-semibold">
-                        {fundReturn(fund.returnYTD)}
+                        {fundReturn(fund.returnYTD)}{fund.returnBasis==='Annualized'?' p.a.':''}
                       </td>
 
                       {/* 1Y Return */}
                       <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#B69249]">
-                        {fundReturn(fund.return1Y)}
+                        {fundReturn(fund.return1Y)}{fund.returnBasis==='Annualized'?' p.a.':''}
                       </td>
 
                       {/* AUM */}
@@ -637,7 +637,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
                 <div className="text-lg font-semibold text-[#EFF3FA] mt-0.5 font-mono">
                   Rs {fundNumber(selectedFund.nav,2)}
                 </div>
-                <span className="text-[10px] text-[#A4AEC1]">{selectedFund.navDate}</span>
+                <span className="text-[10px] text-[#A4AEC1]">{selectedFund.navDate} · Return basis: {selectedFund.returnBasis ?? 'Unspecified'}</span>
               </div>
 
               <div className="bg-[#0B1120] border border-[#6DDBA5]/30 p-3.5 rounded-xl">

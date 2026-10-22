@@ -268,7 +268,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
                   <td key={s.symbol} className="py-3.5 px-6 font-semibold text-[#B69249]">
                     {s.dividendYield && s.dividendYield > 0
                       ? `${s.dividendYield.toFixed(2)}%`
-                      : '0.00%'}
+                      : s.dividendYield===0?'0.00%':'—'}
                   </td>
                 ))}
               </tr>
@@ -287,10 +287,10 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
 
               {/* Free Float */}
               <tr className="hover:bg-[#1C2940]/40 transition-colors">
-                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Free Float (%)</td>
+                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Free Float (shares)</td>
                 {selectedStocks.map((s) => (
                   <td key={s.symbol} className="py-3.5 px-6 text-[#A4AEC1]">
-                    {s.freeFloat && s.freeFloat > 0 ? `${s.freeFloat.toFixed(1)}%` : '—'}
+                    {s.freeFloat && s.freeFloat > 0 ? s.freeFloat.toLocaleString() : '—'}
                   </td>
                 ))}
               </tr>
@@ -300,7 +300,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
                 <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Day Volume</td>
                 {selectedStocks.map((s) => (
                   <td key={s.symbol} className="py-3.5 px-6 font-mono text-[#EFF3FA]">
-                    {s.volume.toLocaleString()} shares
+                    {s.sessionAvailable===false?'—':s.volume.toLocaleString()} shares
                   </td>
                 ))}
               </tr>
