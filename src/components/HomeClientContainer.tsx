@@ -9,6 +9,7 @@ import CommunityPreview from '@/components/CommunityPreview';
 import IndicesBar from '@/components/IndicesBar';
 import KseHeroSection from '@/components/KseHeroSection';
 import HomeCommoditiesWidget from '@/components/HomeCommoditiesWidget';
+import type { PriceSnapshot } from '@/lib/commodity-data';
 import MarketMovers from '@/components/MarketMovers';
 import IndexPerformanceTable from '@/components/IndexPerformanceTable';
 import MarketNewsSection from '@/components/MarketNewsSection';
@@ -17,6 +18,7 @@ import SectorsGrid from '@/components/SectorsGrid';
 import AppPromoBanner from '@/components/AppPromoBanner';
 
 interface HomeClientContainerProps {
+  commodityPrices: PriceSnapshot;
   summary: MarketSummary;
   quotes: StockQuote[];
   news: NewsArticle[];
@@ -26,6 +28,7 @@ interface HomeClientContainerProps {
 }
 
 export default function HomeClientContainer({
+  commodityPrices,
   summary,
   quotes,
   news,
@@ -82,7 +85,7 @@ export default function HomeClientContainer({
 
       {/* 2. Live Gold, Forex & Commodities Snapshot (Daulat Mobile App Integration) */}
       <section>
-        <HomeCommoditiesWidget />
+      <HomeCommoditiesWidget prices={commodityPrices} />
       </section>
 
       {/* 3. Market Movers: Volume Leaders, Gainers, Losers with Shariah Filter */}

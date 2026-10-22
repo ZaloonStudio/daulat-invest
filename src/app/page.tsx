@@ -11,6 +11,7 @@ import {
 import Navbar from '@/components/Navbar';
 import HomeClientContainer from '@/components/HomeClientContainer';
 import Footer from '@/components/Footer';
+import { getPriceSnapshot } from '@/lib/commodity-feed';
 
 export const revalidate = 15; // Revalidate every 15 seconds for live updates
 
@@ -41,11 +42,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [summary, quotes, news, announcements] = await Promise.all([
+  const [summary, quotes, news, announcements, commodityPrices] = await Promise.all([
     getMarketSummary(),
     fetchMarketWatch(),
     fetchMarketNews(),
     fetchCompanyAnnouncements(),
+    getPriceSnapshot(),
   ]);
 
   const isOpen = isPsxMarketOpen();
@@ -57,6 +59,7 @@ export default async function HomePage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <HomeClientContainer
+          commodityPrices={commodityPrices}
           summary={summary}
           quotes={quotes}
           news={news}
