@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { MutualFund, PAKISTAN_MUTUAL_FUNDS } from '@/lib/mutualFundsData';
+import { type ReportFund as MutualFund, fundNumber, fundReturn, fundIsDelayed, FUND_SOURCE } from '@/lib/fund-data';
 import {
   Search,
   Moon,
@@ -20,8 +20,7 @@ import {
 type SortField = 'return1Y' | 'returnYTD' | 'return1M' | 'nav' | 'aumBillion' | 'name';
 type SortOrder = 'asc' | 'desc';
 
-export default function MutualFundsClient() {
-  const [funds] = useState<MutualFund[]>(PAKISTAN_MUTUAL_FUNDS);
+export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [selectedAmc, setSelectedAmc] = useState<string>('ALL');
@@ -133,6 +132,9 @@ export default function MutualFundsClient() {
         const valA: any = a[sortField];
         const valB: any = b[sortField];
 
+        if (valA == null && valB == null) return 0;
+        if (valA == null) return 1;
+        if (valB == null) return -1;
         if (typeof valA === 'string') {
           return sortOrder === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
         }
@@ -153,7 +155,7 @@ export default function MutualFundsClient() {
   };
 
   const exportCSV = () => {
-    const headers = ['Fund Name', 'Symbol', 'AMC', 'Category', 'Shariah Compliant', 'Risk Profile', 'NAV (PKR)', '1M Return (%)', 'YTD Return (%)', '1Y Return (%)', 'AUM (Billion PKR)', 'Rating'];
+    const headers = ['Fund Name', 'Symbol', 'AMC', 'Category', 'Shariah Compliant', 'Risk Profile', 'NAV (PKR)', 'NAV Date', '30D Reported (%)', 'YTD Return (%)', '1Y Return (%)', 'AUM (Billion PKR)', 'Rating'];
     const rows = filteredFunds.map((f) => [
       `"${f.name.replace(/"/g, '""')}"`,
       f.symbol,
@@ -161,11 +163,12 @@ export default function MutualFundsClient() {
       `"${f.category}"`,
       f.isIslamic ? 'Yes' : 'No',
       f.riskProfile,
-      f.nav.toFixed(2),
-      f.return1M.toFixed(2),
-      f.returnYTD.toFixed(2),
-      f.return1Y.toFixed(2),
-      f.aumBillion.toFixed(1),
+      fundNumber(f.nav,2),
+      `"${f.navDate}"`,
+      fundNumber(f.return1M,2),
+      fundNumber(f.returnYTD,2),
+      fundNumber(f.return1Y,2),
+      f.aumBillion===null?'':fundNumber(f.aumBillion,1),
       f.rating || '—',
     ]);
 
@@ -181,6 +184,7 @@ export default function MutualFundsClient() {
 
   return (
     <div className="space-y-6">
+      <p className="text-xs text-[#A4AEC1]"><a href={FUND_SOURCE} target="_blank" rel="noopener noreferrer" className="text-[#B69249] hover:underline">MUFAP reported data ↗</a> · {funds.filter(f=>f.nav!==null).length}/{funds.length} NAVs available. Returns annualized where reported; missing values shown as —.</p>
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl shadow-lg">
@@ -208,8 +212,8 @@ export default function MutualFundsClient() {
             <TrendingUp className="w-3.5 h-3.5" />
             <span>Top 1Y Equity Return</span>
           </div>
-          <div className="text-2xl font-semibold text-[#B69249]">+98.7%</div>
-          <span className="text-[11px] text-[#A4AEC1]">PSX Equity Bull Rally</span>
+          <div className="text-2xl font-semibold text-[#B69249]">{fundReturn(funds.filter(f=>f.category==='Islamic Equity'&&f.return1Y!==null).sort((a,b)=>b.return1Y!-a.return1Y!)[0]?.return1Y)}</div>
+          <span className="text-[11px] text-[#A4AEC1]">Reported equity funds</span>
         </div>
 
         <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl shadow-lg">
@@ -217,8 +221,8 @@ export default function MutualFundsClient() {
             <Shield className="w-3.5 h-3.5 text-[#B69249]" />
             <span>Cash &amp; Money Market</span>
           </div>
-          <div className="text-2xl font-semibold text-[#B69249]">19.8% - 21.0%</div>
-          <span className="text-[11px] text-[#A4AEC1]">Low Risk / Daily Dividend</span>
+          <div className="text-2xl font-semibold text-[#B69249]">{funds.filter(f=>f.category.includes('Money Market')).length} Funds</div>
+          <span className="text-[11px] text-[#A4AEC1]">Explore money-market funds</span>
         </div>
       </div>
 
@@ -264,7 +268,7 @@ export default function MutualFundsClient() {
                 : 'bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A]'
             }`}
           >
-            <span>High Growth Equities (+90% 1Y)</span>
+            <span>Equity funds</span>
           </button>
 
           <button
@@ -445,7 +449,7 @@ export default function MutualFundsClient() {
                   className="py-3 px-4 text-right cursor-pointer hover:text-[#EFF3FA]"
                 >
                   <div className="flex items-center justify-end space-x-1">
-                    <span>1M Return</span>
+                    <span>30D Reported</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
@@ -541,27 +545,28 @@ export default function MutualFundsClient() {
 
                       {/* NAV */}
                       <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#EFF3FA]">
-                        Rs {fund.nav.toFixed(2)}
+                        {fund.nav===null?'—':'Rs '+fundNumber(fund.nav,2)}
+                        <span className="block text-[10px] font-normal text-[#A4AEC1] mt-1">{fund.nav!==null?fund.navDate+(fundIsDelayed(fund.navDate)?' · Delayed':''):'NAV unavailable'}</span>
                       </td>
 
-                      {/* 1M Return */}
+                      {/* 30D Reported */}
                       <td className="py-3.5 px-4 text-right font-mono text-[#6DDBA5] font-semibold">
-                        +{fund.return1M.toFixed(2)}%
+                        {fundReturn(fund.return1M)}
                       </td>
 
                       {/* YTD Return */}
                       <td className="py-3.5 px-4 text-right font-mono text-[#6DDBA5] font-semibold">
-                        +{fund.returnYTD.toFixed(2)}%
+                        {fundReturn(fund.returnYTD)}
                       </td>
 
                       {/* 1Y Return */}
                       <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#B69249]">
-                        +{fund.return1Y.toFixed(2)}%
+                        {fundReturn(fund.return1Y)}
                       </td>
 
                       {/* AUM */}
                       <td className="py-3.5 px-4 text-right font-mono text-[#A4AEC1]">
-                        Rs {fund.aumBillion.toFixed(1)}B
+                        {fund.aumBillion===null?'—':'Rs '+fundNumber(fund.aumBillion,1)+'B'}
                       </td>
 
                       {/* Action */}
@@ -630,15 +635,15 @@ export default function MutualFundsClient() {
               <div className="bg-[#0B1120] border border-[#28354A] p-3.5 rounded-xl">
                 <span className="text-[10px] text-[#A4AEC1] uppercase font-semibold block">Current NAV</span>
                 <div className="text-lg font-semibold text-[#EFF3FA] mt-0.5 font-mono">
-                  Rs {selectedFund.nav.toFixed(2)}
+                  Rs {fundNumber(selectedFund.nav,2)}
                 </div>
                 <span className="text-[10px] text-[#A4AEC1]">{selectedFund.navDate}</span>
               </div>
 
               <div className="bg-[#0B1120] border border-[#6DDBA5]/30 p-3.5 rounded-xl">
-                <span className="text-[10px] text-[#6DDBA5] uppercase font-semibold block">1-Month Return</span>
+                <span className="text-[10px] text-[#6DDBA5] uppercase font-semibold block">30-Day Reported</span>
                 <div className="text-lg font-semibold text-[#6DDBA5] mt-0.5 font-mono">
-                  +{selectedFund.return1M.toFixed(2)}%
+                  {fundReturn(selectedFund.return1M)}
                 </div>
                 <span className="text-[10px] text-[#A4AEC1]">Annualized</span>
               </div>
@@ -646,7 +651,7 @@ export default function MutualFundsClient() {
               <div className="bg-[#0B1120] border border-[#6DDBA5]/30 p-3.5 rounded-xl">
                 <span className="text-[10px] text-[#6DDBA5] uppercase font-semibold block">YTD Return</span>
                 <div className="text-lg font-semibold text-[#6DDBA5] mt-0.5 font-mono">
-                  +{selectedFund.returnYTD.toFixed(2)}%
+                  {fundReturn(selectedFund.returnYTD)}
                 </div>
                 <span className="text-[10px] text-[#A4AEC1]">Current Year</span>
               </div>
@@ -654,7 +659,7 @@ export default function MutualFundsClient() {
               <div className="bg-[#0B1120] border border-[#B69249]/30 p-3.5 rounded-xl">
                 <span className="text-[10px] text-[#B69249] uppercase font-semibold block">1-Year Return</span>
                 <div className="text-lg font-semibold text-[#B69249] mt-0.5 font-mono">
-                  +{selectedFund.return1Y.toFixed(2)}%
+                  {fundReturn(selectedFund.return1Y)}
                 </div>
                 <span className="text-[10px] text-[#A4AEC1]">Trailing 12M</span>
               </div>
@@ -678,7 +683,7 @@ export default function MutualFundsClient() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#A4AEC1]">Total Fund Size (AUM):</span>
-                    <span className="font-mono font-semibold text-[#EFF3FA]">Rs {selectedFund.aumBillion.toFixed(1)} Billion</span>
+                    <span className="font-mono font-semibold text-[#EFF3FA]">{selectedFund.aumBillion===null?'Unavailable':'Rs '+fundNumber(selectedFund.aumBillion,1)+' Billion'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#A4AEC1]">Trustee:</span>
@@ -709,10 +714,10 @@ export default function MutualFundsClient() {
             <div className="bg-gradient-to-r from-[#1C2940] to-[#111A2B] border border-[#28354A] p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="space-y-0.5 text-center sm:text-left">
                 <div className="text-sm font-semibold text-[#EFF3FA]">
-                  Invest in Pakistani Mutual Funds via Daulat App
+                  Track investments with Daulat
                 </div>
                 <div className="text-xs text-[#A4AEC1]">
-                  Track live daily NAV updates, profit payouts, and portfolio allocation in one place.
+                  Keep your investment research and portfolio in one place.
                 </div>
               </div>
               <a

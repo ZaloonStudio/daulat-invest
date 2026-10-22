@@ -16,7 +16,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 py-9">
             <div className="space-y-3">
               <Brand />
-              <p className="text-xs leading-relaxed">A clearer view of Pakistan’s markets.</p>
+              <p className="text-xs leading-relaxed">Your wealth. Your lens.</p>
             </div>
             <nav aria-label="Footer navigation" className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-7 gap-y-4 text-xs">
               <Link href="/stocks" className="footer-link">Stocks</Link>

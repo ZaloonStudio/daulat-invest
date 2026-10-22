@@ -1,3 +1,4 @@
+import { getFundSnapshot } from '@/lib/fund-feed';
 import { pageMetadata } from '@/lib/seo';
 import React, { Suspense } from 'react';
 import { Metadata } from 'next';
@@ -10,7 +11,8 @@ export const revalidate = 300; // 5 minute cache
 
 export const metadata: Metadata = pageMetadata("/mutual-funds", "Pakistan Mutual Funds & NAV Comparison", "Explore Pakistani mutual funds by asset manager, category, NAV, historical returns, risk and Shariah compliance.");
 
-export default function MutualFundsPage() {
+export default async function MutualFundsPage() {
+  const snapshot = await getFundSnapshot();
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -39,8 +41,7 @@ export default function MutualFundsPage() {
             Mutual funds
           </h1>
           <p className="text-xs sm:text-sm text-[#A4AEC1] mt-1 max-w-3xl leading-relaxed">
-            Compare daily Net Asset Values (NAVs), multi-period returns, risk rankings, and Shariah compliance
-            across Pakistan&apos;s leading Asset Management Companies (AMCs) benchmarked against MUFAP.
+            Explore Pakistan&apos;s mutual funds. Available NAVs and returns carry the source valuation date; fund profiles are reference information.
           </p>
         </div>
 
@@ -51,7 +52,8 @@ export default function MutualFundsPage() {
             </div>
           }
         >
-          <MutualFundsClient />
+          {!snapshot.available && <p role="status" className="text-xs text-[#B69249] mb-4">NAV feed unavailable. Fund directory remains available; check MUFAP for current figures.</p>}
+          <MutualFundsClient funds={snapshot.funds} />
         </Suspense>
       </main>
 

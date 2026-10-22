@@ -16,7 +16,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { CommunityPost, CommunityComment } from '@/lib/types';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firestore';
 import { useAuth } from '@/components/AuthProvider';
 import {
   collection,

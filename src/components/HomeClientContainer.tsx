@@ -7,7 +7,8 @@ import { MarketSummary, StockQuote, NewsArticle, CompanyAnnouncement } from '@/l
 import QuickLinksBar from '@/components/QuickLinksBar';
 import CommunityPreview from '@/components/CommunityPreview';
 import IndicesBar from '@/components/IndicesBar';
-import KseHeroSection from '@/components/KseHeroSection';
+import dynamic from 'next/dynamic';
+const KseHeroSection = dynamic(() => import('@/components/KseHeroSection'), { loading: () => <div className="h-[440px] rounded-2xl bg-[#111A2B] animate-pulse" aria-label="Loading market chart" /> });
 import HomeCommoditiesWidget from '@/components/HomeCommoditiesWidget';
 import type { PriceSnapshot } from '@/lib/commodity-data';
 import MarketMovers from '@/components/MarketMovers';

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { StockQuote } from '@/lib/types';
 import { useAuth } from '@/components/AuthProvider';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/firestore';
 import { collection, doc, onSnapshot, setDoc, deleteDoc } from 'firebase/firestore';
 import {
   Star,
