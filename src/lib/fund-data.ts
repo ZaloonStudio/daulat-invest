@@ -42,7 +42,7 @@ export function applyFundReport(catalog:MutualFund[], observations:FundObservati
     const matches=observations.filter(item=>key(item.name)===key(fund.name));
     // Ambiguous funds/plans must not be merged into a different investment.
     const observation=matches.length===1?matches[0]:undefined;
-    return {...fund,returnBasis:observation?.returnBasis??'Unspecified',nav:observation?.nav??null,navDate:observation?.date??'Unavailable',return1M:observation?.month??null,returnYTD:observation?.ytd??null,return1Y:observation?.year??null,return3Y:observation?.threeYears??null,aumBillion:null,rating:observation?.rating||undefined,managementFee:'See AMC report',frontendLoad:'See AMC report'};
+    return {...fund,returnBasis:observation?.returnBasis??'Unspecified',nav:observation?.nav??null,navDate:observation?.date??'Unavailable',return1M:observation?.month??null,returnYTD:observation?.ytd??null,return1Y:observation?.year??null,return3Y:observation?.threeYears??null,aumBillion:null,benchmark:'See AMC report',trustee:'See AMC report',rating:observation?.rating||undefined,managementFee:'See AMC report',frontendLoad:'See AMC report'};
   });
 }
 export function fundNumber(value:number|null|undefined,digits=2):string {return typeof value==='number'&&Number.isFinite(value)?value.toFixed(digits):'—';}

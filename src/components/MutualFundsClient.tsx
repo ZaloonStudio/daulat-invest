@@ -29,7 +29,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
   const [activePreset, setActivePreset] = useState<string | null>(null);
 
   const [sortField, setSortField] = useState<SortField>('name');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
   const [selectedFund, setSelectedFund] = useState<MutualFund | null>(null);
 
@@ -71,7 +71,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
       setSortField('return1Y');
       setSortOrder('desc');
     } else if (preset === 'equity') {
-      setSelectedCategory('Islamic Equity');
+      setSelectedCategory('EQUITY');
       setSortField('return1Y');
       setSortOrder('desc');
     } else if (preset === 'sovereign') {
@@ -107,7 +107,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
         }
 
         // Category
-        if (selectedCategory !== 'ALL' && f.category !== selectedCategory) {
+        if (selectedCategory !== 'ALL' && (selectedCategory === 'EQUITY' ? !f.category.includes('Equity') : f.category !== selectedCategory)) {
           return false;
         }
 
@@ -231,9 +231,9 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2 text-xs font-semibold text-[#EFF3FA]">
             <Sparkles className="w-4 h-4 text-[#B69249]" />
-            <span>Curated Investment Presets</span>
+            <span>Browse by profile</span>
           </div>
-          <span className="text-[11px] text-[#A4AEC1]">MUFAP Verified Benchmarks</span>
+          <span className="text-[11px] text-[#A4AEC1]">Category filters · reference profiles</span>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -257,7 +257,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
                 : 'bg-[#0B1120] text-[#A4AEC1] hover:text-[#EFF3FA] border border-[#28354A]'
             }`}
           >
-            <span>Low Risk / Cash &amp; Daily Dividend</span>
+            <span>Lower-risk profiles</span>
           </button>
 
           <button
@@ -616,6 +616,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
                     <span>Shariah Compliant</span>
                   </span>
                 )}
+                {selectedFund.profileSource && <a href={selectedFund.profileSource} target="_blank" rel="noopener noreferrer" className="text-xs text-[#B69249] hover:underline">Official AMC profile ↗</a>}
                 {selectedFund.rating && (
                   <span className="text-xs bg-[#0B1120] text-[#A4AEC1] px-2 py-0.5 rounded-lg border border-[#28354A]">
                     {selectedFund.rating}

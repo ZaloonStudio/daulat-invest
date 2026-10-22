@@ -3,7 +3,7 @@ export interface MutualFund {
   name: string;
   symbol: string;
   amc: string; // Asset Management Company
-  category: 'Islamic Money Market' | 'Islamic Income' | 'Islamic Equity' | 'Conventional Money Market' | 'Sovereign Income' | 'Balanced / Asset Allocation' | 'Pension (VPS)';
+  category: 'Conventional Equity' | 'Conventional Income' | 'Islamic Money Market' | 'Islamic Income' | 'Islamic Equity' | 'Conventional Money Market' | 'Sovereign Income' | 'Balanced / Asset Allocation' | 'Pension (VPS)';
   isIslamic: boolean;
   riskProfile: 'Low' | 'Moderate' | 'High';
   nav: number; // Net Asset Value in PKR
@@ -18,6 +18,7 @@ export interface MutualFund {
   managementFee: string;
   frontendLoad: string;
   rating?: string;
+  profileSource?: string;
 }
 
 export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
@@ -48,9 +49,9 @@ export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
     name: 'Meezan Daily Income Fund',
     symbol: 'MDIF',
     amc: 'Al Meezan Investment Management',
-    category: 'Islamic Money Market',
+    category: 'Islamic Income',
     isIslamic: true,
-    riskProfile: 'Low',
+    riskProfile: 'Moderate',
     nav: 50.00,
     navDate: 'Oct 21, 2026',
     return1M: 1.48,
@@ -63,6 +64,7 @@ export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
     managementFee: '0.65% p.a.',
     frontendLoad: 'Nil',
     rating: 'AA+(f)',
+    profileSource: 'https://www.almeezangroup.com/regular-investor/mutual-funds/meezan-daily-income-plan-i/',
   },
   {
     id: 'mcf',
@@ -175,7 +177,7 @@ export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
     name: 'Alfalah GHP Stock Fund',
     symbol: 'AGSF',
     amc: 'Alfalah Asset Management',
-    category: 'Islamic Equity',
+    category: 'Conventional Equity',
     isIslamic: false,
     riskProfile: 'High',
     nav: 165.80,
@@ -190,6 +192,7 @@ export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
     managementFee: '2.0% p.a.',
     frontendLoad: 'Up to 2.5%',
     rating: '4-Star',
+    profileSource: 'https://alfalahamc.com/downloads/key-fact-statement/key-fact-statements-of-conventional-funds/',
   },
   {
     id: 'agipf',
@@ -240,9 +243,9 @@ export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
     name: 'NBP Mahana Amdani Fund',
     symbol: 'NBP-MAF',
     amc: 'NBP Fund Management',
-    category: 'Conventional Money Market',
+    category: 'Conventional Income',
     isIslamic: false,
-    riskProfile: 'Low',
+    riskProfile: 'Moderate',
     nav: 10.84,
     navDate: 'Oct 21, 2026',
     return1M: 1.54,
@@ -255,13 +258,14 @@ export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
     managementFee: '0.70% p.a.',
     frontendLoad: 'Nil',
     rating: 'AA+(f)',
+    profileSource: 'https://www.nbpfunds.com/investment-options/conventional-funds/income-funds/nbp-mahana-amdani-fund/',
   },
   {
     id: 'nbp-sf',
     name: 'NBP Stock Fund',
     symbol: 'NBP-SF',
     amc: 'NBP Fund Management',
-    category: 'Islamic Equity',
+    category: 'Conventional Equity',
     isIslamic: false,
     riskProfile: 'High',
     nav: 22.45,
@@ -276,6 +280,7 @@ export const PAKISTAN_MUTUAL_FUNDS: MutualFund[] = [
     managementFee: '2.0% p.a.',
     frontendLoad: 'Up to 3.0%',
     rating: '5-Star',
+    profileSource: 'https://www.nbpfunds.com/investment-options/conventional-funds/equity-funds/nafa-stock-fund/',
   },
   {
     id: 'nbp-isfe',

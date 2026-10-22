@@ -1,5 +1,5 @@
 import { StockQuote, IndexQuote, ChartPoint, MarketSummary, NewsArticle, CompanyAnnouncement, FearGreedData } from './types';
-import { parseMarketWatch, parseTradingPanel, parseAnnouncements, parseDawnFeed } from './market-source';
+import { parseMarketWatch, parseTradingPanel, parseAnnouncements, parseNewsFeed } from './market-source';
 const BASE_URL = 'https://dps.psx.com.pk';
 let sessionToken = '';
 let sessionTokenTime = 0;
@@ -250,10 +250,14 @@ export function getPakistanTimeStr(): string {
 export async function fetchKse100Timeseries(isIntraday = true): Promise<ChartPoint[]> { return fetchTimeseries('KSE100', isIntraday); }
 export async function fetchStockHistory(symbol: string, isIntraday = false): Promise<ChartPoint[]> { return fetchTimeseries(symbol, isIntraday); }
 export async function fetchMarketNews(): Promise<NewsArticle[]> {
-  try {
-    const response = await fetch('https://www.dawn.com/feeds/business', {next:{revalidate:300},signal:AbortSignal.timeout(10000)});
-    return response.ok ? parseDawnFeed(await response.text()) : [];
-  } catch { return []; }
+  const feeds = [{url:'https://www.dawn.com/feeds/business',source:'DAWN' as const},{url:'https://tribune.com.pk/feed/business',source:'TRIBUNE' as const}];
+  const results=await Promise.all(feeds.map(async feed=>{
+    try {
+      const response=await fetch(feed.url,{next:{revalidate:300},signal:AbortSignal.timeout(10000)});
+      return response.ok?parseNewsFeed(await response.text(),feed.source):[];
+    }catch{return [];}
+  }));
+  return [...new Map(results.flat().map(a=>[a.link,a])).values()].sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).slice(0,30);
 }
 export async function fetchCompanyAnnouncements(symbol?: string): Promise<CompanyAnnouncement[]> {
   const body = new URLSearchParams({type:'C', count:'50', offset:'0', page:'annc'});

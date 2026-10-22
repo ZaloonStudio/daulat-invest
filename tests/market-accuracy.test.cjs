@@ -23,6 +23,7 @@ test('announcements use actual document links and never manufacture attachment i
 test('publisher RSS supplies real article links and dates with no invented summaries',()=>{
  const xml=fixture('dawn.xml');const [a]=source.parseDawnFeed(xml,Date.parse('2030-01-01'));assert.ok(a);assert.match(a.link,/^https:\/\/www\.dawn.com\/news\/\d+/);assert.equal(a.summary,'');assert.ok(Number.isFinite(Date.parse(a.publishedAt)));
  assert.deepEqual(source.parseDawnFeed(xml.replace('https://www.dawn.com','https://example.com'),Date.parse('2030-01-01')),[]);assert.deepEqual(source.parseDawnFeed(xml,0),[]);
+ const tribune=fixture('tribune.xml');const [b]=source.parseNewsFeed(tribune,'TRIBUNE',Date.parse('2030-01-01'));assert.equal(b.source,'TRIBUNE');assert.match(b.link,/^https:\/\/tribune.com.pk\/story\//);assert.deepEqual(source.parseNewsFeed(tribune,'DAWN',Date.parse('2030-01-01')),[]);
 });
 test('comparisons match actual dates and never invent benchmark returns',()=>{
  const t=Date.parse('2026-10-01')/1000;
@@ -38,6 +39,11 @@ test('monthly simulation buys shares at actual prices, calendar range does not c
 test('mutual fund reporting basis is retained and ambiguous dates do not become fresh NAVs',()=>{
  const html='<table><tr><th>Fund Name</th><th>Validity Date</th><th>NAV</th><th>YTD</th></tr><tr><td colspan="4">Money Market (Annualized Return)</td></tr><tr><td>Example Fund</td><td>Oct 22, 2026</td><td>10</td><td>9.5</td></tr></table>';
  const rows=funds.parseFundReport(html,Date.parse('2026-10-23'));assert.equal(rows[0].returnBasis,'Annualized');assert.equal(rows[0].ytd,9.5);assert.equal(rows[0].month,null);
+});
+test('fund category and Islamic filter cannot contradict each other',()=>{
+ const {PAKISTAN_MUTUAL_FUNDS:catalog}=load('mutualFundsData');
+ for(const f of catalog){if(f.category.startsWith('Islamic'))assert.equal(f.isIslamic,true,f.name);if(f.category.startsWith('Conventional'))assert.equal(f.isIslamic,false,f.name);}
+ const reported=funds.applyFundReport(catalog,[]);assert.ok(reported.every(f=>f.nav===null&&f.benchmark==='See AMC report'&&f.trustee==='See AMC report'));
 });
 test('upstream outages return unavailable data, never stock quotes, charts, news or a sentiment score disguised as live',async()=>{
  const original=global.fetch;global.fetch=async()=>new Response('Unavailable',{status:503});

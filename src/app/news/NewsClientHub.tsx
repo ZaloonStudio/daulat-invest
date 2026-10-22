@@ -50,7 +50,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
             Market news
           </h1>
           <p className="text-sm text-[#A4AEC1] mt-1.5 max-w-2xl">
-            Business headlines from Dawn RSS. Publisher dates shown; checked every five minutes.
+            Business headlines from publisher RSS feeds. Publisher dates shown; checked every five minutes.
           </p>
         </div>
 

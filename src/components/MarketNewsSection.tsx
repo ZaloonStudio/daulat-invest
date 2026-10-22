@@ -113,7 +113,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
               </div>
 
               <div className="pt-4 mt-4 border-t border-[#28354A]/60 flex items-center justify-between">
-                <span className="text-[11px] text-[#7F8DA4]">Dawn business RSS</span>
+                <span className="text-[11px] text-[#7F8DA4]">Publisher business RSS</span>
                 <a
                   href={featured.link}
                   target="_blank"

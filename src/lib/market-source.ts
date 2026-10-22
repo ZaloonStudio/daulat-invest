@@ -74,13 +74,16 @@ export function parseAnnouncements(html: string): CompanyAnnouncement[] {
   });
 }
 
-export function parseDawnFeed(xml: string, now = Date.now()): NewsArticle[] {
+export function parseNewsFeed(xml: string, source: 'DAWN'|'TRIBUNE', now = Date.now()): NewsArticle[] {
   return [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].flatMap(item => {
     const tag = (name: string) => plainText(item[1].match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>','i'))?.[1] ?? '');
     const title = tag('title'), link = tag('link'), date = Date.parse(tag('pubDate'));
-    try { const u = new URL(link); if (u.protocol !== 'https:' || !['www.dawn.com','dawn.com'].includes(u.hostname) || !/^\/news\/\d+/.test(u.pathname)) return []; } catch { return []; }
+    const hosts=source==='DAWN'?['www.dawn.com','dawn.com']:['tribune.com.pk','www.tribune.com.pk'];
+    const route=source==='DAWN'?/^\/news\/\d+/:/^\/story\/\d+/;
+    try { const u = new URL(link); if (u.protocol !== 'https:' || !hosts.includes(u.hostname) || !route.test(u.pathname)) return []; } catch { return []; }
     if (!title || !Number.isFinite(date) || date > now + 300000) return [];
     // Headline and publisher link only. Do not republish article bodies or invent summaries.
-    return [{ id: link, title, link, summary: '', source: 'DAWN', publishedAt: new Date(date).toISOString(), category: 'Business' }];
+    return [{ id: link, title, link, summary: '', source, publishedAt: new Date(date).toISOString(), category: 'Business' }];
   }).sort((a,b) => Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).slice(0, 30);
 }
+export function parseDawnFeed(xml: string, now = Date.now()) { return parseNewsFeed(xml,'DAWN',now); }
