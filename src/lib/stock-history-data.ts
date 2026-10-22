@@ -12,7 +12,13 @@ export function periodPoints(points: PriceObservation[], period: string): PriceO
   const months: Record<string,number> = {'1M':1,'6M':6,'1Y':12,'3Y':36,'5Y':60};
   const cutoff = new Date(points[points.length-1].time*1000);
   if (period === '1W') cutoff.setUTCDate(cutoff.getUTCDate()-7);
-  else cutoff.setUTCMonth(cutoff.getUTCMonth()-(months[period] ?? 1));
+  else {
+    const day=cutoff.getUTCDate();
+    cutoff.setUTCDate(1);
+    cutoff.setUTCMonth(cutoff.getUTCMonth()-(months[period] ?? 1));
+    const lastDay=new Date(Date.UTC(cutoff.getUTCFullYear(),cutoff.getUTCMonth()+1,0)).getUTCDate();
+    cutoff.setUTCDate(Math.min(day,lastDay));
+  }
   return points.filter(p=>p.time>=cutoff.getTime()/1000);
 }
 export function comparePrices(stock: PriceObservation[], index: PriceObservation[]) {

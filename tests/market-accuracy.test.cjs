@@ -33,6 +33,7 @@ test('comparisons match actual dates and never invent benchmark returns',()=>{
 test('monthly simulation buys shares at actual prices, calendar range does not count trading rows as days',()=>{
  const points=[{time:Date.parse('2026-08-01')/1000,value:100},{time:Date.parse('2026-09-01')/1000,value:200},{time:Date.parse('2026-09-20')/1000,value:150},{time:Date.parse('2026-10-01')/1000,value:100}];
  const result=history.simulateMonthlyPurchases(points,1000);assert.equal(result[3].invested,3000);assert.equal(result[3].value,2500);assert.equal(history.periodPoints(points,'1W').length,1);assert.equal(history.periodPoints(points,'1M').length,3);assert.equal(history.priceObservations([{time:1,value:NaN}]).length,0);
+ const monthEnd=['2026-02-27','2026-02-28','2026-03-31'].map(d=>({time:Date.parse(d)/1000,value:100}));assert.equal(history.periodPoints(monthEnd,'1M').length,2);
 });
 test('mutual fund reporting basis is retained and ambiguous dates do not become fresh NAVs',()=>{
  const html='<table><tr><th>Fund Name</th><th>Validity Date</th><th>NAV</th><th>YTD</th></tr><tr><td colspan="4">Money Market (Annualized Return)</td></tr><tr><td>Example Fund</td><td>Oct 22, 2026</td><td>10</td><td>9.5</td></tr></table>';
