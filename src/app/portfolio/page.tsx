@@ -60,6 +60,7 @@ export default function PortfolioPage() {
   const uid = user ? dataOwnerUid : null;
   const holdings = uid && dataUid === uid ? storedHoldings : [];
   const trades = uid && dataUid === uid ? storedTrades : [];
+  const awaitingPortfolio = loading || Boolean(user && (isSyncing || dataUid !== uid));
   const [quotes, setQuotes] = useState<Record<string, StockQuote>>({});
   const [activeTab, setActiveTab] = useState<'holdings' | 'trades'>('holdings');
 
@@ -205,7 +206,6 @@ export default function PortfolioPage() {
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {syncError && user && <div className="mb-6 text-sm text-[#F28B82]" role="alert">{syncError} <button onClick={() => setSyncAttempt(attempt => attempt + 1)} className="ml-2 text-[#B69249] underline">Retry sync</button></div>}
-        {user && isSyncing && <p role="status" className="mb-6 text-sm text-[#A4AEC1]">Loading your app portfolio…</p>}
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
@@ -241,6 +241,7 @@ export default function PortfolioPage() {
                   <span>Sign Out</span>
                 </button>
                 <button
+                  disabled={awaitingPortfolio || Boolean(syncError)}
                   onClick={() => setShowAddModal(true)}
                   className="flex items-center space-x-1.5 px-4 py-2 bg-[#B69249] hover:bg-[#E5A200] text-black rounded-xl text-xs font-semibold transition-all shadow-md"
                 >
@@ -295,6 +296,14 @@ export default function PortfolioPage() {
           </div>
         )}
 
+        {awaitingPortfolio ? (
+          <section role="status" aria-live="polite" aria-busy="true" className="rounded-xl border border-[#28354A] bg-[#111A2B] p-8 space-y-5">
+            <p className="text-sm text-[#A4AEC1]">Loading your app portfolio…</p>
+            <div aria-hidden="true" className="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">{[0,1,2,3].map(item => <div key={item} className="h-24 rounded-xl bg-[#1C2940]" />)}</div>
+          </section>
+        ) : syncError && user ? (
+          <p className="text-sm text-[#A4AEC1]">Portfolio data is unavailable. Retry sync above to load your holdings.</p>
+        ) : <>
         {/* Portfolio Metrics Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5">
@@ -577,6 +586,7 @@ export default function PortfolioPage() {
             )}
           </div>
         )}
+        </>}
       </main>
 
       {/* Add Holding Modal */}
