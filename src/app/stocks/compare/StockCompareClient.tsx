@@ -164,7 +164,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
         </div>
       </div>
 
-      <p className="text-xs text-[#A4AEC1]">Annual yield = reported full-year cash dividend divided by displayed PSX price. Source: SCSTrade company snapshots; FY shown per stock. {aligned.mismatchedYears&&'Annual yields are withheld because financial years differ.'}{dividends.state==='error'&&<button onClick={()=>setDividendRetry(n=>n+1)} className="text-[#B69249] ml-2 underline">Retry annual dividends</button>}</p>
+      <p className="text-xs text-[#A4AEC1]">Annual yield = reported full-year cash dividend divided by displayed PSX price. Source: issuer filings / SCSTrade; FY shown per stock. Price changes exclude payouts. {aligned.mismatchedYears&&'Annual yields are withheld because financial years differ.'}{dividends.state==='error'&&<button onClick={()=>setDividendRetry(n=>n+1)} className="text-[#B69249] ml-2 underline">Retry annual dividends</button>}</p>
       {/* Main Comparison Matrix Table */}
       <div className="bg-[#111A2B] border border-[#28354A] rounded-2xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
@@ -246,7 +246,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
 
               {/* 1-Year Performance */}
               <tr className="hover:bg-[#1C2940]/40 transition-colors">
-                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">1-Year Price Change</td>
+                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">1-Year Price Change · excluding payouts</td>
                 {selectedStocks.map((s) => {
                   const yr = s.changeYear;
                   if(yr===undefined||!Number.isFinite(yr))return <td key={s.symbol} className="py-3.5 px-6 text-[#A4AEC1]">—</td>;
@@ -281,7 +281,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
               </tr>
               <tr className="hover:bg-[#1C2940]/40 transition-colors">
                 <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Annual dividend per share</td>
-                {selectedStocks.map((s,i)=><td key={s.symbol} className="py-3.5 px-6 font-mono">{annualLoading?'Loading…':annual[i]?.cashPerShare!=null?'Rs '+annual[i]!.cashPerShare!.toFixed(2):'—'}<span className="block text-[10px] text-[#A4AEC1] font-sans mt-1">{annual[i]?.financialYear?'FY '+annual[i]!.financialYear:''}</span></td>)}
+                {selectedStocks.map((s,i)=><td key={s.symbol} className="py-3.5 px-6 font-mono">{annualLoading?'Loading…':annual[i]?.cashPerShare!=null?'Rs '+annual[i]!.cashPerShare!.toFixed(2):'—'}<span className="block text-[10px] text-[#A4AEC1] font-sans mt-1">{annual[i]?.financialYear?'FY '+annual[i]!.financialYear:''}</span>{annual[i]?.note&&<span className="block text-[10px] text-[#A4AEC1] mt-1">{annual[i]!.note}</span>}</td>)}
               </tr>
               {/* Market Capitalization */}
               <tr className="hover:bg-[#1C2940]/40 transition-colors">

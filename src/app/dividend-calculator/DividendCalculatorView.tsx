@@ -72,7 +72,7 @@ export default function DividendCalculatorView({presets=[]}:{presets:{symbol:str
         {/* Presets */}
         <div>
           <label className="text-xs font-semibold text-[#A4AEC1] uppercase tracking-wider block mb-2">
-            Reported annual dividend presets · SCSTrade
+            Reported annual dividend presets · issuer filings / SCSTrade
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
             {PRESET_DIVIDEND_STOCKS.map((s) => (

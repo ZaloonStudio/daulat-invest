@@ -1,6 +1,7 @@
+import {applyAnnualQuality} from './verified-annual';
 import {plainText} from './market-source';
-export type ResearchMetric={id:string;label:string;value:number|null;unit:'PKR'|'B PKR'|'%'|'x';period:string|null};
-export type SupplementalFundamentals={source:string;retrievedAt:string;basis:'Consolidated'|'Unconsolidated'|'Basis not specified';snapshotPrice:number|null;groups:{title:string;metrics:ResearchMetric[]}[]};
+export type ResearchMetric={id:string;label:string;value:number|null;unit:'PKR'|'B PKR'|'%'|'x';period:string|null;source?:string;note?:string;basis?:string};
+export type SupplementalFundamentals={source:string;retrievedAt:string;basis:'Consolidated'|'Unconsolidated'|'Basis not specified';snapshotPrice:number|null;groups:{title:string;metrics:ResearchMetric[]}[];latestAnnualYear?:number;warnings?:string[]};
 export function parseSupplementalFundamentals(html:string,symbol:string,retrievedAt:string):SupplementalFundamentals {
  const spans=new Map([...html.matchAll(/<span\b[^>]*\bid=["']ContentPlaceHolder1_lbl_([a-z0-9]+)["'][^>]*>([\s\S]*?)<\/span>/gi)].map(m=>[m[1].toLowerCase(),plainText(m[2])]));
  const identity=spans.get('companyname')??'';
@@ -25,8 +26,7 @@ export function parseSupplementalFundamentals(html:string,symbol:string,retrieve
 }
 export async function fetchSupplementalFundamentals(symbol:string):Promise<SupplementalFundamentals> {
  const source='https://scstrade.com/stockscreening/SS_CompanySnapShot.aspx?symbol='+encodeURIComponent(symbol);
- try {
-  const r=await fetch(source,{headers:{'User-Agent':'Mozilla/5.0','Accept':'text/html'},next:{revalidate:3600},signal:AbortSignal.timeout(8000)});
-  return parseSupplementalFundamentals(r.ok?await r.text():'',symbol,new Date().toISOString());
- }catch{return parseSupplementalFundamentals('',symbol,new Date().toISOString());}
+ const get=async(url:string)=>{try{const r=await fetch(url,{headers:{'User-Agent':'Mozilla/5.0','Accept':'text/html'},next:{revalidate:3600},signal:AbortSignal.timeout(8000)});return r.ok?await r.text():'';}catch{return '';}};
+ const [html,psxHtml]=await Promise.all([get(source),get('https://dps.psx.com.pk/company/'+encodeURIComponent(symbol))]);
+ return applyAnnualQuality(parseSupplementalFundamentals(html,symbol,new Date().toISOString()),symbol,psxHtml);
 }

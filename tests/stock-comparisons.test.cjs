@@ -21,7 +21,7 @@ test('comparison values preserve each reporting period and use PSX price for pri
  const pb=groups[0].rows.find(r=>r.label==='Price / book (calculated)'),bv=f.groups.flatMap(g=>g.metrics).find(m=>m.id==='bv');
  assert.equal(pb.values[0].value,100/bv.value);assert.equal(pb.values[0].period,bv.period);assert.equal(pb.values[1].value,null);
  assert.equal(groups[0].rows.find(r=>r.label==='Annual dividend yield').values[0].value,0);
- assert.equal(groups[0].rows.find(r=>r.label==='1-year price change').values[0].value,null);
+ assert.equal(groups[0].rows.find(r=>r.label==='1-year price change · excluding payouts').values[0].value,null);
  assert.equal(groups[1].rows.find(r=>r.label==='Return on equity (ROE)').values[0].value,36.89);
  assert.equal(data.formatComparisonValue(null,'%'),'—');assert.equal(data.formatComparisonValue(0,'%'),'0.00%');assert.equal(data.formatComparisonValue(-7.2,'%'),'-7.20%');
  assert.equal(data.formatComparisonValue(125e9,'PKR'),'Rs 125B');
