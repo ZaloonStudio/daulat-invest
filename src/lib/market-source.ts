@@ -1,3 +1,4 @@
+import {NEWS_MAX_AGE_MS,mergeNews} from './news-quality';
 import type { StockQuote, IndexQuote, CompanyAnnouncement, NewsArticle } from './types';
 
 export const plainText = (s: string) => s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').replace(/<[^>]*>/g, ' ').replace(/&amp;/g, '&').replace(/&nbsp;|&#160;/g, ' ').replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/\s+/g, ' ').trim();
@@ -75,13 +76,15 @@ export function parseAnnouncements(html: string): CompanyAnnouncement[] {
 }
 
 export function parseNewsFeed(xml: string, source: 'DAWN'|'TRIBUNE', now = Date.now()): NewsArticle[] {
-  return [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].flatMap(item => {
+  return mergeNews([...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].flatMap(item => {
     const tag = (name: string) => plainText(item[1].match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>','i'))?.[1] ?? '');
-    const title = tag('title'), link = tag('link'), date = Date.parse(tag('pubDate'));
+    const title = tag('title'), rawLink = tag('link'), rawDate=tag('pubDate');
+    const date = /(?:GMT|UTC|[+-]\d{4}|Z)(?:\s*\([^)]*\))?$/i.test(rawDate)?Date.parse(rawDate):NaN;
+    let link:string;
     const hosts=source==='DAWN'?['www.dawn.com','dawn.com']:['tribune.com.pk','www.tribune.com.pk'];
-    const route=source==='DAWN'?/^\/news\/\d+/:/^\/story\/\d+/;
-    try { const u = new URL(link); if (u.protocol !== 'https:' || !hosts.includes(u.hostname) || !route.test(u.pathname)) return []; } catch { return []; }
-    if (!title || !Number.isFinite(date) || date > now + 300000) return [];
+    const route=source==='DAWN'?/^\/news\/\d+(?:\/|$)/:/^\/story\/\d+(?:\/|$)/;
+    try { const u = new URL(rawLink); if (u.protocol !== 'https:' || u.username || u.password || u.port || !hosts.includes(u.hostname) || !route.test(u.pathname)) return []; link='https://'+(source==='DAWN'?'www.dawn.com':'tribune.com.pk')+u.pathname.replace(/\/$/,''); } catch { return []; }
+    if (!title || !Number.isFinite(date) || date > now + 300000 || now-date>NEWS_MAX_AGE_MS) return [];
     const imageTag=item[1].match(/<media:(?:content|thumbnail)\b[^>]*\burl=["']([^"']+)["'][^>]*>/i)?.[1]
       ?? item[1].match(/<image\b[^>]*>[\s\S]*?<img\b[^>]*\bsrc=["']([^"']+)["']/i)?.[1];
     let imageUrl:string|undefined;
@@ -92,6 +95,6 @@ export function parseNewsFeed(xml: string, source: 'DAWN'|'TRIBUNE', now = Date.
     }catch{}
     // Headline and publisher link only. Do not republish article bodies or invent summaries.
     return [{ id: link, title, link, summary: '', source, publishedAt: new Date(date).toISOString(), category: 'Business', imageUrl }];
-  }).sort((a,b) => Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).slice(0, 30);
+  }));
 }
 export function parseDawnFeed(xml: string, now = Date.now()) { return parseNewsFeed(xml,'DAWN',now); }

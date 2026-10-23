@@ -1,0 +1,104 @@
+{
+  "checkedAt": "2026-10-23T08:23:29.419Z",
+  "statuses": [
+    {
+      "source": "DAWN",
+      "url": "https://www.dawn.com/business",
+      "status": "available",
+      "count": 30
+    },
+    {
+      "source": "TRIBUNE",
+      "url": "https://tribune.com.pk/business",
+      "status": "available",
+      "count": 16
+    }
+  ],
+  "displayed": 46,
+  "oldest": "2026-10-19T16:41:41.000Z",
+  "newest": "2026-10-23T02:43:30.000Z",
+  "olderHeadlines": 2,
+  "sample": [
+    {
+      "title": "State Bank of Pakistan's reserves rise by $19m",
+      "publisher": "DAWN",
+      "date": "2026-10-23T02:43:30.000Z",
+      "url": "https://www.dawn.com/news/2039180/state-bank-of-pakistans-reserves-rise-by-19m",
+      "image": true
+    },
+    {
+      "title": "Tech companies eye US market",
+      "publisher": "DAWN",
+      "date": "2026-10-23T02:39:17.000Z",
+      "url": "https://www.dawn.com/news/2039182/tech-companies-eye-us-market",
+      "image": true
+    },
+    {
+      "title": "Govt loans turn out to be stimulant for real estate",
+      "publisher": "DAWN",
+      "date": "2026-10-23T02:33:01.000Z",
+      "url": "https://www.dawn.com/news/2039183/govt-loans-turn-out-to-be-stimulant-for-real-estate",
+      "image": true
+    },
+    {
+      "title": "Middle East tensions dent investor confidence",
+      "publisher": "DAWN",
+      "date": "2026-10-23T02:05:57.000Z",
+      "url": "https://www.dawn.com/news/2039178/middle-east-tensions-dent-investor-confidence",
+      "image": true
+    },
+    {
+      "title": "PTCL Group posts Rs4.7bn profit",
+      "publisher": "DAWN",
+      "date": "2026-10-23T02:05:57.000Z",
+      "url": "https://www.dawn.com/news/2039179/ptcl-group-posts-rs47bn-profit",
+      "image": true
+    }
+  ],
+  "linkChecks": [
+    {
+      "url": "https://www.dawn.com/news/2039180/state-bank-of-pakistans-reserves-rise-by-19m",
+      "status": 403
+    },
+    {
+      "url": "https://www.dawn.com/news/2039182/tech-companies-eye-us-market",
+      "status": 403
+    },
+    {
+      "url": "https://www.dawn.com/news/2039183/govt-loans-turn-out-to-be-stimulant-for-real-estate",
+      "status": 403
+    },
+    {
+      "url": "https://www.dawn.com/news/2039178/middle-east-tensions-dent-investor-confidence",
+      "status": 403
+    },
+    {
+      "url": "https://www.dawn.com/news/2039179/ptcl-group-posts-rs47bn-profit",
+      "status": 403
+    }
+  ],
+  "companyMatches": [
+    {
+      "symbol": "PTC",
+      "headlines": [
+        "PTCL Group posts Rs4.7bn profit"
+      ]
+    },
+    {
+      "symbol": "PRL",
+      "headlines": []
+    },
+    {
+      "symbol": "MEBL",
+      "headlines": []
+    },
+    {
+      "symbol": "LUCK",
+      "headlines": []
+    },
+    {
+      "symbol": "HUBC",
+      "headlines": []
+    }
+  ]
+}

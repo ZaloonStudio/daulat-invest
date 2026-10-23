@@ -1,3 +1,5 @@
+import {fetchNewsSnapshot} from '@/lib/news-feed';
+import {companyNews} from '@/lib/news-quality';
 import { pageMetadata, SITE_URL, jsonLd as serializeJsonLd } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
@@ -41,12 +43,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function StockDetailPage({ params }: Props) {
   const symbol = params.symbol.toUpperCase();
   if (params.symbol !== symbol) permanentRedirect('/stocks/' + encodeURIComponent(symbol));
-  const [quotes, history, kseHistory, announcements, research] = await Promise.all([
+  const [quotes, history, kseHistory, announcements, research, news] = await Promise.all([
     fetchMarketWatch(),
     fetchStockHistory(symbol),
     fetchTimeseries('KSE100', false),
     fetchCompanyAnnouncements(symbol),
     fetchCompanyResearch(symbol),
+    fetchNewsSnapshot(),
   ]);
 
   const quote = quotes.find((q) => q.symbol.toUpperCase() === symbol);
@@ -137,7 +140,7 @@ export default async function StockDetailPage({ params }: Props) {
         </div>
 
         <p className="text-xs text-[#A4AEC1]">PSX DPS snapshot · {quote.updatedAt ? new Date(quote.updatedAt).toLocaleString('en-GB', {timeZone:'Asia/Karachi'}) + ' PKT' : 'Source timestamp unavailable'}</p>
-        <StockDetailTabs stock={quote} peers={relatedStocks} announcements={announcements.filter(a => a.symbol.toUpperCase() === symbol)} fundamentals={<CompanyFundamentals stock={quote} data={research}/>} technicals={<CompanyTechnicals history={history}/>} profile={<CompanyProfile stock={quote} data={research}/>} overview={
+        <StockDetailTabs companyNews={companyNews(news.articles,quote)} newsAvailable={news.available} stock={quote} peers={relatedStocks} announcements={announcements.filter(a => a.symbol.toUpperCase() === symbol)} fundamentals={<CompanyFundamentals stock={quote} data={research}/>} technicals={<CompanyTechnicals history={history}/>} profile={<CompanyProfile stock={quote} data={research}/>} overview={
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8">
             <StockHistoryChart

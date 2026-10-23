@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useState, type ReactNode, type KeyboardEvent } from 'react';
 import Link from 'next/link';
+import CompanyNews from './CompanyNews';
 import StockResearchConsole from './StockResearchConsole';
 import CompanyAnnouncementsSection from './CompanyAnnouncementsSection';
-import { StockQuote, CompanyAnnouncement } from '@/lib/types';
+import { StockQuote, CompanyAnnouncement, NewsArticle } from '@/lib/types';
 import { STOCK_TABS, StockTabId, stockTabFromHash } from '@/lib/stock-tabs';
 
-export default function StockDetailTabs({ stock, peers, announcements, overview, fundamentals, technicals, profile }: { stock: StockQuote; peers: StockQuote[]; announcements: CompanyAnnouncement[]; overview: ReactNode; fundamentals:ReactNode; technicals:ReactNode; profile:ReactNode }) {
+export default function StockDetailTabs({ companyNews,newsAvailable,stock, peers, announcements, overview, fundamentals, technicals, profile }: { companyNews:NewsArticle[];newsAvailable:boolean;stock: StockQuote; peers: StockQuote[]; announcements: CompanyAnnouncement[]; overview: ReactNode; fundamentals:ReactNode; technicals:ReactNode; profile:ReactNode }) {
   const [active, setActive] = useState<StockTabId>('overview-section');
   useEffect(() => {
     const sync = () => setActive(stockTabFromHash(window.location.hash));
@@ -38,6 +39,7 @@ export default function StockDetailTabs({ stock, peers, announcements, overview,
       {id==='company-info-section'&&profile}
       {id==='peers-section'&&<StockResearchConsole stock={stock} peers={peers}/>}
       {id==='announcements-section'&&<div className="space-y-5">
+        <CompanyNews articles={companyNews} available={newsAvailable}/>
         {announcements.length?<CompanyAnnouncementsSection announcements={announcements}/>:<p className="text-sm text-[#A4AEC1]">No company announcements returned by the current feed.</p>}
         <a href={source+'#announcements'} target="_blank" rel="noopener noreferrer" className="text-xs text-[#B69249]">Browse official company filings ↗</a>
         <Link href="/announcements" className="block text-xs text-[#A4AEC1]">All company announcements</Link>

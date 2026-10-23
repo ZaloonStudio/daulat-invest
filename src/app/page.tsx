@@ -1,9 +1,9 @@
+import {fetchNewsSnapshot} from '@/lib/news-feed';
 import { pageMetadata } from '@/lib/seo';
 import React from 'react';
 import { Metadata } from 'next';
 import {
   getMarketSummary,
-  fetchMarketNews,
   fetchCompanyAnnouncements,
 } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
@@ -18,7 +18,7 @@ export const metadata: Metadata = pageMetadata("/", "PSX Live Market & KSE 100 I
 export default async function HomePage() {
   const [summary, news, announcements, commodityPrices] = await Promise.all([
     getMarketSummary(),
-    fetchMarketNews(),
+    fetchNewsSnapshot(),
     fetchCompanyAnnouncements(),
     getPriceSnapshot(),
   ]);
@@ -34,7 +34,8 @@ export default async function HomePage() {
         <HomeClientContainer
           commodityPrices={commodityPrices}
           summary={summary}
-          news={news}
+          news={news.articles}
+          newsStatuses={news.statuses}
           announcements={announcements}
           isOpen={isOpen}
           marketTime={marketTime}

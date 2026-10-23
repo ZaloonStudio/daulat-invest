@@ -1,4 +1,5 @@
 'use client';
+import type {NewsFeedStatus} from '@/lib/news-feed';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -23,6 +24,7 @@ interface HomeClientContainerProps {
   commodityPrices: PriceSnapshot;
   summary: MarketSummary;
   news: NewsArticle[];
+  newsStatuses:NewsFeedStatus[];
   announcements: CompanyAnnouncement[];
   isOpen: boolean;
   marketTime: string;
@@ -31,7 +33,7 @@ interface HomeClientContainerProps {
 export default function HomeClientContainer({
   commodityPrices,
   summary,
-  news,
+  news,newsStatuses,
   announcements,
   isOpen,
   marketTime,
@@ -67,7 +69,7 @@ export default function HomeClientContainer({
 
       {/* 6. Live Business News Center */}
       <section id="news-section">
-        <MarketNewsSection articles={news} />
+        <MarketNewsSection articles={news} statuses={newsStatuses}/>
       </section>
 
       {/* 7. Corporate Announcements & Filings */}

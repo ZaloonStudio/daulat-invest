@@ -1,17 +1,21 @@
 'use client';
 
+import NewsFeedStatusBar from '@/components/NewsFeedStatus';
+import type {NewsFeedStatus} from '@/lib/news-feed';
+import {newsDateLabel,newsIsOlder} from '@/lib/news-quality';
 import React, { useState, useMemo } from 'react';
 import { NewsArticle } from '@/lib/types';
 import { Search, ExternalLink, Calendar, Globe, Newspaper } from 'lucide-react';
 
 interface NewsClientHubProps {
   initialArticles: NewsArticle[];
+  statuses:NewsFeedStatus[];
 }
 
 const FALLBACK_NEWS_IMAGE =
   '/news-placeholder.svg';
 
-export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
+export default function NewsClientHub({ initialArticles,statuses }: NewsClientHubProps) {
   const [search, setSearch] = useState('');
   const [selectedSource, setSelectedSource] = useState<string>('All');
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
@@ -28,8 +32,8 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
     return initialArticles.filter((article) => {
       const matchSearch =
         search.trim() === '' ||
-        article.title.toLowerCase().includes(search.toLowerCase()) ||
-        article.summary.toLowerCase().includes(search.toLowerCase());
+        article.title.toLowerCase().includes(search.trim().toLowerCase()) ||
+        article.summary.toLowerCase().includes(search.trim().toLowerCase());
 
       const matchSource = selectedSource === 'All' || article.source === selectedSource;
 
@@ -50,7 +54,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
             Market news
           </h1>
           <p className="text-sm text-[#A4AEC1] mt-1.5 max-w-2xl">
-            Business headlines from publisher RSS feeds. Publisher dates shown; checked every five minutes.
+            Publisher headlines from the last 14 days. Timestamps shown in Pakistan time.
           </p>
         </div>
 
@@ -67,6 +71,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
         </div>
       </div>
 
+      <NewsFeedStatusBar statuses={statuses}/>
       {/* Filter Tabs: Source & Category */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Source Pills */}
@@ -112,7 +117,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
                 </span>
                 <span className="text-xs text-[#A4AEC1] flex items-center space-x-1">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>{new Date(filteredArticles[0].publishedAt).toLocaleDateString('en-GB')}</span>
+                  <span>{newsDateLabel(filteredArticles[0].publishedAt)}{newsIsOlder(filteredArticles[0].publishedAt)?' · Older headline':''}</span>
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-semibold text-[#EFF3FA] group-hover:text-[#B69249] transition-colors leading-snug">
@@ -179,7 +184,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
 
               <div className="text-[11px] text-[#A4AEC1] flex items-center space-x-1 mb-2">
                 <Calendar className="w-3 h-3" />
-                <span>{new Date(article.publishedAt).toLocaleDateString('en-GB')}</span>
+                <span>{newsDateLabel(article.publishedAt)}{newsIsOlder(article.publishedAt)?' · Older headline':''}</span>
               </div>
 
               <h3 className="text-sm font-semibold text-[#EFF3FA] group-hover:text-[#B69249] transition-colors leading-snug line-clamp-2 mb-2">
@@ -207,9 +212,9 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
           <Newspaper className="w-10 h-10 text-[#7F8DA4] mx-auto mb-3" />
           <h3 className="text-base font-semibold text-[#EFF3FA]">{initialArticles.length?'No articles match your search':'Publisher news feed unavailable'}</h3>
           <p className="text-xs text-[#A4AEC1] mt-1">
-            Try adjusting your search terms or selecting &quot;All&quot; sources.
+            {initialArticles.length?'Try adjusting your search terms or selecting All sources.':'Open a publisher link above for its latest business coverage.'}
           </p>
-          <button
+          {initialArticles.length>0&&<button
             onClick={() => {
               setSearch('');
               setSelectedSource('All');
@@ -217,7 +222,7 @@ export default function NewsClientHub({ initialArticles }: NewsClientHubProps) {
             className="mt-4 px-4 py-2 bg-[#1C2940] hover:bg-[#28354A] text-[#EFF3FA] rounded-xl text-xs font-semibold"
           >
             Clear Filters
-          </button>
+          </button>}
         </div>
       )}
     </div>

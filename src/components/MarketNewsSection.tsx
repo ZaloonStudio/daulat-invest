@@ -1,4 +1,7 @@
 'use client';
+import {newsDateLabel,newsIsOlder} from '@/lib/news-quality';
+import type {NewsFeedStatus} from '@/lib/news-feed';
+import NewsFeedStatusBar from './NewsFeedStatus';
 
 import React from 'react';
 import Link from 'next/link';
@@ -7,10 +10,11 @@ import { Newspaper, ExternalLink, ArrowRight } from 'lucide-react';
 
 interface MarketNewsSectionProps {
   articles: NewsArticle[];
+  statuses:NewsFeedStatus[];
 }
 
-export default function MarketNewsSection({ articles }: MarketNewsSectionProps) {
-  if (!articles || articles.length === 0) return <section role="status" className="rounded-xl border border-[#28354A] p-6 text-sm text-[#A4AEC1]">News feed unavailable. <a href="https://www.dawn.com/business" className="text-[#B69249]" target="_blank" rel="noopener noreferrer">Dawn business ↗</a></section>;
+export default function MarketNewsSection({ articles,statuses }: MarketNewsSectionProps) {
+  if (!articles || articles.length === 0) return <section role="status" className="rounded-xl border border-[#28354A] p-6 text-sm text-[#A4AEC1]"><NewsFeedStatusBar statuses={statuses}/>News feed unavailable. <a href="https://www.dawn.com/business" className="text-[#B69249]" target="_blank" rel="noopener noreferrer">Dawn business ↗</a></section>;
 
   const featured = articles[0];
   const sideArticles = articles.slice(1, 5);
@@ -55,6 +59,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
         </Link>
       </div>
 
+      <NewsFeedStatusBar statuses={statuses}/>
       {/* 2-Column Grid: Featured on Left, List on Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Featured Left Card (5 cols) */}
@@ -93,7 +98,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   {featured.source}
                 </span>
                 <span className="text-[10px] font-semibold text-[#EFF3FA] bg-black/60 backdrop-blur-md px-2 py-0.5 rounded">
-                  {new Date(featured.publishedAt).toLocaleDateString('en-GB')}
+                  {newsDateLabel(featured.publishedAt)}{newsIsOlder(featured.publishedAt)?' · Older headline':''}
                 </span>
               </div>
             </a>
@@ -171,7 +176,7 @@ export default function MarketNewsSection({ articles }: MarketNewsSectionProps) 
                   >
                     {article.source}
                   </span>
-                  <span className="text-[11px] text-[#7F8DA4]">{new Date(article.publishedAt).toLocaleDateString('en-GB')}</span>
+                  <span className="text-[11px] text-[#7F8DA4]">{newsDateLabel(article.publishedAt)}{newsIsOlder(article.publishedAt)?' · Older headline':''}</span>
                 </div>
 
                 <h3 className="font-semibold text-xs sm:text-sm text-[#EFF3FA] group-hover:text-[#B69249] transition-colors line-clamp-2 leading-tight">
