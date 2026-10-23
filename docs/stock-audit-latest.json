@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-23T07:25:41.687Z",
+  "checkedAt": "2026-10-23T07:29:10.525Z",
   "scope": "Seven-stock source and calculation sample; not a certification of every issuer report",
   "results": [
     {
@@ -30,6 +30,8 @@
       "annualPE": 3.8439121756487027,
       "olderReport": false,
       "marketCapConsistent": true,
+      "sourcePB": 1.06,
+      "calculatedPB": 1.0691761048190096,
       "supplementalBasis": "Basis not specified",
       "sourceSnapshotPrice": 96.29,
       "bookValue": {
@@ -70,6 +72,8 @@
       "annualPE": 10.85991118288252,
       "olderReport": false,
       "marketCapConsistent": true,
+      "sourcePB": 3.4,
+      "calculatedPB": 3.355788423153693,
       "supplementalBasis": "Basis not specified",
       "sourceSnapshotPrice": 538,
       "bookValue": {
@@ -110,6 +114,8 @@
       "annualPE": 12.23531259817782,
       "olderReport": false,
       "marketCapConsistent": true,
+      "sourcePB": 1.22,
+      "calculatedPB": 1.2039384196859155,
       "supplementalBasis": "Consolidated",
       "sourceSnapshotPrice": 389.45,
       "bookValue": {
@@ -150,6 +156,8 @@
       "annualPE": 9.939024390243903,
       "olderReport": false,
       "marketCapConsistent": true,
+      "sourcePB": 0.96,
+      "calculatedPB": 0.9424333836098541,
       "supplementalBasis": "Consolidated",
       "sourceSnapshotPrice": 187.45,
       "bookValue": {
@@ -190,6 +198,8 @@
       "annualPE": 37.13333333333334,
       "olderReport": true,
       "marketCapConsistent": true,
+      "sourcePB": 1.34,
+      "calculatedPB": 1.3261904761904761,
       "supplementalBasis": "Basis not specified",
       "sourceSnapshotPrice": 5.57,
       "bookValue": {
@@ -230,6 +240,8 @@
       "annualPE": null,
       "olderReport": false,
       "marketCapConsistent": true,
+      "sourcePB": 0.48,
+      "calculatedPB": 0.47666459240821407,
       "supplementalBasis": "Basis not specified",
       "sourceSnapshotPrice": 7.66,
       "bookValue": {
@@ -270,6 +282,8 @@
       "annualPE": null,
       "olderReport": false,
       "marketCapConsistent": true,
+      "sourcePB": 1.11,
+      "calculatedPB": 1.1012702893436839,
       "supplementalBasis": "Basis not specified",
       "sourceSnapshotPrice": 31.21,
       "bookValue": {

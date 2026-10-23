@@ -58,3 +58,9 @@ test('annual valuation rejects loss or zero EPS; YoY growth needs consecutive re
  for(const eps of [-1,0,null]){const loss=structuredClone(p);loss.annual.rows.find(r=>r.label==='EPS').values[0]=eps;assert.equal(researchSummary(loss,95.12).annualPE,null);}
  assert.equal(researchSummary(p,NaN).annualPE,null);
 });
+
+test('price-to-book uses the PSX quote and reported book value, not a stale provider multiple',()=>{
+ const {priceToBook}=load('research-summary');assert.ok(Math.abs(priceToBook(389.45,323.48)-1.203938419686)<1e-10);
+ for(const book of [null,undefined,0,-10,NaN,Infinity])assert.equal(priceToBook(389.45,book),null);
+ assert.equal(priceToBook(0,323.48),null);
+});

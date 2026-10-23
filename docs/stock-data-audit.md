@@ -6,7 +6,7 @@ Sample: PRL (refinery), MEBL (bank), LUCK (cement), HUBC and KEL (power), UNITY 
 
 - The official company pages identify P/E as TTM, based on unconsolidated financials. Keep that distinct from price divided by the latest annual EPS. PRL's TTM and annual P/E differ legitimately.
 - SCSTrade explicitly identifies LUCK and HUBC as consolidated. Preserve that basis beside the supplemental ratios and overview book value, rather than implying they share the PSX unconsolidated statement basis. If the source gives no basis, say so.
-- Supplemental price-sensitive ratios can use a different price snapshot than the PSX quote. Display the source snapshot price. Do not silently recalculate enterprise value from incompatible data.
+- LUCK’s source P/B did not reconcile with its source price and book value. Calculate displayed P/B from the PSX quote divided by positive reported book value, retaining the book-value period and account basis. Enterprise value and EV/EBITDA remain explicitly source-reported; no compatible debt/cash snapshot is available to recalculate them. The provider quote is displayed separately.
 - KEL's latest available annual data is FY2024. Mark older reporting years in the fundamentals panel and overview snapshot; retain the original period.
 - UNITY's official tables omit EPS. Preserve unavailable EPS and annual P/E rather than deriving EPS from net income and today's shares.
 - EPCL's FY2025 EPS is negative. Preserve losses, and leave annual P/E unavailable when EPS is zero, missing or negative.

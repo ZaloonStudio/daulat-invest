@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),ts=require('typescript');
 function load(name){const file=path.resolve(__dirname,'../src/lib/'+name+'.ts'),m=new Module(file,module);m.filename=file;m.paths=module.paths;m.require=id=>id.startsWith('./')?load(id.slice(2)):require(id);m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,file);return m.exports;}
 const {fetchMarketWatch,fetchCompanyResearch,getSessionToken}=load('psx');
-const {researchSummary}=load('research-summary');
+const {researchSummary,priceToBook}=load('research-summary');
 const text=s=>s.replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
 const numeric=s=>{const n=s.replace(/^Rs\.?\s*/,'').replace(/,/g,'').trim();return /^[+-]?\d+(\.\d+)?$/.test(n)?Number(n):null;};
 (async()=>{
@@ -30,7 +30,7 @@ const numeric=s=>{const n=s.replace(/^Rs\.?\s*/,'').replace(/,/g,'').trim();retu
    quoteWithinTolerance:quote&&officialClose!==null?delta<=Math.max(0.01,officialClose*0.005):false,
    annualPeriod:summary.annualPeriod,annualEPS:summary.eps,quarterPeriod:data.quarterly.periods[0]??null,quarterEPS:summary.quarterEps,annualPE:summary.annualPE,olderReport:summary.olderReport,
    marketCapConsistent:quote?.marketCap&&data.shares?Math.abs(quote.marketCap/(quote.current*data.shares)-1)<0.005:null,
-   supplementalBasis:supplemental?.basis,sourceSnapshotPrice:supplemental?.snapshotPrice,bookValue:supplemental?.groups.flatMap(g=>g.metrics).find(m=>m.id==='bv'),
+   sourcePB:supplemental?.groups.flatMap(g=>g.metrics).find(m=>m.id==='pbv')?.value,calculatedPB:priceToBook(quote?.current??NaN,supplemental?.groups.flatMap(g=>g.metrics).find(m=>m.id==='bv')?.value),supplementalBasis:supplemental?.basis,sourceSnapshotPrice:supplemental?.snapshotPrice,bookValue:supplemental?.groups.flatMap(g=>g.metrics).find(m=>m.id==='bv'),
    payoutRows:data.payouts.length,payoutFeedAvailable:data.payoutsAvailable});
  }
  const report={checkedAt:new Date().toISOString(),scope:'Seven-stock source and calculation sample; not a certification of every issuer report',results};

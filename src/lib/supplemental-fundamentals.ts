@@ -17,7 +17,7 @@ export function parseSupplementalFundamentals(html:string,symbol:string,retrieve
  };
  const basis=valid&&/\bunconsolidated\b/i.test(identity)?'Unconsolidated':valid&&/\bconsolidated\b/i.test(identity)?'Consolidated':'Basis not specified';
  return {source:'https://scstrade.com/stockscreening/SS_CompanySnapShot.aspx?symbol='+encodeURIComponent(symbol),retrievedAt,basis,snapshotPrice:metric('price','Source quote','PKR').value,groups:[
-  {title:'Book value & valuation',metrics:[metric('bv','Book value per share','PKR'),metric('pbv','Price-to-book · source snapshot','x'),metric('ev','Enterprise value · source snapshot','B PKR'),metric('eve','EV / EBITDA · source snapshot','x')]},
+  {title:'Book value & valuation',metrics:[metric('bv','Book value per share','PKR'),metric('pbv','Price-to-book · source snapshot','x'),metric('ev','Enterprise value · source reported','B PKR'),metric('eve','EV / EBITDA · source reported','x')]},
   {title:'Profitability & returns',metrics:[metric('gpm','Gross profit margin','%'),metric('ebitm','Operating profit margin','%'),metric('npm','Net profit margin','%'),metric('ebitdam','EBITDA margin','%'),metric('roe','Return on equity (ROE)','%'),metric('roa','Return on assets (ROA)','%'),metric('roce','Return on capital employed (ROCE)','%')]},
   {title:'Financial health',metrics:[metric('cr','Current ratio','x'),metric('qr','Quick ratio','x'),metric('it','Inventory turnover','x'),metric('at','Asset turnover','x'),metric('ear','Equity-to-assets','%'),metric('lde','Long-term debt-to-equity','%'),metric('lda','Long-term debt-to-assets','%')]}
  ]};

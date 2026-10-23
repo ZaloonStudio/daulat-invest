@@ -1,4 +1,7 @@
 import type {CompanyResearch} from './company-research';
+export function priceToBook(price:number,bookValue:number|null|undefined):number|null {
+ return Number.isFinite(price)&&price>0&&bookValue!=null&&Number.isFinite(bookValue)&&bookValue>0?price/bookValue:null;
+}
 export function researchSummary(data:CompanyResearch,price:number,now=new Date()) {
  const latest=(table:CompanyResearch['annual'],label:string)=>table.rows.find(r=>r.label===label)?.values[0]??null;
  const eps=latest(data.annual,'EPS'),quarterEps=latest(data.quarterly,'EPS');
