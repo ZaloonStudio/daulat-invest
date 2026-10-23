@@ -1,5 +1,8 @@
 import type {Time} from 'lightweight-charts';
 export type TooltipRow={label:string;value:string};
+export function tooltipAxisTime(time:Time,intraday:boolean):string|null {
+ return intraday&&typeof time==='number'?new Date(time*1000).toLocaleTimeString('en-GB',{timeZone:'Asia/Karachi',hour:'2-digit',minute:'2-digit'}):null;
+}
 export function tooltipDate(time:Time,intraday:boolean):string {
  const date=typeof time==='number'?new Date(time*1000):typeof time==='string'?new Date(time+'T00:00:00Z'):new Date(Date.UTC(time.year,time.month-1,time.day));
  if(!Number.isFinite(date.getTime()))return '';

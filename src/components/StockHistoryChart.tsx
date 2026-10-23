@@ -2,7 +2,7 @@
 import {useState,useMemo,useEffect,useRef} from 'react';
 import {createChart,LineSeries,ColorType,type ISeriesApi,type SeriesType} from 'lightweight-charts';
 import {attachChartTooltip} from '@/lib/chart-tooltip';
-import {tooltipDate,tooltipNumber} from '@/lib/chart-tooltip-data';
+import {tooltipAxisTime,tooltipDate,tooltipNumber} from '@/lib/chart-tooltip-data';
 import type {ChartPoint} from '@/lib/types';
 import {priceObservations,periodPoints,comparePrices,simulateMonthlyPurchases} from '@/lib/stock-history-data';
 export type ChartMode='price'|'comparison'|'mktcap'|'sip'|'tradingview';
@@ -16,7 +16,7 @@ export default function StockHistoryChart({symbol,history,kseHistory=[],currentP
  const purchases=useMemo(()=>simulateMonthlyPurchases(points,monthly),[points,monthly]);const canCompare=period!=='1D'&&compared.index.length>1;
  useEffect(()=>{
   if(!ref.current||mode==='tradingview')return;
-  const chart=createChart(ref.current,{autoSize:true,height:340,layout:{background:{type:ColorType.Solid,color:'transparent'},textColor:getComputedStyle(document.documentElement).getPropertyValue('--chart-label').trim()||'#A4AEC1'},grid:{vertLines:{color:'rgba(127,141,164,.12)'},horzLines:{color:'rgba(127,141,164,.12)'}},localization:{timeFormatter:(time:import('lightweight-charts').Time)=>tooltipDate(time,period==='1D')},timeScale:{timeVisible:period==='1D'}});
+  const chart=createChart(ref.current,{autoSize:true,height:340,layout:{background:{type:ColorType.Solid,color:'transparent'},textColor:getComputedStyle(document.documentElement).getPropertyValue('--chart-label').trim()||'#A4AEC1'},grid:{vertLines:{color:'rgba(127,141,164,.12)'},horzLines:{color:'rgba(127,141,164,.12)'}},localization:{timeFormatter:(time:import('lightweight-charts').Time)=>tooltipDate(time,period==='1D')},timeScale:{timeVisible:period==='1D',tickMarkFormatter:(time:import('lightweight-charts').Time)=>tooltipAxisTime(time,period==='1D')}});
   const entries:{series:ISeriesApi<SeriesType>;label:string;format:(n:number)=>string}[]=[];
   const format=(n:number)=>tooltipNumber(n,mode==='comparison'?'index':mode==='mktcap'?'billions':'price');
   const add=(data:{time:number;value:number}[],color:string,title:string)=>{const series=chart.addSeries(LineSeries,{color,lineWidth:2,title});series.setData(data as any);entries.push({series,label:mode==='price'?'Price':mode==='comparison'?title+' · base 100':title,format});return series;};

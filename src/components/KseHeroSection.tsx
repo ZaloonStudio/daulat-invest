@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import {attachChartTooltip} from '@/lib/chart-tooltip';
-import {tooltipDate,tooltipNumber} from '@/lib/chart-tooltip-data';
+import {tooltipAxisTime,tooltipDate,tooltipNumber} from '@/lib/chart-tooltip-data';
 import { normalizeChartPoints } from '@/lib/chart-data';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createChart, ColorType, AreaSeries, HistogramSeries, IChartApi, ISeriesApi } from 'lightweight-charts';
@@ -108,6 +108,7 @@ export default function KseHeroSection({
       timeScale: {
         borderColor: '#28354A',
         timeVisible: timeframe==='1D',
+        tickMarkFormatter:(time:import('lightweight-charts').Time)=>tooltipAxisTime(time,timeframe==='1D'),
         secondsVisible: false,
       },
       handleScroll: false,

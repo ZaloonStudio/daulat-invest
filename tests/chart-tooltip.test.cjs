@@ -7,11 +7,13 @@ const ts=require('typescript');
 const filename=path.resolve(__dirname,'../src/lib/chart-tooltip-data.ts');
 const instance=new Module(filename,module);
 instance._compile(ts.transpileModule(fs.readFileSync(filename,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,filename);
-const {tooltipDate,tooltipNumber,tooltipPosition}=instance.exports;
+const {tooltipAxisTime,tooltipDate,tooltipNumber,tooltipPosition}=instance.exports;
 
 test('intraday tooltip uses Pakistan time across UTC midnight boundaries',()=>{
  const text=tooltipDate(Date.parse('2026-10-22T21:30:00Z')/1000,true);
  assert.match(text,/23 Oct 2026/);assert.match(text,/02:30 PKT/);
+ assert.equal(tooltipAxisTime(Date.parse('2026-10-22T21:30:00Z')/1000,true),'02:30');
+ assert.equal(tooltipAxisTime('2026-10-22',false),null);
  assert.equal(tooltipDate('2026-10-22',false),tooltipDate({year:2026,month:10,day:22},false));
 });
 test('tooltip distinguishes missing volume from a real zero and price from index units',()=>{

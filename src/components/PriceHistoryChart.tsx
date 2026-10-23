@@ -1,7 +1,7 @@
 'use client';
 
 import {attachChartTooltip} from '@/lib/chart-tooltip';
-import {tooltipDate} from '@/lib/chart-tooltip-data';
+import {tooltipAxisTime,tooltipDate} from '@/lib/chart-tooltip-data';
 import { useEffect, useRef, useState } from 'react';
 import { AreaSeries, ColorType, createChart, LineType, type UTCTimestamp } from 'lightweight-charts';
 import { formatAsOf, formatPrice, type PricePoint } from '@/lib/commodity-data';
@@ -24,7 +24,7 @@ export default function PriceHistoryChart({points,currency,intraday,stepped,labe
       layout:{background:{type:ColorType.Solid,color:'transparent'},textColor:'#7F8DA4',fontSize:11},
       grid:{vertLines:{visible:false},horzLines:{color:'rgba(127,141,164,0.14)'}},
       rightPriceScale:{borderVisible:false,scaleMargins:{top:.12,bottom:.12}},
-      timeScale:{borderVisible:false,timeVisible:intraday,secondsVisible:false},
+      timeScale:{borderVisible:false,timeVisible:intraday,secondsVisible:false,tickMarkFormatter:(time:import('lightweight-charts').Time)=>tooltipAxisTime(time,intraday)},
       crosshair:{vertLine:{color:'#B69249',labelBackgroundColor:'#886521'},horzLine:{color:'#B69249',labelBackgroundColor:'#886521'}},
       handleScroll:{mouseWheel:false,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},
       handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:true},
