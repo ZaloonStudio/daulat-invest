@@ -5,6 +5,7 @@ import { fetchMarketWatch } from '@/lib/psx';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StockCompareClient from './StockCompareClient';
+import CuratedComparisons from '@/components/CuratedComparisons';
 
 export const revalidate = 15;
 
@@ -18,6 +19,8 @@ export default async function StockComparePage() {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <header className="mb-7"><h1 className="text-3xl font-semibold">Compare PSX stocks</h1><p className="text-sm text-[#A4AEC1] mt-2">Choose a sector comparison or build your own side-by-side view.</p></header>
+        <div className="mb-9"><CuratedComparisons/></div>
         <Suspense
           fallback={
             <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-12 text-center text-sm text-[#A4AEC1]">

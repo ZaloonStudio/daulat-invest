@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { fetchMarketWatch } from '@/lib/psx';
 import { PRICE_PAGES } from '@/lib/price-pages';
+import {STOCK_COMPARISONS,comparisonPath} from '@/lib/stock-comparisons';
 
 export const revalidate = 3600; // Regenerate sitemap every hour
 
@@ -9,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Core static & financial tool routes
   const staticRoutes: MetadataRoute.Sitemap = [
+    ...STOCK_COMPARISONS.map(p=>({url:baseUrl+comparisonPath(p),changeFrequency:'daily' as const,priority:0.8})),
     ...PRICE_PAGES.map(page => ({url: `${baseUrl}/${page.slug}`, changeFrequency: 'daily' as const, priority: 0.8})),
     { url: baseUrl, changeFrequency: 'always', priority: 1.0 },
     { url: `${baseUrl}/market`, changeFrequency: 'hourly', priority: 0.9 },

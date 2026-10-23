@@ -9,6 +9,7 @@ import { fetchMarketWatch, fetchStockHistory, fetchTimeseries, fetchCompanyAnnou
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StockHistoryChart from '@/components/StockHistoryChart';
+import CuratedComparisons from '@/components/CuratedComparisons';
 import CompanyHealthScore from '@/components/CompanyHealthScore';
 import StockDetailTabs from '@/components/StockDetailTabs';
 import {CompanyFundamentals,CompanyProfile,CompanyTechnicals} from '@/components/CompanyResearchPanels';
@@ -208,6 +209,7 @@ export default async function StockDetailPage({ params }: Props) {
         } />
 
 
+        <CuratedComparisons symbol={symbol}/>
       </main>
 
       <Footer />

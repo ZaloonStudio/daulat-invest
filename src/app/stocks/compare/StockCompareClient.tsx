@@ -104,9 +104,9 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
             <GitCompare className="w-4 h-4" />
             <span>Compare the details. See the difference.</span>
           </div>
-          <h1 className="text-3xl font-semibold text-[#EFF3FA] tracking-tight">
-            Stock comparison
-          </h1>
+          <h2 className="text-2xl font-semibold text-[#EFF3FA] tracking-tight">
+            Build your own comparison
+          </h2>
           <p className="text-sm text-[#A4AEC1] mt-1.5 max-w-2xl">
             Compare valuation multiples (P/E, P/B), dividend yields, 1-year capital returns, and balance-sheet liquidity side-by-side.
           </p>
@@ -235,7 +235,8 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
               <tr className="hover:bg-[#1C2940]/40 transition-colors">
                 <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">1-Year Return</td>
                 {selectedStocks.map((s) => {
-                  const yr = s.changeYear || 0;
+                  const yr = s.changeYear;
+                  if(yr===undefined||!Number.isFinite(yr))return <td key={s.symbol} className="py-3.5 px-6 text-[#A4AEC1]">—</td>;
                   const isPos = yr >= 0;
                   return (
                     <td
@@ -326,7 +327,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
                         <span>KMI Compliant</span>
                       </span>
                     ) : (
-                      <span className="text-xs text-[#A4AEC1]">Conventional</span>
+                      <span className="text-xs text-[#A4AEC1]">Not listed in KMI indices</span>
                     )}
                   </td>
                 ))}
