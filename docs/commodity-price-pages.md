@@ -4,7 +4,7 @@ The homepage cards link to five server-rendered pages: `/gold-price-pakistan`, `
 
 ## Price sources
 
-- Gold/silver: https://xaus.com/api/ — international indicative prices, converted with the available PKR FX rate. Never labelled an official Sarafa quote.
+- Gold/silver: dated APGJSA-attributed daily reports from Mettis Global, refreshed through its public commodities index every 30 minutes. See `bullion-local-feed.md` for validation and source limits. XAUS / Yahoo international benchmarks remain the separately labelled fallback.
 - Petrol: https://autoones.com/fuel-prices-api — the same endpoint used by Android, with its effective date. At implementation, its petrol value matched PSO's published fuel page. This is not continuous independent verification of every future rate.
 - Energy: Yahoo Finance BZ=F, CL=F and NG=F futures quotes; source timestamp and USD units retained. PKR overview values use the shared FX reference.
 - USD/PKR: XAUS's aggregated FX reference. Not labelled an SBP fixing or a cash-exchange quote. Static fallback FX (`fx_stale`) is rejected.
@@ -21,7 +21,7 @@ Gold (GC=F), silver (SI=F), USD/PKR (PKR=X) and Brent (BZ=F) history comes from 
 
 Petrol uses AutoOnes daily records with monthly closes for earlier coverage. At implementation the available daily history began 24 July 2026; no intraday feed existed, so only its 1D selector is disabled. The stepped petrol chart shows notified prices. Monthly closes are dated at month end and cannot extend daily coverage backwards using a partial month's final value.
 
-Current gold/silver/FX quotes prefer XAUS; if that feed is unavailable, observed Yahoo futures/FX quotes supply a clearly attributed fallback. Missing prices are still unavailable, never sample data.
+Current gold/silver quotes prefer validated dated local reports; the original XAUS / Yahoo benchmark pipeline remains the separately attributed fallback. FX retains its original source. No fitted premium is used. Missing prices are unavailable, never sample data.
 
 One tola = 11.6638038 grams; one troy ounce = 31.1034768 grams. Purity estimates use 22/24. Calculator estimates exclude dealer spreads, making charges and taxes. The overview retains Gold/Silver/Energy filters, gold calculator, WTI and natural gas rows.
 

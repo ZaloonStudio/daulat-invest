@@ -1,3 +1,5 @@
+import {getLocalBullion} from './local-bullion-feed';
+import {localMetalQuote} from './local-bullion-data';
 import { cache } from 'react';
 import { positive, validDate, PriceQuote, PriceSnapshot, TROY_OUNCE_GRAMS } from './commodity-data';
 
@@ -23,7 +25,7 @@ const marketQuote = cache(async (symbol: string, name: string, currency = 'USD')
   return quote(m?.currency === currency ? m.regularMarketPrice : null, typeof m?.regularMarketTime === 'number' ? new Date(m.regularMarketTime*1000).toISOString() : null, name+' · Yahoo Finance', `https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}/`);
 });
 export const getPriceSnapshot = cache(async (): Promise<PriceSnapshot> => {
-  const [s, fuel, brent, wti, gas] = await Promise.all([spot(), read('https://api2.autoones.com/api/fuel-prices', 3600), marketQuote('BZ=F','Brent futures'), marketQuote('CL=F','WTI futures'), marketQuote('NG=F','Natural gas futures')]);
+  const [s, fuel, brent, wti, gas, local] = await Promise.all([spot(), read('https://api2.autoones.com/api/fuel-prices', 3600), marketQuote('BZ=F','Brent futures'), marketQuote('CL=F','WTI futures'), marketQuote('NG=F','Natural gas futures'),getLocalBullion()]);
   const fx = s?.fx_stale === false && s?.xau?.currency === 'PKR' ? positive(s.fx_rate) : null;
   const gold = s?.xau?.unit === 'gram' && fx ? s.xau.price : null;
   const silver = positive(s?.silver_usd_oz);
@@ -45,5 +47,6 @@ export const getPriceSnapshot = cache(async (): Promise<PriceSnapshot> => {
     if (goldQuote?.value && fxQuote.value) result.gold={...goldQuote,value:goldQuote.value*fxQuote.value/TROY_OUNCE_GRAMS,delayed:goldQuote.delayed||fxQuote.delayed};
     if (silverQuote?.value && fxQuote.value) result.silver={...silverQuote,value:silverQuote.value*fxQuote.value/TROY_OUNCE_GRAMS,delayed:silverQuote.delayed||fxQuote.delayed};
   }
+  if(local){for(const metal of ['gold','silver'] as const){const q=localMetalQuote(local,metal);if(q)result[metal]=q;}}
   return result;
 });

@@ -1,7 +1,7 @@
 export const TOLA_GRAMS = 11.6638038;
 export const TROY_OUNCE_GRAMS = 31.1034768;
 export type PriceKey = 'gold' | 'silver' | 'petrol' | 'usd' | 'brent' | 'wti' | 'gas';
-export type PriceQuote = { value: number | null; asOf: string | null; delayed: boolean; source: string; sourceUrl: string };
+export type PriceQuote = { value: number | null; asOf: string | null; delayed: boolean; source: string; sourceUrl: string; basis?:'local-daily'|'global';dateOnly?:boolean;per10Grams?:number };
 export type PriceSnapshot = Record<PriceKey, PriceQuote>;
 export type PricePoint = { time: number; value: number };
 export function positive(value: unknown): number | null {
@@ -30,3 +30,6 @@ export function formatPrice(value: number | null, currency = 'PKR') {
 export function formatAsOf(value: string | null) {
   return value ? new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Karachi',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(value)) + ' PKT' : 'Timestamp unavailable';
 }
+
+export function formatQuoteAsOf(q:PriceQuote){return q.dateOnly&&q.asOf?new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Karachi',day:'numeric',month:'short',year:'numeric'}).format(new Date(q.asOf)):formatAsOf(q.asOf);}
+export function metalValue(q:PriceQuote,grams:number,purity=24){return q.value===null?null:(grams===10&&q.per10Grams!==undefined?q.per10Grams:q.value*grams)*purity/24;}

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Coins, DollarSign, Fuel, ArrowRight, Flame } from 'lucide-react';
-import { formatAsOf, formatPrice, PriceKey, PriceSnapshot, TOLA_GRAMS } from '@/lib/commodity-data';
+import { formatQuoteAsOf, metalValue, formatPrice, PriceKey, PriceSnapshot, TOLA_GRAMS } from '@/lib/commodity-data';
 
 const CARDS: {key:PriceKey;name:string;slug:string;factor:number;icon:typeof Coins;subtitle:string}[] = [
   {key:'gold',name:'Gold 24K (Per Tola)',slug:'gold-price-pakistan',factor:TOLA_GRAMS,icon:Coins,subtitle:'Global benchmark'},
@@ -19,11 +19,11 @@ export default function HomeCommoditiesWidget({prices}:{prices:PriceSnapshot}) {
     </div>
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">{CARDS.map(item=>{
       const q=prices[item.key], Icon=item.icon, international=item.key==='brent';
-      return <Link key={item.name} href={`/${item.slug}`} className="bg-[#0B1120] border border-[#28354A] hover:border-[#B69249] p-3 rounded-xl transition-colors group" title={`${q.source} · ${formatAsOf(q.asOf)}`}>
+      return <Link key={item.name} href={`/${item.slug}`} className="bg-[#0B1120] border border-[#28354A] hover:border-[#B69249] p-3 rounded-xl transition-colors group" title={`${q.source} · ${formatQuoteAsOf(q)}`}>
         <div className="flex items-center justify-between mb-3"><div className="w-7 h-7 rounded-lg flex items-center justify-center border border-[#B69249]/25 bg-[#B69249]/10"><Icon className="w-3.5 h-3.5 text-[#B69249]"/></div><Image src={international?'/flags/us.svg':'/flags/pk.svg'} alt={international?'International price in USD':'Pakistan price in PKR'} width={24} height={16} className="h-4 w-6 rounded-sm"/></div>
-        <p className="font-semibold text-xs group-hover:text-[#B69249]">{item.name}</p><p className="text-[10px] text-[#A4AEC1] mt-1">{item.subtitle}</p>
-        <p className="mt-3 pt-3 border-t border-[#28354A] font-mono text-sm font-semibold">{formatPrice(q.value===null?null:q.value*item.factor,international?'USD':'PKR')}</p>
-        <p className="text-[10px] text-[#A4AEC1] mt-1">{q.value===null?'Feed unavailable':q.delayed?'Earlier observation':'Latest available'} <span aria-hidden="true">↗</span></p>
+        <p className="font-semibold text-xs group-hover:text-[#B69249]">{item.name}</p><p className="text-[10px] text-[#A4AEC1] mt-1">{q.basis==='local-daily'?'Daily market rate':item.subtitle}</p>
+        <p className="mt-3 pt-3 border-t border-[#28354A] font-mono text-sm font-semibold">{formatPrice(q.value===null?null:(item.key==='gold'||item.key==='silver')?metalValue(q,item.factor):q.value*item.factor,international?'USD':'PKR')}</p>
+        <p className="text-[10px] text-[#A4AEC1] mt-1">{q.basis==='local-daily'?formatQuoteAsOf(q):q.value===null?'Feed unavailable':q.delayed?'Earlier observation':'Latest available'} <span aria-hidden="true">↗</span></p>
       </Link>;
     })}</div>
   </div>;

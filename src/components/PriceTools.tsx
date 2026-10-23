@@ -2,7 +2,7 @@
 
 import { useId, useMemo, useState } from 'react';
 import PriceHistoryChart from './PriceHistoryChart';
-import { formatPrice, PriceKey, PriceSnapshot, TOLA_GRAMS } from '@/lib/commodity-data';
+import { metalValue, formatPrice, PriceKey, PriceSnapshot, TOLA_GRAMS } from '@/lib/commodity-data';
 import { historyWindow, PRICE_RANGES, type PriceHistory, type PriceRange } from '@/lib/price-history-data';
 
 const NAMES: Record<PriceKey,string> = {gold:'Gold',silver:'Silver',usd:'USD / PKR',petrol:'Petrol',brent:'Brent crude',wti:'WTI crude',gas:'Natural gas'};
@@ -17,7 +17,7 @@ export default function PriceTools({kind,prices,history}:{kind:PriceKey;prices:P
   const factor = (metal?grams:1)*(kind==='gold'?purity/24:1);
   const value = prices[kind].value;
   const amount = quantity.trim()===''?NaN:Number(quantity);
-  const total = value!==null && Number.isFinite(amount) && amount>=0 && Number.isFinite(amount*value*factor)?amount*value*factor:null;
+  const total = value!==null && Number.isFinite(amount) && amount>=0 && Number.isFinite(amount*value*factor)?amount*(metal?metalValue(prices[kind],grams,kind==='gold'?purity:24)!:value*factor):null;
   const points = useMemo(()=>history?historyWindow(history,range).map(p=>({...p,value:p.value*factor})):[],[history,range,factor]);
   const hasHistory = history && (history.daily.length>=2||history.intraday.length>=2||history.longTerm.length>=2);
   const units = <div className="flex flex-wrap items-center gap-2">
@@ -26,7 +26,7 @@ export default function PriceTools({kind,prices,history}:{kind:PriceKey;prices:P
   </div>;
   return <div className="space-y-5">
     {hasHistory&&<section aria-labelledby={`${id}-chart`} className="border border-[#28354A] bg-[#111A2B] rounded-2xl p-4 sm:p-6">
-      <div className="flex flex-wrap items-center justify-between gap-3"><h2 id={`${id}-chart`} className="text-base font-semibold">{NAMES[kind]} chart</h2>{units}</div>
+      <div className="flex flex-wrap items-center justify-between gap-3"><h2 id={`${id}-chart`} className="text-base font-semibold">{metal?'International '+NAMES[kind].toLowerCase():NAMES[kind]} chart</h2>{units}</div>
       <div role="group" aria-label="Chart period" className="flex flex-wrap gap-1 mt-4">{PRICE_RANGES.map(r=><button key={r} aria-pressed={range===r} disabled={r==='1D'&&history.intraday.length<2} title={r==='ALL'?'All available history, up to 25 years':r==='1D'&&history.intraday.length<2?'Intraday data unavailable':r} onClick={()=>setRange(r)} className={`px-3 py-2 rounded-lg text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed ${range===r?'bg-[#B69249] text-black':'text-[#A4AEC1] hover:bg-[#1C2940]'}`}>{r==='ALL'?'All':r}</button>)}</div>
       <PriceHistoryChart points={points} currency={currency} intraday={range==='1D'} stepped={kind==='petrol'} label={`${NAMES[kind]} ${range==='ALL'?'all available':range} price history in ${currency}`}/>
       <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] text-[#A4AEC1] mt-3"><span>{history.basis}{range==='ALL'?' · Monthly + daily · up to 25Y':''}</span><a href={history.sourceUrl} className="underline">{history.source}</a></div>
