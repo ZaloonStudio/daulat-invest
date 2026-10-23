@@ -39,3 +39,22 @@ test('supplemental ratios preserve source periods, units and unavailable values'
  const changed=fixture('supplemental-PRL.html').replace('Rs. 90.06','Rs. N/A').replace('36.89 %','0.00 %').replace('17.53 %','(17.53) %');
  const edge=parseSupplementalFundamentals(changed,'PRL','').groups.flatMap(g=>g.metrics);assert.equal(edge.find(m=>m.id==='bv').value,null);assert.equal(edge.find(m=>m.id==='roe').value,0);assert.equal(edge.find(m=>m.id==='lde').value,-17.53);
 });
+
+test('source account basis and price remain distinct from PSX unconsolidated statements',()=>{
+ const p=parseSupplementalFundamentals(fixture('supplemental-LUCK.html'),'LUCK','');assert.equal(p.basis,'Consolidated');assert.ok(p.snapshotPrice>0);
+ const unknown=parseSupplementalFundamentals(fixture('supplemental-PRL.html'),'PRL','');assert.equal(unknown.basis,'Basis not specified');
+ const unconsolidated=parseSupplementalFundamentals(fixture('supplemental-LUCK.html').replace('Ltd. Consolidated','Ltd. Unconsolidated'),'LUCK','');assert.equal(unconsolidated.basis,'Unconsolidated');
+});
+test('source unit changes cannot multiply asset turnover or enterprise value incorrectly',()=>{
+ const raw=fixture('supplemental-PRL.html');
+ const revised=raw.replace('268.33 %','2.6833 x').replace('Rs. 53.65 bn','Rs. 53,650 mn');
+ const metrics=parseSupplementalFundamentals(revised,'PRL','').groups.flatMap(g=>g.metrics);assert.equal(metrics.find(m=>m.id==='at').value,2.6833);assert.equal(metrics.find(m=>m.id==='ev').value,53.65);
+ const missingUnit=parseSupplementalFundamentals(raw.replace('Rs. 53.65 bn','Rs. 53.65'),'PRL','').groups.flatMap(g=>g.metrics);assert.equal(missingUnit.find(m=>m.id==='ev').value,null);
+});
+test('annual valuation rejects loss or zero EPS; YoY growth needs consecutive reporting years',()=>{
+ const {researchSummary}=load('research-summary'),p=parseCompanyResearch(fixture('company-PRL.html'),'','PRL');
+ const summary=researchSummary(p,95.12,new Date('2026-10-23'));assert.equal(summary.annualPE,95.12/25.05);assert.equal(summary.olderReport,false);assert.ok(Math.abs(summary.growth-13.0457)<0.001);
+ const gap=structuredClone(p);gap.annual.periods=['2024','2022'];assert.equal(researchSummary(gap,95.12,new Date('2026-10-23')).growth,null);assert.equal(researchSummary(gap,95.12,new Date('2026-10-23')).olderReport,true);
+ for(const eps of [-1,0,null]){const loss=structuredClone(p);loss.annual.rows.find(r=>r.label==='EPS').values[0]=eps;assert.equal(researchSummary(loss,95.12).annualPE,null);}
+ assert.equal(researchSummary(p,NaN).annualPE,null);
+});
