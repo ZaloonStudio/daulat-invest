@@ -4,9 +4,9 @@ import { Coins, DollarSign, Fuel, ArrowRight, Flame } from 'lucide-react';
 import { formatAsOf, formatPrice, PriceKey, PriceSnapshot, TOLA_GRAMS } from '@/lib/commodity-data';
 
 const CARDS: {key:PriceKey;name:string;slug:string;factor:number;icon:typeof Coins;subtitle:string}[] = [
-  {key:'gold',name:'Gold 24K (Per Tola)',slug:'gold-price-pakistan',factor:TOLA_GRAMS,icon:Coins,subtitle:'International value in PKR'},
-  {key:'gold',name:'Gold 24K (10 Grams)',slug:'gold-price-pakistan',factor:10,icon:Coins,subtitle:'International value in PKR'},
-  {key:'silver',name:'Silver (Per Tola)',slug:'silver-price-pakistan',factor:TOLA_GRAMS,icon:Coins,subtitle:'International value in PKR'},
+  {key:'gold',name:'Gold 24K (Per Tola)',slug:'gold-price-pakistan',factor:TOLA_GRAMS,icon:Coins,subtitle:'Global benchmark'},
+  {key:'gold',name:'Gold 24K (10 Grams)',slug:'gold-price-pakistan',factor:10,icon:Coins,subtitle:'Global benchmark'},
+  {key:'silver',name:'Silver (Per Tola)',slug:'silver-price-pakistan',factor:TOLA_GRAMS,icon:Coins,subtitle:'Global benchmark'},
   {key:'usd',name:'US Dollar (USD/PKR)',slug:'usd-to-pkr',factor:1,icon:DollarSign,subtitle:'Indicative exchange rate'},
   {key:'petrol',name:'Petrol (Per Litre)',slug:'petrol-price-pakistan',factor:1,icon:Fuel,subtitle:'Notified rate via AutoOnes'},
   {key:'brent',name:'Crude Oil (Brent)',slug:'brent-crude-oil-price',factor:1,icon:Flame,subtitle:'International futures / barrel'},
