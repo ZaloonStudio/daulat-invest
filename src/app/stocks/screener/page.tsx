@@ -50,8 +50,7 @@ export default async function ScreenerPage() {
             Stock screener
           </h1>
           <p className="text-xs sm:text-sm text-[#A4AEC1] mt-1 max-w-3xl leading-relaxed">
-            Screen all listed companies across Pakistan Stock Exchange using fundamental valuation ratios,
-            KMI Shariah compliance audits, trailing dividend yields, and institutional volume activity.
+            Find PSX companies with your own valuation, dividend, price and volume filters.
           </p>
         </div>
 
