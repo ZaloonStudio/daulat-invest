@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { StockQuote } from '@/lib/types';
+import {alignedAnnualYields,type AnnualDividend} from '@/lib/annual-dividend';
 import {
   GitCompare,
   Search,
@@ -43,6 +44,14 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
       });
     }
   }, [searchParams]);
+  const dividendKey=selectedSymbols.join(',');
+  const [dividends,setDividends]=useState<{key:string;state:'loading'|'ready'|'error';rows:(AnnualDividend&{symbol:string})[]}>({key:'',state:'loading',rows:[]});
+  const [dividendRetry,setDividendRetry]=useState(0);
+  useEffect(()=>{
+    const c=new AbortController();setDividends({key:dividendKey,state:'loading',rows:[]});
+    fetch('/api/stock-dividends?symbols='+encodeURIComponent(dividendKey),{signal:c.signal}).then(async r=>{if(!r.ok)throw new Error('source');const d=await r.json();if(!Array.isArray(d.rows))throw new Error('source');setDividends({key:dividendKey,state:'ready',rows:d.rows});}).catch(()=>{if(!c.signal.aborted)setDividends({key:dividendKey,state:'error',rows:[]});});
+    return()=>c.abort();
+  },[dividendKey,dividendRetry]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
@@ -58,6 +67,9 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
       .filter((s): s is StockQuote => Boolean(s));
   }, [selectedSymbols, stockMap]);
 
+  const annual=selectedStocks.map(s=>dividends.key===dividendKey?dividends.rows.find(d=>d.symbol===s.symbol):undefined);
+  const aligned=alignedAnnualYields(annual,selectedStocks.map(s=>s.current));
+  const annualLoading=dividends.key!==dividendKey||dividends.state==='loading';
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const q = searchQuery.toLowerCase();
@@ -108,7 +120,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
             Build your own comparison
           </h2>
           <p className="text-sm text-[#A4AEC1] mt-1.5 max-w-2xl">
-            Compare valuation multiples (P/E, P/B), dividend yields, 1-year capital returns, and balance-sheet liquidity side-by-side.
+            Compare valuation, full-year dividend yields and 1-year price changes side by side.
           </p>
         </div>
 
@@ -152,6 +164,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
         </div>
       </div>
 
+      <p className="text-xs text-[#A4AEC1]">Annual yield = reported full-year cash dividend divided by displayed PSX price. Source: SCSTrade company snapshots; FY shown per stock. {aligned.mismatchedYears&&'Annual yields are withheld because financial years differ.'}{dividends.state==='error'&&<button onClick={()=>setDividendRetry(n=>n+1)} className="text-[#B69249] ml-2 underline">Retry annual dividends</button>}</p>
       {/* Main Comparison Matrix Table */}
       <div className="bg-[#111A2B] border border-[#28354A] rounded-2xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
@@ -233,7 +246,7 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
 
               {/* 1-Year Performance */}
               <tr className="hover:bg-[#1C2940]/40 transition-colors">
-                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">1-Year Return</td>
+                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">1-Year Price Change</td>
                 {selectedStocks.map((s) => {
                   const yr = s.changeYear;
                   if(yr===undefined||!Number.isFinite(yr))return <td key={s.symbol} className="py-3.5 px-6 text-[#A4AEC1]">—</td>;
@@ -262,18 +275,14 @@ export default function StockCompareClient({ allStocks }: StockCompareClientProp
                 ))}
               </tr>
 
-              {/* Dividend Yield */}
               <tr className="hover:bg-[#1C2940]/40 transition-colors">
-                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Dividend Yield</td>
-                {selectedStocks.map((s) => (
-                  <td key={s.symbol} className="py-3.5 px-6 font-semibold text-[#B69249]">
-                    {s.dividendYield && s.dividendYield > 0
-                      ? `${s.dividendYield.toFixed(2)}%`
-                      : s.dividendYield===0?'0.00%':'—'}
-                  </td>
-                ))}
+                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Annual dividend yield</td>
+                {selectedStocks.map((s,i)=><td key={s.symbol} className="py-3.5 px-6 font-semibold text-[#B69249]">{annualLoading?'Loading…':aligned.yields[i]===null?'—':aligned.yields[i]!.toFixed(2)+'%'}<span className="block text-[10px] text-[#A4AEC1] font-normal mt-1">{annual[i]?.financialYear?'FY '+annual[i]!.financialYear:annualLoading?'':'Annual data unavailable'}</span></td>)}
               </tr>
-
+              <tr className="hover:bg-[#1C2940]/40 transition-colors">
+                <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Annual dividend per share</td>
+                {selectedStocks.map((s,i)=><td key={s.symbol} className="py-3.5 px-6 font-mono">{annualLoading?'Loading…':annual[i]?.cashPerShare!=null?'Rs '+annual[i]!.cashPerShare!.toFixed(2):'—'}<span className="block text-[10px] text-[#A4AEC1] font-sans mt-1">{annual[i]?.financialYear?'FY '+annual[i]!.financialYear:''}</span></td>)}
+              </tr>
               {/* Market Capitalization */}
               <tr className="hover:bg-[#1C2940]/40 transition-colors">
                 <td className="py-3.5 px-6 font-semibold text-[#A4AEC1]">Market Capitalization</td>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Calculator, ArrowLeft, ShieldCheck } from 'lucide-react';
 
 
-export default function DividendCalculatorView({presets=[]}:{presets:{symbol:string;name:string;price:number;dps:number;yield:number;sector:string}[]}) {
+export default function DividendCalculatorView({presets=[]}:{presets:{symbol:string;name:string;price:number;dps:number;yield:number;sector:string;financialYear:number}[]}) {
   const PRESET_DIVIDEND_STOCKS=presets;
   const [selectedStock, setSelectedStock] = useState<string>('Custom');
   const [stockPrice, setStockPrice] = useState<number>(0);
@@ -72,7 +72,7 @@ export default function DividendCalculatorView({presets=[]}:{presets:{symbol:str
         {/* Presets */}
         <div>
           <label className="text-xs font-semibold text-[#A4AEC1] uppercase tracking-wider block mb-2">
-            Reported PSX yield presets (DPS implied from yield)
+            Reported annual dividend presets · SCSTrade
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
             {PRESET_DIVIDEND_STOCKS.map((s) => (
@@ -86,7 +86,7 @@ export default function DividendCalculatorView({presets=[]}:{presets:{symbol:str
                 }`}
               >
                 <div className="text-xs font-semibold">{s.symbol}</div>
-                <div className="text-[10px] mt-0.5">{s.yield}% Yield</div>
+                <div className="text-[10px] mt-0.5">{s.yield.toFixed(2)}% · FY {s.financialYear}</div>
               </button>
             ))}
           </div>

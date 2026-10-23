@@ -5,7 +5,7 @@ export type ScreenerQuote=StockQuote&{research?:ScreenerResearchRow};
 export const SCREENER_METRICS = [
  {key:'current',label:'Price',unit:'PKR',min:0},
  {key:'peRatio',label:'P/E ratio',unit:'×',min:0},
- {key:'dividendYield',label:'Dividend yield',unit:'%',min:0},
+ {key:'dividendYield',label:'PSX yield · period unspecified',unit:'%',min:0},
  {key:'marketCap',label:'Market cap',unit:'PKR billion',min:0},
  {key:'volume',label:'Trading volume',unit:'shares',min:0},
  {key:'changePercent',label:'Day change',unit:'%'},
