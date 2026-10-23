@@ -68,9 +68,9 @@ export default function IndexPerformanceTable({
                   {/* Code & Name */}
                   <td className="py-3.5 pl-2">
                     <div className="flex items-center space-x-2">
-                      <span className="font-semibold text-sm text-[#EFF3FA] group-hover:text-[#B69249] transition-colors">
+                      <button type="button" onClick={event=>{event.stopPropagation();onSelectIndex?.(idx.code);}} aria-label={'View '+idx.code+' companies'} className="font-semibold text-sm text-[#EFF3FA] group-hover:text-[#B69249] transition-colors hover:underline">
                         {idx.code}
-                      </span>
+                      </button>
                       {isIslamic && (
                         <span
                           title="Shariah Compliant Index"

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import {indexCompaniesPath} from '@/lib/index-members';
 import {attachChartTooltip} from '@/lib/chart-tooltip';
 import {tooltipAxisTime,tooltipDate,tooltipNumber} from '@/lib/chart-tooltip-data';
 import { normalizeChartPoints } from '@/lib/chart-data';
@@ -255,6 +256,7 @@ export default function KseHeroSection({
             </div>
           </div>
 
+          <Link href={indexCompaniesPath(selectedIndexCode)} className="inline-block text-xs text-[#B69249] mb-3 hover:underline">View {selectedIndexCode} companies →</Link>
           {/* Big Live Value & Change Badges */}
           <div className="flex flex-wrap items-baseline gap-3 mb-4">
             <span className="text-4xl sm:text-5xl font-medium text-[#EFF3FA] font-mono tracking-tight">

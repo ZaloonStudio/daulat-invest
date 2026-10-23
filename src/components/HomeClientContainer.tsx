@@ -1,7 +1,9 @@
 'use client';
 import type {NewsFeedStatus} from '@/lib/news-feed';
 
-import React, { useState } from 'react';
+import React from 'react';
+import {useRouter} from 'next/navigation';
+import {indexCompaniesPath} from '@/lib/index-members';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { MarketSummary, NewsArticle, CompanyAnnouncement } from '@/lib/types';
@@ -38,7 +40,8 @@ export default function HomeClientContainer({
   isOpen,
   marketTime,
 }: HomeClientContainerProps) {
-  const [selectedIndexCode, setSelectedIndexCode] = useState<string>('KSE100');
+  const selectedIndexCode='KSE100';
+  const router=useRouter();
 
 
   return (
@@ -58,7 +61,7 @@ export default function HomeClientContainer({
 
       <section aria-label="Gold, forex and commodities"><HomeCommoditiesWidget prices={commodityPrices}/></section>
       <section id="indices-section">
-        <KseHeroSection initialIndex={summary.kse100} allIndices={summary.indices} selectedIndexCode={selectedIndexCode} isPsxOpen={isOpen} marketTime={marketTime} compactIndices={homeIndices(summary.indices)} onSelectIndex={setSelectedIndexCode}/>
+        <KseHeroSection initialIndex={summary.kse100} allIndices={summary.indices} selectedIndexCode={selectedIndexCode} isPsxOpen={isOpen} marketTime={marketTime} compactIndices={homeIndices(summary.indices)} onSelectIndex={code=>router.push(indexCompaniesPath(code))}/>
       </section>
       <QuickLinksBar/>
 

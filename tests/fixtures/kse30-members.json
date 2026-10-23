@@ -1,0 +1,122 @@
+[
+  {
+    "symbol": "ATRL",
+    "listedIndices": "ALLSHR,JSMFI,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI"
+  },
+  {
+    "symbol": "BAFL",
+    "listedIndices": "ALLSHR,BKTI,JSGBKTI,KSE100,KSE100PR,KSE30,PSXDIV20"
+  },
+  {
+    "symbol": "BOP",
+    "listedIndices": "ALLSHR,BKTI,JSGBKTI,KSE100,KSE100PR,KSE30,PSXDIV20"
+  },
+  {
+    "symbol": "DGKC",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI"
+  },
+  {
+    "symbol": "EFERT",
+    "listedIndices": "ALLSHR,JSMFI,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,NBPPGI,PSXDIV20,UPP9"
+  },
+  {
+    "symbol": "ENGROH",
+    "listedIndices": "ALLSHR,JSMFI,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,UPP9"
+  },
+  {
+    "symbol": "FATIMA",
+    "listedIndices": "ALLSHR,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30"
+  },
+  {
+    "symbol": "FCCL",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30"
+  },
+  {
+    "symbol": "FFC",
+    "listedIndices": "ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,PSXDIV20,UPP9"
+  },
+  {
+    "symbol": "HBL",
+    "listedIndices": "ALLSHR,BKTI,JSGBKTI,KSE100,KSE100PR,KSE30,NBPPGI,NITPGI,PSXDIV20,UPP9"
+  },
+  {
+    "symbol": "HUBC",
+    "listedIndices": "ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,PSXDIV20,UPP9"
+  },
+  {
+    "symbol": "KEL",
+    "listedIndices": "ALLSHR,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30"
+  },
+  {
+    "symbol": "LUCK",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,UPP9"
+  },
+  {
+    "symbol": "MARI",
+    "listedIndices": "ALLSHR,JSMFI,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,OGTI"
+  },
+  {
+    "symbol": "MCB",
+    "listedIndices": "ALLSHR,BKTI,JSGBKTI,KSE100,KSE100PR,KSE30,NBPPGI,NITPGI,PSXDIV20"
+  },
+  {
+    "symbol": "MEBL",
+    "listedIndices": "ALLSHR,BKTI,JSGBKTI,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,UPP9"
+  },
+  {
+    "symbol": "MLCF",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI"
+  },
+  {
+    "symbol": "NBP",
+    "listedIndices": "ALLSHR,BKTI,JSGBKTI,KSE100,KSE100PR,KSE30,NBPPGI,PSXDIV20"
+  },
+  {
+    "symbol": "NRL",
+    "listedIndices": "ALLSHR,JSMFI,KMI30,KMIALLSHR,KSE30"
+  },
+  {
+    "symbol": "OGDC",
+    "listedIndices": "ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,OGTI"
+  },
+  {
+    "symbol": "PAEL",
+    "listedIndices": "ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30"
+  },
+  {
+    "symbol": "POL",
+    "listedIndices": "ALLSHR,JSMFI,KSE100,KSE100PR,KSE30,PSXDIV20"
+  },
+  {
+    "symbol": "PPL",
+    "listedIndices": "ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI,NBPPGI,NITPGI,OGTI"
+  },
+  {
+    "symbol": "PSO",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,MZNPI"
+  },
+  {
+    "symbol": "PTC",
+    "listedIndices": "ALLSHR,KSE100,KSE100PR,KSE30"
+  },
+  {
+    "symbol": "SAZEW",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30"
+  },
+  {
+    "symbol": "SEARL",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30"
+  },
+  {
+    "symbol": "SNGP",
+    "listedIndices": "ACI,ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30"
+  },
+  {
+    "symbol": "SYS",
+    "listedIndices": "ALLSHR,KMI30,KMIALLSHR,KSE100,KSE100PR,KSE30,MII30,NBPPGI,UPP9"
+  },
+  {
+    "symbol": "UBL",
+    "listedIndices": "ALLSHR,BKTI,JSGBKTI,KSE100,KSE100PR,KSE30,NBPPGI,NITPGI,PSXDIV20,UPP9"
+  }
+]

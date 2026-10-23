@@ -63,6 +63,7 @@ export default function IndicesBar({
             <button
               key={idx.code}
               aria-pressed={isSelected}
+              aria-label={'View '+idx.code+' companies'}
               onClick={() => onSelectIndex?.(idx.code)}
               className={`flex-shrink-0 min-w-[192px] text-left p-4 rounded-lg border transition-all cursor-pointer ${
                 isSelected
