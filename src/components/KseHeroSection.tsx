@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import {attachChartTooltip} from '@/lib/chart-tooltip';
+import {tooltipDate,tooltipNumber} from '@/lib/chart-tooltip-data';
 import { normalizeChartPoints } from '@/lib/chart-data';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createChart, ColorType, AreaSeries, HistogramSeries, IChartApi, ISeriesApi } from 'lightweight-charts';
@@ -41,7 +43,6 @@ export default function KseHeroSection({
 
   const [points, setPoints] = useState<ChartPoint[]>([]);
   const [timeframe, setTimeframe] = useState<'1D' | '7D' | '1M' | '6M' | '1Y' | '3Y' | '5Y'>('1D');
-  const [hoveredPoint, setHoveredPoint] = useState<{ value: number; time: string } | null>(null);
 
   // Fetch chart points for active index / timeframe
   useEffect(() => {
@@ -103,9 +104,10 @@ export default function KseHeroSection({
           bottom: 0.25, // Leaves bottom 25% for volume bars
         },
       },
+      localization:{timeFormatter:(time:import('lightweight-charts').Time)=>tooltipDate(time,timeframe==='1D')},
       timeScale: {
         borderColor: '#28354A',
-        timeVisible: true,
+        timeVisible: timeframe==='1D',
         secondsVisible: false,
       },
       handleScroll: false,
@@ -152,44 +154,22 @@ export default function KseHeroSection({
       .sort((a, b) => a.time - b.time);
 
     const formattedVolume = chartData
-      .map((p, idx) => ({
+      .flatMap((p, idx) => (typeof p.volume==='number'&&Number.isFinite(p.volume)&&p.volume>=0?[{
         time: Number(p.time) as any,
-        value: p.volume || 1000000 + (idx % 5) * 500000,
+        value: p.volume,
         color:
           idx > 0 && (chartData[idx].value || 0) >= (chartData[idx - 1].value || 0)
             ? 'rgba(182, 146, 73, 0.45)'
             : 'rgba(242, 139, 130, 0.45)',
-      }))
+      }]:[]))
       .sort((a, b) => a.time - b.time);
 
     areaSeries.setData(formattedArea);
     volumeSeries.setData(formattedVolume);
     chart.timeScale().fitContent();
 
-    // Crosshair tooltips
-    chart.subscribeCrosshairMove((param) => {
-      if (
-        param.point === undefined ||
-        !param.time ||
-        param.point.x < 0 ||
-        param.point.y < 0
-      ) {
-        setHoveredPoint(null);
-      } else {
-        const price = param.seriesData.get(areaSeries) as any;
-        if (price && typeof price.value === 'number') {
-          const date = new Date(Number(param.time) * 1000);
-          const timeStr = date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-          });
-          setHoveredPoint({
-            value: price.value,
-            time: timeStr,
-          });
-        }
-      }
-    });
+    const byTime=new Map(chartData.map(p=>[Number(p.time),p]));
+    const cleanupTooltip=attachChartTooltip(chart,chartContainerRef.current,[{series:areaSeries,label:'Index',format:n=>tooltipNumber(n,'index')}],timeframe==='1D',time=>[{label:'Volume',value:tooltipNumber(byTime.get(Number(time))?.volume,'volume')}]);
 
     chartInstance.current = chart;
     areaSeriesRef.current = areaSeries;
@@ -208,15 +188,16 @@ export default function KseHeroSection({
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
     return () => {
+      cleanupTooltip();
       resizeObserver.disconnect();
       themeObserver.disconnect();
       chart.remove();
       chartInstance.current = null;
     };
-  }, [points, activeIndex]);
+  }, [points, activeIndex,timeframe]);
 
   if (!activeIndex.current) return <div role="status" className="p-8 rounded-xl border border-[#28354A] text-[#A4AEC1]">PSX index data unavailable. Please try again shortly.</div>;
-  const displayValue = hoveredPoint?.value ?? activeIndex.current;
+  const displayValue = activeIndex.current;
   const isPositive = (activeIndex.change ?? 0) >= 0;
 
   // Day Range Calculations
@@ -305,11 +286,7 @@ export default function KseHeroSection({
               {activeIndex.changePercent.toFixed(2)}%
             </span>
 
-            {hoveredPoint && (
-              <span className="text-xs text-[#A4AEC1] font-mono bg-[#0B1120] px-2 py-0.5 rounded border border-[#28354A]">
-                @ {hoveredPoint.time}
-              </span>
-            )}
+
           </div>
         </div>
 

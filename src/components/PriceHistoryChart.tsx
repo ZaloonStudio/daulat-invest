@@ -1,5 +1,7 @@
 'use client';
 
+import {attachChartTooltip} from '@/lib/chart-tooltip';
+import {tooltipDate} from '@/lib/chart-tooltip-data';
 import { useEffect, useRef, useState } from 'react';
 import { AreaSeries, ColorType, createChart, LineType, type UTCTimestamp } from 'lightweight-charts';
 import { formatAsOf, formatPrice, type PricePoint } from '@/lib/commodity-data';
@@ -26,7 +28,7 @@ export default function PriceHistoryChart({points,currency,intraday,stepped,labe
       crosshair:{vertLine:{color:'#B69249',labelBackgroundColor:'#886521'},horzLine:{color:'#B69249',labelBackgroundColor:'#886521'}},
       handleScroll:{mouseWheel:false,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},
       handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:true},
-      localization:{priceFormatter:(price:number)=>formatPrice(price,currency)},
+      localization:{timeFormatter:(time:import('lightweight-charts').Time)=>tooltipDate(time,intraday),priceFormatter:(price:number)=>formatPrice(price,currency)},
     });
     const series = chart.addSeries(AreaSeries,{lineColor:'#B69249',topColor:'rgba(182,146,73,.22)',bottomColor:'rgba(182,146,73,.01)',lineWidth:2,lineType:stepped?LineType.WithSteps:LineType.Simple,priceLineVisible:false,lastValueVisible:true});
     series.setData(points.map(p=>({time:p.time as UTCTimestamp,value:p.value})));
@@ -35,6 +37,7 @@ export default function PriceHistoryChart({points,currency,intraday,stepped,labe
       const p = param.seriesData.get(series);
       setSelected(p && 'value' in p && typeof param.time==='number' ? {time:param.time,value:p.value} : null);
     });
+    const cleanupTooltip=attachChartTooltip(chart,container.current,[{series,label:'Price',format:n=>formatPrice(n,currency)}],intraday);
     const resize = new ResizeObserver(()=>{if(container.current)chart.applyOptions({width:container.current.clientWidth});});
     resize.observe(container.current);
     const recolor = ()=>chart.applyOptions({layout:{textColor:getComputedStyle(document.documentElement).getPropertyValue('--chart-label').trim()||'#7F8DA4'}});
@@ -42,7 +45,7 @@ export default function PriceHistoryChart({points,currency,intraday,stepped,labe
     const theme = new MutationObserver(recolor);
     theme.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
     setReady(true);
-    return ()=>{resize.disconnect();theme.disconnect();chart.remove();};
+    return ()=>{cleanupTooltip();resize.disconnect();theme.disconnect();chart.remove();};
   },[points,currency,intraday,stepped]);
   const low = points.length?Math.min(...points.map(p=>p.value)):0;
   const high = points.length?Math.max(...points.map(p=>p.value)):0;

@@ -124,7 +124,7 @@ export async function fetchTimeseries(symbol: string, isIntraday = true): Promis
           .map((item: any[]) => {
             const time = item[0];
             const close = item[1];
-            const volume = item[2] || 0;
+            const volume = typeof item[2]==='number'&&Number.isFinite(item[2])&&item[2]>=0?item[2]:undefined;
             const open = item[3];
             return {
               time,

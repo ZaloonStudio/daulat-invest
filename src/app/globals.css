@@ -18,6 +18,27 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.chart-detail-tooltip {
+  position: absolute;
+  z-index: 15;
+  pointer-events: none;
+  width: 236px;
+  max-width: calc(100% - 16px);
+  padding: 12px 14px;
+  border: 1px solid #35445b;
+  border-radius: 12px;
+  background: #111a2b;
+  color: #eff3fa;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 22%);
+  font-size: 12px;
+}
+.chart-detail-tooltip-date { color: #b69249; font-weight: 600; margin-bottom: 8px; }
+.chart-detail-tooltip-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 5px; }
+.chart-detail-tooltip-row > span { color: #a4aec1; }
+.chart-detail-tooltip-row > strong { font-family: var(--font-geist-mono), monospace; text-align: right; }
+html.light .chart-detail-tooltip { background: #fff; color: #1b2638; border-color: #d8dfeb; box-shadow: 0 8px 28px rgb(27 38 56 / 12%); }
+html.light .chart-detail-tooltip-row > span { color: #657084; }
+
 /* Custom Sleek Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
