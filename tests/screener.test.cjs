@@ -1,9 +1,47 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),ts=require('typescript');
-const file=path.resolve(__dirname,'../src/lib/screener.ts'),m=new Module(file,module);
-m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,file);
-const {metricValue,matchesRanges,rangeError,screenQuotes,blueChipUniverse,screenerCSV}=m.exports;
+function load(name){const file=path.resolve(__dirname,'../src/lib/'+name+'.ts'),m=new Module(file,module);m.require=id=>id.startsWith('./')?load(id.slice(2)):require(id);m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,file);return m.exports;}
+const {metricValue,matchesRanges,rangeError,screenQuotes,blueChipUniverse,screenerCSV}=load('screener');
 const base={symbol:'ABC',name:'Example company',sector:'ENERGY',current:10,change:0,changePercent:0,volume:0};
 const options={search:'',sector:'ALL',shariahOnly:false,ranges:[],bluechips:false,sort:'marketCap',order:'desc'};
+const {RESEARCH_METRICS,parseResearchRows,researchRequest}=load('screener-research-data');
+
+test('captured public fundamentals map exact fields, preserve negative returns and never substitute ROE for ROIC',()=>{
+ const fixture=JSON.parse(fs.readFileSync(path.join(__dirname,'fixtures/screener-research.json'),'utf8'));
+ const rows=parseResearchRows(fixture,RESEARCH_METRICS),prl=rows.find(r=>r.symbol==='PRL');
+ assert.equal(prl.values.roe,36.89);assert.equal(prl.values.priceToBook,1.06);assert.equal(prl.values.expectedPe,1.07);assert.equal(prl.values.evEbitda,2.28);
+ assert.equal(RESEARCH_METRICS.some(m=>m.key==='roic'),false);
+ const negative=parseResearchRows({d:[{company_symbol:'LOSS',Company_name:'Example Consolidated',ReturnOnEquity:-12.5,ExpectedPriceToEarning:0,PriceToBookValue:null}]},RESEARCH_METRICS)[0];
+ assert.equal(negative.values.roe,-12.5);assert.equal(negative.values.expectedPe,undefined);assert.equal(negative.values.priceToBook,undefined);assert.equal(negative.basis,'Consolidated');
+ assert.deepEqual(parseResearchRows('<html>Error</html>',RESEARCH_METRICS),[]);
+ assert.deepEqual(parseResearchRows({d:[{company_symbol:'ABC',Company_name:'A',ReturnOnEquity:10},{company_symbol:'ABC',Company_name:'A Consolidated',ReturnOnEquity:20}]},RESEARCH_METRICS),[]);
+ const q={...base,research:negative};assert.equal(matchesRanges(q,[{key:'roe',min:'-15',max:'-10'}]),true);
+});
+
+test('bulk fundamentals query includes wide negative bounds and exact metric identifiers',()=>{
+ const request=researchRequest(RESEARCH_METRICS.filter(m=>m.key==='roe'));
+ assert.deepEqual(JSON.parse(request.ids),[1,['7']]);assert.deepEqual(JSON.parse(request.bet),[1,['-1000000000','1000000000']]);
+});
+
+test('advanced screens use only each company source values; missing expected P/E does not hide available ROE',()=>{
+ const quotes=[{...base,symbol:'A',research:{symbol:'A',basis:'Consolidated',values:{roe:25,priceToBook:1.25}}},{...base,symbol:'B',research:{symbol:'B',basis:'Basis not specified',values:{roe:12,expectedPe:4}}}];
+ assert.deepEqual(screenQuotes(quotes,{...options,ranges:[{key:'roe',min:'20',max:''}]}).map(q=>q.symbol),['A']);
+ assert.deepEqual(screenQuotes(quotes,{...options,ranges:[{key:'expectedPe',min:'',max:'5'}]}).map(q=>q.symbol),['B']);
+ assert.ok(screenerCSV(quotes).includes('Return on equity (ROE) (%)'));
+});
+
+test('independent bulk groups preserve healthy metrics during source failure and never merge conflicting bases',async()=>{
+ const {fetchScreenerResearch}=load('screener-research');const before=global.fetch;
+ try{
+  global.fetch=async(_,opts)=>{
+   const ids=JSON.parse(JSON.parse(opts.body).ids).slice(1).flat();
+   if(ids.includes('3'))return {ok:false};
+   if(ids.includes('14'))return {ok:true,json:async()=>({d:[{company_symbol:'ABC',Company_name:'A Unconsolidated',ExpectedEarningGowth:20}]})};
+   return {ok:true,json:async()=>({d:[{company_symbol:'ABC',Company_name:'A Consolidated',ReturnOnEquity:25}]})};
+  };
+  const data=await fetchScreenerResearch();assert.equal(data.complete,false);assert.deepEqual(data.unavailable,['expectedPe']);assert.equal(data.rows[0].values.roe,25);assert.equal(data.rows[0].values.expectedGrowth,undefined);
+  global.fetch=async()=>{throw new Error('offline');};const missing=await fetchScreenerResearch();assert.deepEqual(missing.rows,[]);assert.equal(missing.complete,false);
+ }finally{global.fetch=before;}
+});
 
 test('custom fractional bounds are inclusive, combine with AND, and removing a filter broadens results',()=>{
  const quotes=[{...base,symbol:'A',peRatio:6.25,dividendYield:8.75},{...base,symbol:'B',peRatio:7.5,dividendYield:8.75},{...base,symbol:'C',peRatio:6.25,dividendYield:0}];
