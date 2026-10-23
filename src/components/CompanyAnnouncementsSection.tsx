@@ -61,7 +61,7 @@ export default function CompanyAnnouncementsSection({
             </Link>
           </div>
           <p className="text-xs text-[#A4AEC1] mt-0.5">
-            Real-time PSX disclosures with executive summaries and original source documents
+            PSX company filings and original source documents
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export default function CompanyAnnouncementsSection({
               </h3>
 
               <p className="text-xs text-[#A4AEC1] leading-relaxed line-clamp-3">
-                {ann.summary || ann.title}
+                {ann.summary || ''}
               </p>
             </div>
 

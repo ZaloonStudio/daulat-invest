@@ -9,6 +9,7 @@ Only publisher RSS headlines, original article links, image URLs and publication
 - Deduplicate article IDs despite slug/URL variations, plus repeated normalized titles within a publisher. Connected duplicate groups are resolved consistently. Independent publishers' coverage is retained, not merged by fuzzy topic similarity. Feed display is capped at50headlines.
 - Show both source statuses, including failures and feeds with no recent stories. One publisher's outage does not discard the healthy publisher. HTTP200 challenge HTML is not accepted as RSS. Each request has an eight-second timeout and five-minute Next data caching.
 - Search trims surrounding whitespace. Full feed failure no longer suggests that clearing filters will fix upstream availability.
+- Remove the unsupported executive-summary claim from company filings and stop repeating a filing title as its summary.
 - Stock Announcements panels now include company news from the current feed. Matching uses clear company-name phrases or explicit ticker notation (`PSX:LUCK`, `$LUCK`, `(LUCK)`), with selected brand aliases. Generic industry words and plain symbol substrings do not match. It is deliberately conservative and can miss headlines that use only an ambiguous abbreviation. Empty matches mean no matched headline in this feed, not that no company news exists anywhere.
 
 ## Verification
