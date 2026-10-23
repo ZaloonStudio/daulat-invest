@@ -1,5 +1,6 @@
 import type { MutualFund } from './mutualFundsData';
 export type ReportFund = Omit<MutualFund,'nav'|'return1M'|'returnYTD'|'return1Y'|'return3Y'|'aumBillion'> & {
+  navSource?:string;navSourceName?:string;navKind?:string;
   returnBasis?:'Annualized'|'Absolute'|'Unspecified';
   nav:number|null;return1M:number|null;returnYTD:number|null;return1Y:number|null;return3Y:number|null;aumBillion:number|null;
 };
@@ -11,7 +12,19 @@ function number(value:string):number|null {
   if (!/^[+-]?\d+(\.\d+)?$/.test(clean)) return null;
   const n=Number(clean);return Number.isFinite(n)?n:null;
 }
-export type FundObservation = { returnBasis?:'Annualized'|'Absolute'|'Unspecified'; name:string;nav:number;date:string;ytd:number|null;month:number|null;year:number|null;threeYears:number|null;rating:string };
+export type FundObservation = { source?:string;sourceName?:string;provider?:'HBL'|'NBP';navKind?:string;returnBasis?:'Annualized'|'Absolute'|'Unspecified'; name:string;nav:number;date:string;ytd:number|null;month:number|null;year:number|null;threeYears:number|null;rating:string };
+export function fundValuationDate(raw:string,now=Date.now()):string|null {
+ if(!/^[A-Za-z]{3,9} \d{1,2},? \d{4}$/.test(raw))return null;
+ const match=raw.match(/^([A-Za-z]+) (\d{1,2}),? (\d{4})$/)!;
+ const month=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(match[1].slice(0,3).toLowerCase());
+ const monthName=['January','February','March','April','May','June','July','August','September','October','November','December'][month];
+ if(!monthName||![monthName.toLowerCase(),monthName.slice(0,3).toLowerCase()].includes(match[1].toLowerCase()))return null;
+ const day=Number(match[2]),year=Number(match[3]);
+ const utc=new Date(Date.UTC(year,month,day));
+ const dateMs=utc.getTime()-5*3600000;
+ if(month<0||utc.getUTCMonth()!==month||utc.getUTCDate()!==day||year<2000||dateMs>now+300000)return null;
+ return `${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][month]} ${day}, ${year}`;
+}
 export function parseFundReport(html:string, now=Date.now()):FundObservation[] {
   const output:FundObservation[]=[];
   for(const table of html.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)) {
@@ -27,22 +40,24 @@ export function parseFundReport(html:string, now=Date.now()):FundObservation[] {
       if(i('fundname')<0||i('validitydate')<0||i('nav')<0||cells.length!==columns.length)continue;
       const rawDate=cells[i('validitydate')];
       // MUFAP publishes English month names; reject ambiguous numeric dates.
-      if(!/^[A-Za-z]{3,9} \d{1,2},? \d{4}$/.test(rawDate))continue;
-      const dateMs=Date.parse(rawDate+' 00:00:00 GMT+0500');
+      const date=fundValuationDate(rawDate,now);
       const nav=number(cells[i('nav')]);
-      if(!Number.isFinite(dateMs)||dateMs>now+300000||dateMs<946684800000||nav===null||nav<=0)continue;
+      if(date===null||nav===null||nav<=0)continue;
       const value=(column:string)=>i(column)<0?null:number(cells[i(column)]);
-      output.push({returnBasis,name:cells[i('fundname')],date:rawDate,nav,ytd:value('ytd'),month:value('30days'),year:value('365days'),threeYears:value('3years'),rating:i('rating')<0?'':cells[i('rating')]});
+      output.push({returnBasis,name:cells[i('fundname')],date,nav,ytd:value('ytd'),month:value('30days'),year:value('365days'),threeYears:value('3years'),rating:i('rating')<0?'':cells[i('rating')],source:FUND_SOURCE,sourceName:'MUFAP'});
     }
   }
   return output;
 }
 export function applyFundReport(catalog:MutualFund[], observations:FundObservation[]):ReportFund[] {
   return catalog.map(fund=>{
-    const matches=observations.filter(item=>key(item.name)===key(fund.name));
+    const matches=observations.filter(item=>key(item.name)===key(fund.name)&&(!item.provider||fund.amc.startsWith(item.provider)));
     // Ambiguous funds/plans must not be merged into a different investment.
-    const observation=matches.length===1?matches[0]:undefined;
-    return {...fund,returnBasis:observation?.returnBasis??'Unspecified',nav:observation?.nav??null,navDate:observation?.date??'Unavailable',return1M:observation?.month??null,returnYTD:observation?.ytd??null,return1Y:observation?.year??null,return3Y:observation?.threeYears??null,aumBillion:null,benchmark:'See AMC report',trustee:'See AMC report',rating:observation?.rating||undefined,managementFee:'See AMC report',frontendLoad:'See AMC report'};
+    // Prefer the newest dated observation. Conflicting same-date values fail closed.
+    const newest=matches.sort((a,b)=>Date.parse(b.date)-Date.parse(a.date))[0];
+    const sameDate=newest?matches.filter(m=>m.date===newest.date):[];
+    const observation=sameDate.length&&new Set(sameDate.map(m=>m.sourceName)).size===sameDate.length&&sameDate.every(m=>m.nav===newest.nav)?sameDate.find(m=>m.sourceName==='MUFAP')??newest:undefined;
+    return {...fund,navSource:observation?.source,navSourceName:observation?.sourceName,navKind:observation?.navKind,returnBasis:observation?.returnBasis??'Unspecified',nav:observation?.nav??null,navDate:observation?.date??'Unavailable',return1M:observation?.month??null,returnYTD:observation?.ytd??null,return1Y:observation?.year??null,return3Y:observation?.threeYears??null,aumBillion:null,benchmark:'See AMC report',trustee:'See AMC report',rating:observation?.rating||undefined,managementFee:'See AMC report',frontendLoad:'See AMC report'};
   });
 }
 export function fundNumber(value:number|null|undefined,digits=2):string {return typeof value==='number'&&Number.isFinite(value)?value.toFixed(digits):'—';}

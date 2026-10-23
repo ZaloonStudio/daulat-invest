@@ -52,7 +52,8 @@ export default async function MutualFundsPage() {
             </div>
           }
         >
-          {!snapshot.available && <p role="status" className="text-xs text-[#B69249] mb-4">NAV feed unavailable. Fund directory remains available; check MUFAP for current figures.</p>}
+          {!snapshot.available && <p role="status" className="text-xs text-[#B69249] mb-4">NAV feed unavailable. Fund directory remains available; check the official AMC for current figures.</p>}
+          {snapshot.available&&snapshot.partial&&<p role="status" className="text-xs text-[#B69249]">Partial NAV coverage. Returns remain unavailable where the source reporting period or basis cannot be verified.</p>}
           <MutualFundsClient funds={snapshot.funds} />
         </Suspense>
       </main>

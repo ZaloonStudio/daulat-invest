@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { type ReportFund as MutualFund, fundNumber, fundReturn, fundIsDelayed, FUND_SOURCE } from '@/lib/fund-data';
+import { type ReportFund as MutualFund, fundNumber, fundReturn, fundIsDelayed } from '@/lib/fund-data';
 import {
   Search,
   Moon,
@@ -26,6 +26,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
   const [selectedAmc, setSelectedAmc] = useState<string>('ALL');
   const [selectedRisk, setSelectedRisk] = useState<string>('ALL');
   const [islamicOnly, setIslamicOnly] = useState(false);
+  const [navOnly,setNavOnly]=useState(false);
   const [activePreset, setActivePreset] = useState<string | null>(null);
 
   const [sortField, setSortField] = useState<SortField>('name');
@@ -91,6 +92,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
     setSelectedAmc('ALL');
     setSelectedRisk('ALL');
     setIslamicOnly(false);
+    setNavOnly(false);
     setActivePreset(null);
   };
 
@@ -98,6 +100,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
   const filteredFunds = useMemo(() => {
     return funds
       .filter((f) => {
+        if(navOnly&&f.nav===null)return false;
         // Search
         if (search) {
           const matchName = f.name.toLowerCase().includes(search.toLowerCase());
@@ -143,7 +146,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
         if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
         return 0;
       });
-  }, [funds, search, selectedCategory, selectedAmc, selectedRisk, islamicOnly, sortField, sortOrder]);
+  }, [funds, search, selectedCategory, selectedAmc, selectedRisk, islamicOnly, navOnly, sortField, sortOrder]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -155,7 +158,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
   };
 
   const exportCSV = () => {
-    const headers = ['Fund Name', 'Symbol', 'AMC', 'Category', 'Shariah Compliant', 'Risk Profile', 'NAV (PKR)', 'NAV Date', '30D Reported (%)', 'YTD Return (%)', '1Y Return (%)', 'AUM (Billion PKR)', 'Rating'];
+    const headers = ['Fund Name', 'Symbol', 'AMC', 'Category', 'Shariah Compliant', 'Risk Profile', 'NAV (PKR)', 'NAV Date', '30D Reported (%)', 'YTD Return (%)', '1Y Return (%)', 'AUM (Billion PKR)', 'Rating', 'NAV Source', 'Source URL', 'Price Type', 'Return Basis'];
     const rows = filteredFunds.map((f) => [
       `"${f.name.replace(/"/g, '""')}"`,
       f.symbol,
@@ -163,13 +166,17 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
       `"${f.category}"`,
       f.isIslamic ? 'Yes' : 'No',
       f.riskProfile,
-      fundNumber(f.nav,2),
+      fundNumber(f.nav,4),
       `"${f.navDate}"`,
       fundNumber(f.return1M,2),
       fundNumber(f.returnYTD,2),
       fundNumber(f.return1Y,2),
       f.aumBillion===null?'':fundNumber(f.aumBillion,1),
       f.rating || '—',
+      f.navSourceName || '',
+      f.navSource || '',
+      f.navKind || 'NAV',
+      f.returnBasis || 'Unspecified',
     ]);
 
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
@@ -184,7 +191,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
 
   return (
     <div className="space-y-6">
-      <p className="text-xs text-[#A4AEC1]"><a href={FUND_SOURCE} target="_blank" rel="noopener noreferrer" className="text-[#B69249] hover:underline">MUFAP reported data ↗</a> · {funds.filter(f=>f.nav!==null).length}/{funds.length} NAVs available. Compare returns within the same category and reporting basis. Missing values shown as —.</p>
+      <div className="flex flex-wrap justify-between gap-3 text-xs text-[#A4AEC1]"><p>{funds.filter(f=>f.nav!==null).length}/{funds.length} dated NAVs available · Official MUFAP / AMC sources · Missing figures shown as —.</p><label className="flex gap-2 items-center cursor-pointer"><input type="checkbox" checked={navOnly} onChange={e=>setNavOnly(e.target.checked)}/>With NAV only</label></div>
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl shadow-lg">
@@ -210,10 +217,10 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
         <div className="bg-[#111A2B] border border-[#B69249]/30 p-4 rounded-xl shadow-lg">
           <div className="flex items-center space-x-2 text-[#B69249] text-[10px] font-semibold uppercase tracking-wider mb-1">
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>Top 1Y Equity Return</span>
+            <span>Dated NAV Coverage</span>
           </div>
-          <div className="text-2xl font-semibold text-[#B69249]">{fundReturn(funds.filter(f=>f.category==='Islamic Equity'&&f.return1Y!==null).sort((a,b)=>b.return1Y!-a.return1Y!)[0]?.return1Y)}</div>
-          <span className="text-[11px] text-[#A4AEC1]">Reported equity funds</span>
+          <div className="text-2xl font-semibold text-[#B69249]">{funds.filter(f=>f.nav!==null).length} / {funds.length}</div>
+          <span className="text-[11px] text-[#A4AEC1]">Official source observations</span>
         </div>
 
         <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl shadow-lg">
@@ -545,8 +552,8 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
 
                       {/* NAV */}
                       <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#EFF3FA]">
-                        {fund.nav===null?'—':'Rs '+fundNumber(fund.nav,2)}
-                        <span className="block text-[10px] font-normal text-[#A4AEC1] mt-1">{fund.nav!==null?fund.navDate+(fundIsDelayed(fund.navDate)?' · Delayed':''):'NAV unavailable'}</span>
+                        {fund.nav===null?'—':'Rs '+fundNumber(fund.nav,4)}
+                        <span className="block text-[10px] font-normal text-[#A4AEC1] mt-1">{fund.nav!==null?fund.navDate+(fundIsDelayed(fund.navDate)?' · Delayed':''):'NAV unavailable'}</span>{fund.navSource&&<a href={fund.navSource} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} className="block text-[10px] text-[#B69249] mt-1">{fund.navSourceName} ↗</a>}
                       </td>
 
                       {/* 30D Reported */}
@@ -631,14 +638,15 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
               </p>
             </div>
 
+            {selectedFund.navSource&&<a href={selectedFund.navSource} target="_blank" rel="noopener noreferrer" className="text-xs text-[#B69249]">NAV source: {selectedFund.navSourceName} ↗</a>}
             {/* Performance Metric Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="bg-[#0B1120] border border-[#28354A] p-3.5 rounded-xl">
-                <span className="text-[10px] text-[#A4AEC1] uppercase font-semibold block">Current NAV</span>
+                <span className="text-[10px] text-[#A4AEC1] uppercase font-semibold block">Reported NAV</span>
                 <div className="text-lg font-semibold text-[#EFF3FA] mt-0.5 font-mono">
-                  Rs {fundNumber(selectedFund.nav,2)}
+                  Rs {fundNumber(selectedFund.nav,4)}
                 </div>
-                <span className="text-[10px] text-[#A4AEC1]">{selectedFund.navDate} · Return basis: {selectedFund.returnBasis ?? 'Unspecified'}</span>
+                <span className="text-[10px] text-[#A4AEC1]">{selectedFund.navDate}{fundIsDelayed(selectedFund.navDate)?' · Delayed':''} · {selectedFund.navKind||'NAV'}</span>
               </div>
 
               <div className="bg-[#0B1120] border border-[#6DDBA5]/30 p-3.5 rounded-xl">
@@ -646,7 +654,7 @@ export default function MutualFundsClient({funds}: {funds:MutualFund[]}) {
                 <div className="text-lg font-semibold text-[#6DDBA5] mt-0.5 font-mono">
                   {fundReturn(selectedFund.return1M)}
                 </div>
-                <span className="text-[10px] text-[#A4AEC1]">Annualized</span>
+                <span className="text-[10px] text-[#A4AEC1]">{selectedFund.returnBasis==='Annualized'?'Annualized':selectedFund.returnBasis==='Absolute'?'Absolute':'Basis unavailable'}</span>
               </div>
 
               <div className="bg-[#0B1120] border border-[#6DDBA5]/30 p-3.5 rounded-xl">

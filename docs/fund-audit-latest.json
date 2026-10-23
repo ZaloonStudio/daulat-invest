@@ -1,0 +1,85 @@
+{
+  "checkedAt": "2026-10-23T08:09:23.597Z",
+  "available": 7,
+  "total": 28,
+  "partial": true,
+  "funds": [
+    {
+      "name": "NBP Islamic Money Market Fund",
+      "nav": 10.5485,
+      "valuationDate": "Oct 23, 2026",
+      "source": "https://www.nbpfunds.com/fund-prices/fund-nav-view/",
+      "sourceName": "NBP Funds",
+      "navKind": "NAV / redemption",
+      "return1M": null,
+      "returnYTD": null,
+      "return1Y": null
+    },
+    {
+      "name": "NBP Mahana Amdani Fund",
+      "nav": 10.6944,
+      "valuationDate": "Oct 22, 2026",
+      "source": "https://www.nbpfunds.com/fund-prices/fund-nav-view/",
+      "sourceName": "NBP Funds",
+      "navKind": "NAV / redemption",
+      "return1M": null,
+      "returnYTD": null,
+      "return1Y": null
+    },
+    {
+      "name": "NBP Stock Fund",
+      "nav": 40.0917,
+      "valuationDate": "Oct 22, 2026",
+      "source": "https://www.nbpfunds.com/fund-prices/fund-nav-view/",
+      "sourceName": "NBP Funds",
+      "navKind": "NAV / redemption",
+      "return1M": null,
+      "returnYTD": null,
+      "return1Y": null
+    },
+    {
+      "name": "NBP Islamic Sarmaya Izafa Fund",
+      "nav": 33.0815,
+      "valuationDate": "Oct 22, 2026",
+      "source": "https://www.nbpfunds.com/fund-prices/fund-nav-view/",
+      "sourceName": "NBP Funds",
+      "navKind": "NAV / redemption",
+      "return1M": null,
+      "returnYTD": null,
+      "return1Y": null
+    },
+    {
+      "name": "HBL Cash Fund",
+      "nav": 107.0762,
+      "valuationDate": "Oct 23, 2026",
+      "source": "https://hblasset.com/products/",
+      "sourceName": "HBL AMC",
+      "navKind": "NAV",
+      "return1M": null,
+      "returnYTD": null,
+      "return1Y": null
+    },
+    {
+      "name": "HBL Islamic Money Market Fund",
+      "nav": 105.1475,
+      "valuationDate": "Oct 23, 2026",
+      "source": "https://hblasset.com/products/",
+      "sourceName": "HBL AMC",
+      "navKind": "NAV",
+      "return1M": null,
+      "returnYTD": null,
+      "return1Y": null
+    },
+    {
+      "name": "HBL Islamic Stock Fund",
+      "nav": 252.9904,
+      "valuationDate": "Oct 22, 2026",
+      "source": "https://hblasset.com/products/",
+      "sourceName": "HBL AMC",
+      "navKind": "NAV",
+      "return1M": null,
+      "returnYTD": null,
+      "return1Y": null
+    }
+  ]
+}
