@@ -65,14 +65,13 @@ export default function HomeClientContainer({
       </section>
       <QuickLinksBar/>
 
-      {/* 5. PSX Investor Community Preview */}
-      <section id="community-section">
-        <CommunityPreview />
-      </section>
-
       {/* 6. Live Business News Center */}
       <section id="news-section">
         <MarketNewsSection articles={news} statuses={newsStatuses}/>
+      </section>
+
+      <section id="community-section">
+        <CommunityPreview />
       </section>
 
       {/* 7. Corporate Announcements & Filings */}

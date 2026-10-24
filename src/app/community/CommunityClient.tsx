@@ -29,85 +29,8 @@ import {
   limit,
 } from 'firebase/firestore';
 
-const SEED_POSTS: CommunityPost[] = [
-  {
-    id: 'seed-1',
-    author: 'Asad_EquityAnalyst',
-    authorBadge: 'Chartered Analyst',
-    symbolTag: 'HUBC',
-    title: 'Hub Power (HUBC) dividend safety post-PPA revisions: Full breakdown',
-    content:
-      'After recent capacity payment renegotiations, many investors feared severe cash-flow cuts. However, looking at the receivables trajectory and upcoming dividend announcements, HUBC yield remains near 16–18% annualized. The company retains healthy cash conversion from Thar Energy and CPHGC ventures.',
-    sentiment: 'Bullish',
-    upvotes: 56,
-    commentsCount: 12,
-    timestamp: '3 hours ago',
-    comments: [
-      {
-        id: 'c-1',
-        author: 'Kashif_Trader',
-        content: 'Agreed. Thar coal mine dividend stream is dollar-indexed which cushions local currency depreciation.',
-        timestamp: '2 hours ago',
-      },
-      {
-        id: 'c-2',
-        author: 'Zubair_PSX',
-        content: 'Watch out for circular debt settlement timelines though. Still prudent to keep it below 15% of portfolio.',
-        timestamp: '1 hour ago',
-      },
-    ],
-  },
-  {
-    id: 'seed-2',
-    author: 'Saman_Fintech',
-    authorBadge: 'Verified Investor',
-    symbolTag: 'MEBL',
-    title: 'Meezan Bank branch expansion: 1,000+ branches and Islamic banking dominance',
-    content:
-      'Meezan Bank continues to report industry-leading Return on Equity (>40%). While policy rate cuts will gradually compress Net Interest Margins across conventional banks, MEBL has a higher share of low-cost current accounts (CASA ratio >52%) which shields earnings.',
-    sentiment: 'Bullish',
-    upvotes: 48,
-    commentsCount: 8,
-    timestamp: '5 hours ago',
-    comments: [
-      {
-        id: 'c-3',
-        author: 'Bilal_KHI',
-        content: 'MEBL is the bedrock of Shariah compliant investing in Pakistan. Great long-term compounder.',
-        timestamp: '4 hours ago',
-      },
-    ],
-  },
-  {
-    id: 'seed-3',
-    author: 'Hamza_Macro',
-    symbolTag: 'OGDC',
-    title: 'OGDC exploration update & circular debt resolution roadmap',
-    content:
-      'Exploration drilling in Bettani and regional wells showing steady production. If the government announces another sovereign energy bond for circular debt clearing, OGDC and PPL will see rapid multiple expansion.',
-    sentiment: 'Neutral',
-    upvotes: 34,
-    commentsCount: 5,
-    timestamp: '8 hours ago',
-    comments: [],
-  },
-  {
-    id: 'seed-4',
-    author: 'TechBull_Lahore',
-    symbolTag: 'SYS',
-    title: 'Systems Limited IT export demand outlook for FY2026',
-    content:
-      'With interest rates dropping in the US and Europe, enterprise digital transformation budgets are thawing. SYS trading near favorable valuations compared to historical 5-year averages.',
-    sentiment: 'Bullish',
-    upvotes: 29,
-    commentsCount: 4,
-    timestamp: '12 hours ago',
-    comments: [],
-  },
-];
-
 export default function CommunityClient() {
-  const [posts, setPosts] = useState<CommunityPost[]>(SEED_POSTS);
+  const [posts, setPosts] = useState<CommunityPost[]>([]);
   const { user, openSignIn, logout } = useAuth();
   const [search, setSearch] = useState('');
   const [selectedSentiment, setSelectedSentiment] = useState<'All' | 'Bullish' | 'Bearish'>('All');
@@ -141,7 +64,7 @@ export default function CommunityClient() {
         try {
           const parsed = JSON.parse(cached);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            setPosts(parsed);
+            setPosts(parsed.filter((post:CommunityPost)=>post&&typeof post.id==='string'&&!/^(seed|sample)-/.test(post.id)));
           }
         } catch {}
       }
@@ -157,7 +80,7 @@ export default function CommunityClient() {
       try {
         const q = query(collection(db, 'community_posts'), orderBy('timestamp', 'desc'), limit(50));
         const snapshot = await getDocs(q);
-        if (!snapshot.empty) {
+        {
           const remotePosts: CommunityPost[] = [];
           snapshot.forEach((docSnap) => {
             const data = docSnap.data();
@@ -179,7 +102,7 @@ export default function CommunityClient() {
           localStorage.setItem('daulat_community_posts', JSON.stringify(remotePosts));
         }
       } catch {
-        // Firestore rules or offline: keep seeded / local
+        // Keep locally cached user posts if the cloud is unavailable.
       }
     }
 
