@@ -223,8 +223,29 @@ html.light .footer-link:hover { color: #886521; }
 .overview-title { font-size: clamp(40px, 4.8vw, 66px); line-height: 1.06; letter-spacing: -.065em; font-weight: 500; }
 .hero-chart { background-image: radial-gradient(ellipse at 0 0, rgba(182,146,73,.035), transparent 60%); }
 .hero-stats { background-color: transparent; }
-.research-tool { display: flex; align-items: center; gap: 10px; background: #0B1120; padding: 20px 16px; font-size: 11px; color: #C8CFDC; transition: background .2s; }
-.research-tool:hover { background: #172237; }
+/* Research toolkit: prominent destinations, quieter supporting tools. */
+.research-tools { --tool-bg: #111A2B; --tool-border: #28354A; --tool-title: #EFF3FA; --tool-muted: #A4AEC1; --tool-gold: #C5A35B; --tool-hover: #172237; }
+.research-primary-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+.research-primary-card { min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 22px; padding: 22px; background: var(--tool-bg); border: 1px solid var(--tool-border); border-radius: 14px; color: var(--tool-title); transition: border-color .2s, background .2s, transform .2s; }
+.research-icon { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 12px; color: var(--tool-gold); background: rgba(182,146,73,.10); border: 1px solid rgba(182,146,73,.16); }
+.research-description { color: var(--tool-muted); }
+.research-arrow { color: var(--tool-muted); transition: color .2s, transform .2s; }
+.research-primary-card:hover, .research-primary-card:focus-visible { border-color: var(--tool-gold); background: var(--tool-hover); transform: translateY(-2px); }
+.research-primary-card:hover .research-arrow, .research-primary-card:focus-visible .research-arrow, .research-supporting-link:hover .research-arrow { color: var(--tool-gold); transform: translate(2px,-2px); }
+.research-supporting-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin-top: 14px; }
+.research-supporting-link { min-width: 0; min-height: 54px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--tool-border); border-radius: 10px; font-size: 12px; color: var(--tool-muted); transition: border-color .2s, background .2s; }
+.research-supporting-link > svg:first-child { color: var(--tool-gold); }
+.research-supporting-link:hover, .research-supporting-link:focus-visible { background: var(--tool-hover); border-color: var(--tool-gold); color: var(--tool-title); }
+html.light .research-tools { --tool-bg: #FFFFFF; --tool-border: #E3E5E8; --tool-title: #1B2638; --tool-muted: #657084; --tool-gold: #886521; --tool-hover: #FAF8F2; }
+@media (max-width: 767px) {
+ .research-primary-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+ .research-primary-card { padding: 16px; gap: 18px; }
+ .research-primary-card:first-child { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: flex-start; gap: 16px; }
+ .research-primary-card:first-child > div:first-child { position: static; }
+ .research-primary-card:first-child .research-arrow { display: none; }
+ .research-supporting-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+ .research-supporting-link { font-size: 11px; padding: 12px 10px; gap: 8px; }
+}
 .home-overview > section { scroll-margin-top: 150px; }
 .home-overview > section:not(#indices-section) { padding-top: 4px; }
 html.light .site-header { background: rgba(248,250,248,.94); }
@@ -232,8 +253,6 @@ html.light .desktop-nav-link { color: #657084; }
 html.light .desktop-nav-link.is-active, html.light .desktop-nav-link:hover { color: #886521; }
 html.light .desktop-nav-link.is-active::after { background: #886521; }
 html.light .eyebrow { color: #657084; }
-html.light .research-tool { background: #fff; color: #364154; }
-html.light .research-tool:hover { background: #F3F1EB; }
 html.light .text-\[\#B69249\] { color: #886521; }
 html.light .text-\[\#6DDBA5\] { color: #167348; }
 html.light .text-\[\#F28B82\] { color: #BF4038; }
@@ -247,7 +266,6 @@ html.light :focus-visible { outline-color: #886521; }
   .overview-heading > div:last-child { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 16px; }
   .overview-heading > div:last-child > .eyebrow { display: none; }
   .overview-title { font-size: 44px; }
-  .research-tool { padding: 17px 12px; font-size: 10px; gap: 8px; }
   html { scroll-padding-top: 100px; }
 }
 @media (prefers-reduced-motion: reduce) {
