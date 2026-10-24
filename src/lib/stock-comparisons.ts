@@ -62,3 +62,6 @@ export function resolveComparison(slug:string):StockComparison|undefined {
 export const comparisonPath=(p:StockComparison)=>'/stocks/compare/'+p.slug;
 export const comparisonTitle=(p:StockComparison)=>COMPARISON_COMPANIES[p.left].short+' vs '+COMPARISON_COMPANIES[p.right].short;
 export const comparisonsForStock=(symbol:string)=>STOCK_COMPARISONS.filter(p=>p.left===symbol||p.right===symbol);
+
+const DIRECTORY_NAMES:Partial<Record<ComparisonSymbol,string>>={MEBL:'Meezan',GAL:'Ghandhara',FATIMA:'Fatima',FFC:'Fauji Fertilizer',EFERT:'Engro Fertilizers'};
+export const comparisonDirectoryTitle=(p:StockComparison)=>[p.left,p.right].map(symbol=>DIRECTORY_NAMES[symbol]??COMPARISON_COMPANIES[symbol].short.replace(/\s+\([A-Z0-9]+\)$/,'')).join(' vs ');
