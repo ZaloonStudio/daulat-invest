@@ -26,4 +26,14 @@ assert.ok(!sitemap.includes('<lastmod>'));
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
 assert.equal(new Set(urls).size, urls.length);
 assert.ok(urls.some(url => url.endsWith('/stocks/KEL')), 'Stock URLs missing');
+const directory=fs.readFileSync(path.join(root,'stocks/compare/all.html'),'utf8');
+const pairFiles=files.filter(file=>/^stocks[\\/]compare[\\/][a-z0-9-]+-vs-[a-z0-9-]+\.html$/.test(file));
+for(const file of pairFiles){
+ const slug=path.basename(file,'.html'),url='/stocks/compare/'+slug;
+ assert.ok(directory.includes('href="'+url+'"'),slug+': missing directory link');
+ assert.ok(urls.includes('https://www.daulatinvest.com'+url),slug+': missing sitemap URL');
+}
+const comparisonHub=fs.readFileSync(path.join(root,'stocks/compare.html'),'utf8');
+assert.ok(comparisonHub.includes('href="/stocks/compare/all"'),'Comparison directory is orphaned');
+console.log('Comparison discoverability checks passed for '+pairFiles.length+' pairs.');
 console.log('SEO HTML checks passed for ' + titles.size + ' pages and ' + urls.length + ' sitemap URLs.');

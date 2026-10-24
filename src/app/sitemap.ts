@@ -21,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/commodities`, changeFrequency: 'hourly', priority: 0.9 },
     { url: `${baseUrl}/forex`, changeFrequency: 'hourly', priority: 0.9 },
     { url: `${baseUrl}/shariah`, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${baseUrl}/stocks/compare/all`, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/stocks/compare`, changeFrequency: 'daily', priority: 0.8 },
     { url: `${baseUrl}/announcements`, changeFrequency: 'hourly', priority: 0.8 },
     { url: `${baseUrl}/dividend-calculator`, changeFrequency: 'weekly', priority: 0.7 },

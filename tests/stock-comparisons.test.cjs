@@ -1,8 +1,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),ts=require('typescript');
 function load(name){const file=path.resolve(__dirname,'../src/lib/'+name+'.ts'),m=new Module(file,module);m.require=id=>id.startsWith('./')?load(id.slice(2)):require(id);m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,file);return m.exports;}
 const catalog=load('stock-comparisons'),data=load('comparison-data'),supp=load('supplemental-fundamentals');
-test('curated catalog has 13 unique pairs with complete three-company fertilizer coverage',()=>{
- const pairs=catalog.STOCK_COMPARISONS;assert.equal(pairs.length,13);assert.equal(new Set(pairs.map(p=>[p.left,p.right].sort().join('|'))).size,13);
+test('curated catalog has 53 unique pairs with complete three-company fertilizer coverage',()=>{
+ const pairs=catalog.STOCK_COMPARISONS;assert.equal(pairs.length,53);assert.equal(new Set(pairs.map(p=>[p.left,p.right].sort().join('|'))).size,53);
+ assert.equal(pairs.filter(p=>p.featured).length,13);assert.equal(new Set(pairs.map(p=>p.sector)).size,10);
  const fert=pairs.filter(p=>p.sector==='Fertilizer');assert.equal(fert.length,3);
  for(const [a,b] of [['FATIMA','FFC'],['FATIMA','EFERT'],['FFC','EFERT']])assert.ok(fert.some(p=>[p.left,p.right].includes(a)&&[p.left,p.right].includes(b)));
  for(const p of pairs){assert.notEqual(p.left,p.right);assert.ok(catalog.COMPARISON_COMPANIES[p.left]);assert.ok(catalog.COMPARISON_COMPANIES[p.right]);assert.equal(catalog.comparisonPath(p),'/stocks/compare/'+p.slug);}
@@ -25,4 +26,11 @@ test('comparison values preserve each reporting period and use PSX price for pri
  assert.equal(groups[1].rows.find(r=>r.label==='Return on equity (ROE)').values[0].value,36.89);
  assert.equal(data.formatComparisonValue(null,'%'),'—');assert.equal(data.formatComparisonValue(0,'%'),'0.00%');assert.equal(data.formatComparisonValue(-7.2,'%'),'-7.20%');
  assert.equal(data.formatComparisonValue(125e9,'PKR'),'Rs 125B');
+});
+
+test('expanded pairs stay relevant to their sectors and preserve existing canonical URLs',()=>{
+ for(const slug of ['hbl-vs-mebl','mcb-vs-mebl','ppl-vs-pol','sazew-vs-indu','luck-vs-bwcl','atrl-vs-nrl','sys-vs-netsol','hubc-vs-kapco','pso-vs-apl','agp-vs-searl'])assert.ok(catalog.resolveComparison(slug),slug);
+ assert.equal(catalog.resolveComparison('meezan-vs-hbl').slug,'mebl-vs-hbl');assert.equal(catalog.resolveComparison('mari-vs-ogdc').slug,'mari-vs-ogdc');
+ for(const p of catalog.STOCK_COMPARISONS)assert.ok(catalog.comparisonsForStock(p.left).some(x=>x.slug===p.slug));
+ assert.equal(catalog.resolveComparison('sys-vs-ffc'),undefined);
 });
