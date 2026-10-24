@@ -123,7 +123,7 @@ export default function NewsClientHub({ initialArticles,statuses }: NewsClientHu
               <h2 className="text-xl sm:text-2xl font-semibold text-[#EFF3FA] group-hover:text-[#B69249] transition-colors leading-snug">
                 {filteredArticles[0].title}
               </h2>
-              <p className="text-xs sm:text-sm text-[#A4AEC1] leading-relaxed line-clamp-3">
+              <p className="text-xs sm:text-sm text-[#A4AEC1] leading-relaxed line-clamp-2 sm:line-clamp-3">
                 {filteredArticles[0].summary}
               </p>
             </div>
@@ -191,7 +191,7 @@ export default function NewsClientHub({ initialArticles,statuses }: NewsClientHu
                 {article.title}
               </h3>
 
-              <p className="text-xs text-[#A4AEC1] line-clamp-3 leading-relaxed">
+              <p className="text-xs text-[#A4AEC1] line-clamp-2 leading-relaxed">
                 {article.summary}
               </p>
             </div>

@@ -113,13 +113,13 @@ export default function MarketNewsSection({ articles,statuses }: MarketNewsSecti
                 >
                   {featured.title}
                 </a>
-                <p className="text-xs text-[#A4AEC1] line-clamp-3 leading-relaxed">
+                <p className="text-xs text-[#A4AEC1] line-clamp-2 sm:line-clamp-3 leading-relaxed">
                   {featured.summary}
                 </p>
               </div>
 
               <div className="pt-4 mt-4 border-t border-[#28354A]/60 flex items-center justify-between">
-                <span className="text-[11px] text-[#7F8DA4]">Publisher business RSS</span>
+                <span className="text-[11px] text-[#7F8DA4]">Publisher coverage</span>
                 <a
                   href={featured.link}
                   target="_blank"
@@ -183,7 +183,7 @@ export default function MarketNewsSection({ articles,statuses }: MarketNewsSecti
                   {article.title}
                 </h3>
 
-                <p className="text-[11px] text-[#A4AEC1] line-clamp-1 mt-1 hidden sm:block">
+                <p className="text-[11px] text-[#A4AEC1] line-clamp-2 mt-1 leading-relaxed">
                   {article.summary}
                 </p>
               </div>

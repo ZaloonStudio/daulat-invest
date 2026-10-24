@@ -30,3 +30,27 @@ test('feed failures and malformed HTML remain visible while a healthy publisher 
  global.fetch=async()=>new Response(rss(''));s=await load('news-feed').fetchNewsSnapshot();assert.ok(s.statuses.every(p=>p.status==='no-recent-headlines'));
  }finally{global.fetch=original;}
 });
+
+
+test('publisher RSS descriptions become clean plain-text previews without executable markup',()=>{
+ const entry=item().replace('</item>','<description><![CDATA[<p>Regulator approves <b>new rules</b> &amp; relief for Pakistan&#39;s exporters.</p><script>bad()</script>]]></description></item>');
+ const [article]=parseNewsFeed(rss(entry),'TRIBUNE',now);
+ assert.equal(article.summary,"Regulator approves new rules & relief for Pakistan's exporters.");assert.ok(!article.summary.includes('<'));
+});
+test('missing or repeated descriptions use only the publisher opening paragraph, with a 45-word cap',()=>{
+ const {newsPreview}=load('news-summary');
+ assert.equal(newsPreview('Headline','<p>Company earnings increased following higher sales this quarter.</p><p>Do not republish this body.</p>','Headline'),'Company earnings increased following higher sales this quarter.');
+ const long=Array.from({length:90},(_,i)=>'word'+i).join(' ');const preview=newsPreview('',long+'\n\nOther paragraphs','Headline');assert.equal(preview.split(' ').length,45);assert.ok(preview.endsWith('…'));assert.ok(!preview.includes('word45'));
+ assert.equal(newsPreview('','','Headline'),'');assert.equal(newsPreview('Headline','Headline','Headline'),'');
+});
+test('content encoded fallback is attached to its own article and does not alter publisher identity or date',()=>{
+ const entry=item().replace('</item>','<content:encoded><![CDATA[<p>Refinery earnings improved following an increase in production.</p><p>More body text.</p>]]></content:encoded></item>');
+ const [article]=parseNewsFeed(rss(entry),'TRIBUNE',now);assert.equal(article.summary,'Refinery earnings improved following an increase in production.');assert.equal(article.source,'TRIBUNE');assert.equal(article.publishedAt,'2026-10-23T05:00:00.000Z');
+});
+
+test('escaped publisher widgets, captions and CSS never appear in previews',()=>{
+ const {newsPreview}=load('news-summary');
+ const html='<div><script type="text/plain"><div>Chart widget</div><style>.fpw-root { color: red; }</style></script></div><figure>Photo caption</figure><p>Government revised fuel prices following the latest review of international oil markets.</p>';
+ const escaped=html.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+ assert.equal(newsPreview(escaped,'','Fuel prices'),'Government revised fuel prices following the latest review of international oil markets.');
+});

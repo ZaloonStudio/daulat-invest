@@ -1,3 +1,4 @@
+import {newsPreview} from './news-summary';
 import {NEWS_MAX_AGE_MS,mergeNews} from './news-quality';
 import type { StockQuote, IndexQuote, CompanyAnnouncement, NewsArticle } from './types';
 
@@ -93,8 +94,9 @@ export function parseNewsFeed(xml: string, source: 'DAWN'|'TRIBUNE', now = Date.
       const imageHosts=source==='DAWN'?['i.dawn.com']:['i.tribune.com.pk'];
       if(image.protocol==='https:'&&imageHosts.includes(image.hostname)&&!image.username&&!image.password)imageUrl=image.href;
     }catch{}
-    // Headline and publisher link only. Do not republish article bodies or invent summaries.
-    return [{ id: link, title, link, summary: '', source, publishedAt: new Date(date).toISOString(), category: 'Business', imageUrl }];
+    const rawTag=(name:string)=>item[1].match(new RegExp('<'+name+'(?:\\s[^>]*)?>([\\s\\S]*?)<\\/'+name+'>','i'))?.[1]??'';
+    const summary=newsPreview(rawTag('description'),rawTag('content:encoded'),title);
+    return [{ id: link, title, link, summary, source, publishedAt: new Date(date).toISOString(), category: 'Business', imageUrl }];
   }));
 }
 export function parseDawnFeed(xml: string, now = Date.now()) { return parseNewsFeed(xml,'DAWN',now); }
