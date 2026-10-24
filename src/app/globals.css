@@ -319,3 +319,9 @@ html.light .sentiment-dial { background: #F8F7F3; }
 html.light .sentiment-gauge .gauge-label { fill: #657084; }
 html.light .sentiment-gauge .gauge-needle { fill: #1B2638; }
 html.light .sentiment-gauge .gauge-hub { fill: #FFFFFF; stroke: #C9CFD8; }
+
+/* Directory cards retain natural height; columns balance without empty rows. */
+.comparison-directory-columns { columns: 1; column-gap: 12px; }
+.comparison-directory-card { break-inside: avoid; margin-bottom: 12px; }
+@media (min-width: 640px) { .comparison-directory-columns { columns: 2; } }
+@media (min-width: 1024px) { .comparison-directory-columns { columns: 3; } }
