@@ -54,7 +54,7 @@ export default function HomeClientContainer({
         </div>
         <div className="flex flex-col items-start sm:items-end gap-4">
           <span className="eyebrow text-[#7F8DA4]">DAULAT / MARKET OVERVIEW</span>
-          <Link href="/stocks/screener" className="inline-flex primary-action px-5 py-3 text-sm">Explore the screener <ArrowUpRight className="w-4 h-4" /></Link>
+          <Link href="/stocks/compare" className="inline-flex primary-action px-5 py-3 text-sm">Compare stocks <ArrowUpRight className="w-4 h-4" /></Link>
           <Link href="/stocks" className="inline-flex items-center gap-2 text-xs text-[#A4AEC1] hover:text-[#B69249]">Browse all stocks <ArrowRight className="w-3.5 h-3.5" /></Link>
         </div>
       </div>
