@@ -141,7 +141,7 @@ export default function FearGreedIndex({ data }: FearGreedIndexProps) {
               {/* Needle Pivot & Line */}
               <g
                 transform={`rotate(${needleRotation - 90}, 100, 100)`}
-                className="transition-transform duration-700 ease-out origin-[100px_100px]"
+                className="transition-transform duration-700 ease-out"
               >
                 <line
                   x1="100"

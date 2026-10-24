@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import SentimentGauge from '@/components/SentimentGauge';
 import Link from 'next/link';
 import { FearGreedData } from '@/lib/types';
 import {
@@ -26,8 +27,6 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
 
   if (data.available === false) return <div role="status" className="rounded-xl border border-[#28354A] p-6 text-[#A4AEC1]">Sentiment unavailable — waiting for PSX source data.</div>;
 
-  // Score to angle: 0 score = -90 deg (left), 50 = 0 deg (top), 100 = 90 deg (right)
-  const angle = (data.score / 100) * 180 - 90;
 
   const getSentimentTheme = (sentiment: string) => {
     switch (sentiment) {
@@ -90,7 +89,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
   return (
     <div className="space-y-8">
       {/* Back button & Breadcrumb */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <Link
           href="/"
           className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#A4AEC1] hover:text-[#EFF3FA] transition-colors"
@@ -99,168 +98,28 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
           <span>Back to Market Overview</span>
         </Link>
 
-        <div className="flex items-center space-x-2 text-xs text-[#A4AEC1]">
+        <div className="flex items-start gap-2 text-xs text-[#A4AEC1] min-w-0">
           <Clock className="w-3.5 h-3.5 text-[#7F8DA4]" />
           <span>PSX source snapshot: {data.updatedAt ? new Date(data.updatedAt).toLocaleString('en-GB',{timeZone:'Asia/Karachi'})+' PKT' : 'Unavailable'}</span>
         </div>
       </div>
 
-      {/* Main Hero Card with Redesigned Gauge */}
-      <div
-        className={`relative bg-[#111A2B] border border-[#28354A] rounded-2xl p-6 sm:p-10 shadow-2xl overflow-hidden bg-gradient-to-b ${theme.gradient}`}
-      >
-        <div className="text-center max-w-xl mx-auto space-y-2 mb-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#0B1120] border border-[#28354A] text-[11px] font-semibold text-[#B69249]">
-            <Gauge className="w-3.5 h-3.5" />
-            <span>Pakistan Stock Exchange Sentiment</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-semibold text-[#EFF3FA] tracking-tight">
-            PSX Fear &amp; Greed Index
-          </h1>
-          <p className="text-xs sm:text-sm text-[#A4AEC1] leading-relaxed">
-            Quantitative gauge measuring emotional extremes in the Pakistani stock market using live exchange breadth, index momentum, and volume.
-          </p>
-        </div>
-
-        {/* REFINED SVG SPEEDOMETER GAUGE */}
-        <div className="flex flex-col items-center justify-center my-6">
-          <div className="relative w-[320px] sm:w-[380px] h-[190px] sm:h-[220px] flex items-center justify-center">
-            <svg viewBox="0 0 300 170" className="w-full h-full overflow-visible">
-              <defs>
-                {/* 5-Stop Smooth Gradient for the Arc */}
-                <linearGradient id="psxGaugeArc" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#EF4444" />    {/* Extreme Fear */}
-                  <stop offset="25%" stopColor="#F97316" />   {/* Fear */}
-                  <stop offset="50%" stopColor="#EAB308" />   {/* Neutral */}
-                  <stop offset="75%" stopColor="#10B981" />   {/* Greed */}
-                  <stop offset="100%" stopColor="#B69249" />  {/* Extreme Greed */}
-                </linearGradient>
-
-                <filter id="needleShadow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.6" />
-                </filter>
-              </defs>
-
-              {/* Background Inactive Arc */}
-              <path
-                d="M 30 150 A 120 120 0 0 1 270 150"
-                fill="none"
-                stroke="#1C2940"
-                strokeWidth="20"
-                strokeLinecap="round"
-              />
-
-              {/* Colored Gauge Arc */}
-              <path
-                d="M 30 150 A 120 120 0 0 1 270 150"
-                fill="none"
-                stroke="url(#psxGaugeArc)"
-                strokeWidth="18"
-                strokeLinecap="round"
-              />
-
-              {/* Sub-Tick Markers */}
-              {/* 0 Left */}
-              <text x="22" y="165" fill="#EF4444" fontSize="10" fontWeight="800" textAnchor="middle">
-                0
-              </text>
-              {/* 25 */}
-              <text x="65" y="65" fill="#A4AEC1" fontSize="9" fontWeight="600" textAnchor="middle">
-                25
-              </text>
-              {/* 50 Center Top */}
-              <text x="150" y="20" fill="#EAB308" fontSize="10" fontWeight="700" textAnchor="middle">
-                50
-              </text>
-              {/* 75 */}
-              <text x="235" y="65" fill="#A4AEC1" fontSize="9" fontWeight="600" textAnchor="middle">
-                75
-              </text>
-              {/* 100 Right */}
-              <text x="278" y="165" fill="#B69249" fontSize="10" fontWeight="800" textAnchor="middle">
-                100
-              </text>
-
-              {/* NEEDLE POINTER */}
-              <g
-                transform={`rotate(${angle}, 150, 150)`}
-                filter="url(#needleShadow)"
-                className="transition-transform duration-1000 ease-out origin-[150px_150px]"
-              >
-                {/* Triangular Tapered Pointer */}
-                <path
-                  d="M 147 150 L 150 42 L 153 150 Z"
-                  fill="#EFF3FA"
-                />
-                <circle cx="150" cy="42" r="2.5" fill={theme.color} />
-
-                {/* Central Metallic Hub */}
-                <circle cx="150" cy="150" r="14" fill="#111A2B" stroke="#28354A" strokeWidth="2.5" />
-                <circle cx="150" cy="150" r="7" fill={theme.color} />
-              </g>
-            </svg>
-          </div>
-
-          {/* Centered Score & Dynamic Sentiment Badge */}
-          <div className="text-center mt-3 space-y-1">
-            <div className="text-5xl sm:text-6xl font-semibold tracking-tight" style={{ color: theme.color }}>
-              {data.score}
-            </div>
-            <div
-              className={`inline-block text-xs font-semibold uppercase tracking-wider px-3.5 py-1 rounded-full border ${theme.bgClass} ${theme.textClass} ${theme.borderClass}`}
-            >
-              {data.sentiment}
-            </div>
+      <section className="sentiment-hero grid lg:grid-cols-2 gap-6 lg:gap-10 items-center rounded-2xl border border-[#28354A] bg-[#111A2B] p-5 sm:p-8">
+        <div className="min-w-0 space-y-4">
+          <p className="eyebrow"><Gauge aria-hidden="true" className="w-4 h-4"/>MARKET SENTIMENT</p>
+          <h1 className="text-3xl sm:text-4xl font-semibold leading-tight text-[#EFF3FA]">PSX Fear &amp; Greed Index</h1>
+          <p className="text-sm text-[#A4AEC1] leading-relaxed max-w-md">A snapshot of market sentiment, combining PSX breadth, KSE-100 momentum and trading volume.</p>
+          <p className="text-xs text-[#A4AEC1] leading-relaxed">{data.description}</p>
+          <div className="flex flex-wrap gap-2 pt-2" aria-label="Sentiment scale">
+            {[['Extreme fear','0–24','#F28B82'],['Fear','25–44','#E7AD66'],['Neutral','45–55','#9AA6B8'],['Greed','56–75','#6DDBA5'],['Extreme greed','76–100','#26AD84']].map(([label,range,color])=><span key={label} className="inline-flex items-center gap-1.5 rounded-lg border border-[#28354A] px-2 py-1.5 text-[10px] text-[#A4AEC1]"><span aria-hidden="true" className="w-1.5 h-1.5 rounded-full" style={{backgroundColor:color}}/>{label}<span className="font-mono">{range}</span></span>)}
           </div>
         </div>
-
-        {/* Current State Summary */}
-        <div className="max-w-2xl mx-auto bg-[#0B1120] border border-[#28354A] p-4 sm:p-5 rounded-xl text-center space-y-2">
-          <p className="text-xs sm:text-sm text-[#EFF3FA] font-medium leading-relaxed">
-            {data.description}
-          </p>
-          <span className="text-[11px] text-[#7F8DA4] block">
-            Calculated from 100% verified PSX DPS trading activity. No subjective polls.
-          </span>
+        <div className="min-w-0 sentiment-dial rounded-xl p-3 sm:p-5 text-center">
+          <SentimentGauge score={data.score} sentiment={data.sentiment}/>
+          <div className="text-5xl sm:text-6xl font-semibold font-mono tracking-tight leading-none" style={{color:theme.color}}>{data.score}<span className="text-sm text-[#A4AEC1] ml-1">/100</span></div>
+          <span className={`inline-block mt-3 text-xs font-semibold px-3 py-1.5 rounded-full ${theme.bgClass} ${theme.textClass}`}>{data.sentiment}</span>
         </div>
-      </div>
-
-      {/* Historical Sentiment Benchmarks */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
-            Previous Close
-          </span>
-          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">
-            {Math.max(10, Math.min(95, data.score - 3))}
-          </div>
-          <span className="text-[10px] text-[#A4AEC1]">{data.sentiment}</span>
-        </div>
-
-        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
-            1 Week Ago
-          </span>
-          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">54</div>
-          <span className="text-[10px] text-[#EAB308]">Neutral</span>
-        </div>
-
-        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
-            1 Month Ago
-          </span>
-          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">42</div>
-          <span className="text-[10px] text-[#F97316]">Fear</span>
-        </div>
-
-        <div className="bg-[#111A2B] border border-[#28354A] p-4 rounded-xl text-center">
-          <span className="text-[10px] font-semibold text-[#A4AEC1] uppercase tracking-wider block">
-            1 Year Ago
-          </span>
-          <div className="text-xl font-semibold text-[#EFF3FA] mt-1">68</div>
-          <span className="text-[10px] text-[#10B981]">Greed</span>
-        </div>
-      </div>
+      </section>
 
       {/* 3 Core Underlying Factors Breakdown */}
       <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-6 shadow-xl space-y-6">
@@ -276,7 +135,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
 
         {/* Pillar 1: Market Breadth */}
         <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl space-y-3">
-          <div className="flex justify-between items-center text-xs">
+          <div className="flex flex-wrap justify-between items-start gap-2 text-xs">
             <span className="font-semibold text-[#EFF3FA] flex items-center space-x-1.5">
               <TrendingUp className="w-4 h-4 text-[#6DDBA5]" />
               <span>1. PSX Market Breadth (40% Weight)</span>
@@ -291,7 +150,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
             <div style={{ width: `${declinePercent}%` }} className="bg-[#EF4444] h-full transition-all duration-500" />
           </div>
 
-          <div className="flex justify-between items-center text-[11px] text-[#A4AEC1]">
+          <div className="flex flex-wrap justify-between items-center gap-2 text-[11px] text-[#A4AEC1]">
             <span className="text-[#6DDBA5] font-semibold">
               {data.advanceCount} Advancing ({advancePercent.toFixed(1)}%)
             </span>
@@ -305,7 +164,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
         {/* Pillar 2: Intraday Momentum & Pillar 3: Volume Conviction */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl space-y-2">
-            <div className="flex justify-between items-center text-xs">
+            <div className="flex flex-wrap justify-between items-start gap-2 text-xs">
               <span className="font-semibold text-[#EFF3FA] flex items-center space-x-1.5">
                 <Activity className="w-4 h-4 text-[#B69249]" />
                 <span>2. KSE-100 Momentum (35% Weight)</span>
@@ -318,7 +177,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
           </div>
 
           <div className="bg-[#0B1120] border border-[#28354A] p-4 rounded-xl space-y-2">
-            <div className="flex justify-between items-center text-xs">
+            <div className="flex flex-wrap justify-between items-start gap-2 text-xs">
               <span className="font-semibold text-[#EFF3FA] flex items-center space-x-1.5">
                 <BarChart3 className="w-4 h-4 text-[#B69249]" />
                 <span>3. Trading Volume Force (25% Weight)</span>
@@ -336,7 +195,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
       <div className="bg-[#111A2B] border border-[#28354A] rounded-xl p-5">
         <button
           onClick={() => setShowMethodology(!showMethodology)}
-          className="w-full flex items-center justify-between text-xs font-semibold text-[#EFF3FA] hover:text-[#B69249] transition-colors"
+          aria-expanded={showMethodology} className="w-full flex items-center justify-between gap-3 text-left text-xs font-semibold text-[#EFF3FA] hover:text-[#B69249] transition-colors"
         >
           <span className="flex items-center space-x-2">
             <Info className="w-4 h-4 text-[#B69249]" />
@@ -347,12 +206,7 @@ export default function FearGreedClient({ data }: FearGreedClientProps) {
 
         {showMethodology && (
           <div className="pt-4 mt-3 border-t border-[#28354A] text-xs text-[#A4AEC1] space-y-3 leading-relaxed animate-fadeIn">
-            <blockquote className="border-l-2 border-[#B69249] pl-3 italic text-[#EFF3FA]">
-              &quot;Be fearful when others are greedy, and greedy when others are fearful.&quot; &mdash; Warren Buffett
-            </blockquote>
-            <p>
-              When investors become overly greedy, stock valuations get bid up beyond underlying corporate earnings, creating heightened vulnerability to pullbacks. Conversely, during periods of extreme fear, high-quality, dividend-paying cash cows (such as HUBC, MEBL, FFC, EFERT) often trade at substantial discounts to their fair book value.
-            </p>
+            <p>The score describes the current session. Use it alongside company fundamentals, valuation and your own risk limits; it does not predict the next price move.</p>
             <div className="flex items-center space-x-2 text-[11px] text-[#6DDBA5] pt-1">
               <ShieldCheck className="w-4 h-4" />
               <span>Independent quantitative model updated during PSX trading sessions.</span>

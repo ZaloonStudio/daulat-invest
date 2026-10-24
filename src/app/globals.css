@@ -309,3 +309,13 @@ html.light .hover\:text-\[\#EFF3FA\]:hover,
 html.light .group:hover .group-hover\:text-\[\#EFF3FA\] { color: #1B2638; }
 html.light .hover\:text-\[\#B69249\]:hover,
 html.light .group:hover .group-hover\:text-\[\#B69249\] { color: #886521; }
+
+/* Keep the gauge needle in SVG coordinates at every screen size. */
+.sentiment-dial { background: #0B1120; }
+.sentiment-gauge .gauge-label { fill: #A4AEC1; }
+.sentiment-gauge .gauge-needle { fill: #EFF3FA; }
+.sentiment-gauge .gauge-hub { fill: #111A2B; stroke: #465770; }
+html.light .sentiment-dial { background: #F8F7F3; }
+html.light .sentiment-gauge .gauge-label { fill: #657084; }
+html.light .sentiment-gauge .gauge-needle { fill: #1B2638; }
+html.light .sentiment-gauge .gauge-hub { fill: #FFFFFF; stroke: #C9CFD8; }
