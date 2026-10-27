@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { announcementCompanyPath } from '@/lib/announcement-links';
 import { CompanyAnnouncement } from '@/lib/types';
 import {
   FileText,
@@ -130,7 +131,7 @@ export default function AnnouncementsClient({ initialAnnouncements }: Announceme
               <div className="space-y-1.5 flex-1">
                 <div className="flex items-center space-x-2">
                   <Link
-                    href={`/stocks/${item.symbol}`}
+                    href={announcementCompanyPath(item.symbol)}
                     className="font-semibold text-sm text-[#B69249] hover:underline"
                   >
                     {item.symbol}

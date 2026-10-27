@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { announcementCompanyPath } from '@/lib/announcement-links';
 import { CompanyAnnouncement } from '@/lib/types';
 import { FileText, ExternalLink, ArrowRight, Calendar } from 'lucide-react';
 
@@ -162,10 +163,10 @@ export default function CompanyAnnouncementsSection({
               </a>
 
               <Link
-                href={`/stocks/${ann.symbol}`}
+                href={announcementCompanyPath(ann.symbol)}
                 className="text-xs text-[#B69249] hover:text-[#B69249]/80 font-semibold inline-flex items-center space-x-1"
               >
-                <span>View Stock</span>
+                <span>{ann.symbol === 'NBP-FUNDS' ? 'View Funds' : 'View Stock'}</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
