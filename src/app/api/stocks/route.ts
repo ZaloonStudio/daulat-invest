@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
     const sector = searchParams.get('sector')?.trim() || '';
 
     let quotes = await fetchMarketWatch();
+    if (!quotes.length) return NextResponse.json([], { status: 503, headers: { 'Cache-Control': 'no-store' } });
 
     if (q) {
       quotes = quotes.filter(
@@ -21,7 +22,7 @@ export async function GET(request: NextRequest) {
       quotes = quotes.filter((item) => item.sector.toLowerCase() === sector.toLowerCase());
     }
 
-    return NextResponse.json(quotes);
+    return NextResponse.json(quotes, { headers: { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=30' } });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Failed to fetch stocks' }, { status: 500 });
   }

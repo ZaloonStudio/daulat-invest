@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FearGreedClient from './FearGreedClient';
 
-export const revalidate = 15; // Revalidate every 15 seconds for live PSX sentiment
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMetadata("/fear-greed", "PSX Fear & Greed Index", "Explore Pakistan stock market sentiment using KSE 100 momentum, market breadth and trading activity in the Daulat Fear & Greed Index.");
 

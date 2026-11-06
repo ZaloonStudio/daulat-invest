@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import StockCompareClient from './StockCompareClient';
 import CuratedComparisons from '@/components/CuratedComparisons';
 
-export const revalidate = 15;
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMetadata("/stocks/compare", "Compare PSX Stocks", "Compare Pakistan Stock Exchange shares side by side with prices, valuation ratios, dividends and company fundamentals.");
 

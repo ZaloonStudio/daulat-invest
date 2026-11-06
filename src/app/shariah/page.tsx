@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ShariahClient from './ShariahClient';
 
-export const revalidate = 15;
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMetadata("/shariah", "Shariah Stock Screener for PSX", "Explore Shariah screening information for Pakistan Stock Exchange companies and compare available compliance and financial ratios.");
 

@@ -24,7 +24,7 @@ interface Props {
   params: { symbol: string };
 }
 
-export const revalidate = 30; // Revalidate every 30 seconds
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const symbol = params.symbol.toUpperCase();

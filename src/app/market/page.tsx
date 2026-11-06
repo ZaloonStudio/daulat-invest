@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import {getMarketSummary,fetchMarketWatch} from '@/lib/psx';
 import {pageMetadata} from '@/lib/seo';
 import MarketClient from './MarketClient';
-export const revalidate=30;
+export const revalidate = 60;
 export const metadata=pageMetadata('/market','PSX Market Overview, Indices & Movers','Explore all PSX indices, KSE 100 charts, market movers, top gainers, losers, volume leaders and sector performance.');
 export default async function MarketPage({searchParams}:{searchParams?:{index?:string;view?:string}}){
  const [summary,quotes]=await Promise.all([getMarketSummary(),fetchMarketWatch()]);

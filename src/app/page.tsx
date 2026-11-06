@@ -11,7 +11,7 @@ import HomeClientContainer from '@/components/HomeClientContainer';
 import Footer from '@/components/Footer';
 import { getPriceSnapshot } from '@/lib/commodity-feed';
 
-export const revalidate = 15; // Revalidate every 15 seconds for live updates
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMetadata("/", "PSX Live Market & KSE 100 Index", "Track the Pakistan Stock Exchange with KSE 100 charts, share prices, market movers, stock screening and portfolio tools.");
 

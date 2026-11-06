@@ -1,3 +1,5 @@
+import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 import {fetchNewsSnapshot} from './news-feed';
 import {fetchSupplementalFundamentals} from './supplemental-fundamentals';
 import {parseCompanyResearch} from './company-research';
@@ -89,14 +91,49 @@ async function psxText(path: string, options: RequestInit = {}, revalidate = 30)
     return response.ok ? await response.text() : '';
   } catch { return ''; }
 }
-let pendingPanel: Promise<ReturnType<typeof parseTradingPanel>> | undefined;
-async function panel() {
-  if (!pendingPanel) pendingPanel = psxText('/trading-panel').then(parseTradingPanel).finally(() => { pendingPanel = undefined; });
-  return pendingPanel;
+// Cache parsed results, not just upstream HTML, across routes and requests.
+// Reject failed refreshes so Next can retain the previous successful snapshot.
+async function loadPanel() {
+  const snapshot = parseTradingPanel(await psxText('/trading-panel', { cache: 'no-store' }));
+  if (!snapshot.indices.length) throw new Error('PSX trading panel unavailable');
+  return snapshot;
 }
+// A bound callback has a stable identity string across separately minified route bundles.
+// Bump the explicit key when the parser contract changes.
+const cachedPanel = unstable_cache(
+  loadPanel.bind(null), ['psx-parsed-panel-v2'], { revalidate: 60 }
+);
+
+const panel = cache(async () => {
+  try {
+    return await cachedPanel();
+  } catch {
+    return parseTradingPanel('');
+  }
+});
+
+async function loadMarketWatch(): Promise<StockQuote[]> {
+  const [watch, screener, snapshot] = await Promise.all([
+    psxText('/market-watch', { cache: 'no-store' }),
+    psxText('/screener', { cache: 'no-store' }),
+    panel(),
+  ]);
+  const quotes = parseMarketWatch(watch, screener, SECTOR_CODE_MAP, snapshot.asOf);
+  if (!watch || !screener || !quotes.length) throw new Error('PSX market data unavailable');
+  return quotes;
+}
+
+const cachedMarketWatch = unstable_cache(
+  loadMarketWatch.bind(null), ['psx-parsed-market-watch-v2'], { revalidate: 60 }
+);
+const requestMarketWatch = cache(() => cachedMarketWatch());
+
 export async function fetchMarketWatch(forceFresh = false): Promise<StockQuote[]> {
-  const [watch, screener, snapshot] = await Promise.all([psxText('/market-watch', forceFresh ? {cache:'no-store'} : {}), psxText('/screener'), panel()]);
-  return parseMarketWatch(watch, screener, SECTOR_CODE_MAP, snapshot.asOf);
+  try {
+    return await (forceFresh ? loadMarketWatch() : requestMarketWatch());
+  } catch {
+    return [];
+  }
 }
 export async function fetchIndices(): Promise<IndexQuote[]> { return (await panel()).indices; }
 export async function fetchTimeseries(symbol: string, isIntraday = true): Promise<ChartPoint[]> {
@@ -258,7 +295,7 @@ export async function fetchMarketNews(): Promise<NewsArticle[]> {
 export async function fetchCompanyAnnouncements(symbol?: string): Promise<CompanyAnnouncement[]> {
   const body = new URLSearchParams({type:'C', count:'50', offset:'0', page:'annc'});
   if (symbol && /^[A-Z0-9-]{1,20}$/.test(symbol)) body.set('symbol',symbol);
-  return parseAnnouncements(await psxText('/announcements', {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()}));
+  return parseAnnouncements(await psxText('/announcements', {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()},300));
 }
 
 export async function fetchCompanyResearch(symbol:string) {

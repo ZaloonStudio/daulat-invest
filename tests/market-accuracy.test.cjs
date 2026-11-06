@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),ts=require('typescript');
-function load(name){const file=path.resolve(__dirname,'../src/lib/'+name+'.ts');const m=new Module(file,module);m.filename=file;m.paths=module.paths;m.require=id=>id.startsWith('./')?load(id.slice(2)):require(id);m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,file);return m.exports;}
+function load(name){const file=path.resolve(__dirname,'../src/lib/'+name+'.ts');const m=new Module(file,module);m.filename=file;m.paths=module.paths;m.require=id=>id==='react'?{cache:fn=>fn}:id==='next/cache'?{unstable_cache:fn=>fn}:id.startsWith('./')?load(id.slice(2)):require(id);m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,file);return m.exports;}
 const source=load('market-source'),history=load('stock-history-data'),funds=load('fund-data');
 const fixture=n=>fs.readFileSync(path.join(__dirname,'fixtures',n),'utf8');
 test('captured PSX report supplies dated exchange totals; zero breadth is preserved',()=>{

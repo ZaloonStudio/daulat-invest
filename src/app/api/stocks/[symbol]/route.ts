@@ -14,6 +14,10 @@ export async function GET(
       fetchStockHistory(symbol),
     ]);
 
+    if (!quotes.length) {
+      return NextResponse.json({ error: 'Market data temporarily unavailable' }, { status: 503, headers: { 'Cache-Control': 'no-store' } });
+    }
+
     const quote = quotes.find((q) => q.symbol.toUpperCase() === symbol);
 
     if (!quote) {
@@ -23,7 +27,7 @@ export async function GET(
     return NextResponse.json({
       quote,
       history,
-    });
+    }, { headers: { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=30' } });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Failed to fetch stock detail' }, { status: 500 });
   }

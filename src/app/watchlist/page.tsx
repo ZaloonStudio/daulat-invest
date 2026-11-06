@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import WatchlistClient from './WatchlistClient';
 
-export const revalidate = 15;
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMetadata("/watchlist", "Your PSX Stock Watchlist", "Track your saved Pakistan Stock Exchange shares and monitor prices in your personal Daulat watchlist.", false);
 
